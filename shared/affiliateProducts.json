@@ -1,0 +1,569 @@
+{
+  "_comment": "Affiliate product mappings for FriendCheck result pages. Replace 'url' with your actual affiliate tracking link.",
+
+  "soulmate-bff": {
+    "headline": "You're a legend — treat your friendship 💎",
+    "subtext": "Soulmate-tier friends deserve Soulmate-tier gifts.",
+    "products": [
+      {
+        "id": "sbff-1",
+        "name": "Personalized BFF Photo Book",
+        "description": "Custom hardcover photo book with your friendship memories. Ships in 3 days.",
+        "price": "$29.99",
+        "badge": "🔥 Fan Fave",
+        "emoji": "📖",
+        "cta": "Create Yours",
+        "url": "https://REPLACE_WITH_AFFILIATE_LINK/photo-book",
+        "color": "#67e8f9"
+      },
+      {
+        "id": "sbff-2",
+        "name": "Matching BFF Bracelets Set",
+        "description": "Sterling silver 'Better Half' bracelets. Comes in a gift box.",
+        "price": "$24.99",
+        "badge": "💎 Premium",
+        "emoji": "💍",
+        "cta": "Shop Now",
+        "url": "https://REPLACE_WITH_AFFILIATE_LINK/bff-bracelets",
+        "color": "#67e8f9"
+      },
+      {
+        "id": "sbff-3",
+        "name": "Custom Star Map Print",
+        "description": "Night sky print for the date you became best friends. Frameable.",
+        "price": "$19.99",
+        "badge": "⭐ Bestseller",
+                "emoji": "🌌",
+        "cta": "Get It",
+        "url": "https://REPLACE_WITH_AFFILIATE_LINK/star-map",
+        "color": "#67e8f9"
+      }
+    ]
+  },
+
+  "golden-friend": {
+    "headline": "Golden friends deserve golden gifts 👑",
+    "subtext": "You're in the top 1% — show your squad you mean it.",
+    "products": [
+      {
+        "id": "gf-1",
+        "name": "Personalized Friendship Mug Set",
+        "description": "2-piece 'Best Friend' mug set with custom names. Dishwasher safe.",
+        "price": "$22.99",
+        "badge": "🏅 Top Pick",
+        "emoji": "☕",
+        "cta": "Personalize Now",
+        "url": "https://REPLACE_WITH_AFFILIATE_LINK/friend-mugs",
+        "color": "#fbbf24"
+      },
+      {
+        "id": "gf-2",
+        "name": "Friendship Journal — 52 Prompts",
+        "description": "A guided journal for you and your bestie. 52 weekly friendship prompts.",
+        "price": "$16.99",
+        "badge": "📚 Loved",
+        "emoji": "📓",
+        "cta": "Shop Now",
+        "url": "https://REPLACE_WITH_AFFILIATE_LINK/friendship-journal",
+        "color": "#fbbf24"
+      },
+      {
+        "id": "gf-3",
+        "name": "GiftNow Friendship Gift Card",
+        "description": "Let them pick their own gift. $25 gift card, instantly delivered.",
+        "price": "$25.00",
+        "badge": "✨ Easy Gift",
+        "emoji": "🎁",
+        "cta": "Send Gift",
+        "url": "https://REPLACE_WITH_AFFILIATE_LINK/gift-card",
+        "color": "#fbbf24"
+      }
+    ]
+  },
+
+  "ride-or-die": {
+    "headline": "Loyalty this strong deserves recognition 🛡️",
+    "subtext": "Ride-or-Die status is rare. Celebrate it.",
+    "products": [
+      {
+        "id": "rod-1",
+        "name": "Custom Matching Phone Cases",
+        "description": "Coordinating 'Ride' and 'Die' phone cases. Fits all major models.",
+        "price": "$18.99",
+        "badge": "⚔️ Iconic",
+        "emoji": "📱",
+        "cta": "Get Matching",
+        "url": "https://REPLACE_WITH_AFFILIATE_LINK/matching-cases",
+        "color": "#34d399"
+      },
+      {
+        "id": "rod-2",
+        "name": "Friendship Survival Kit",
+        "description": "Curated gift box: candle, tea, snacks, and a handwritten card.",
+        "price": "$34.99",
+        "badge": "🎀 Gift Ready",
+        "emoji": "🎁",
+        "cta": "Send a Box",
+        "url": "https://REPLACE_WITH_AFFILIATE_LINK/gift-box",
+        "color": "#34d399"
+      }
+    ]
+  },
+
+  "emergency-friend": {
+    "headline": "Always there when it counts 🚑",
+    "subtext": "Level up your friendship game with these picks.",
+    "products": [
+      {
+        "id": "ef-1",
+        "name": "The Friendship Book — 101 Ways",
+        "description": "A fun, easy read about deepening your friendships. Perfect gift.",
+        "price": "$13.99",
+        "badge": "📖 Quick Read",
+        "emoji": "📚",
+        "cta": "Get the Book",
+        "url": "https://REPLACE_WITH_AFFILIATE_LINK/friendship-book",
+        "color": "#fface8"
+      },
+      {
+        "id": "ef-2",
+        "name": "Friendship Card Game — 150 Questions",
+        "description": "Get to know your friends on a deeper level. 2–8 players.",
+        "price": "$14.99",
+        "badge": "🎲 Party Hit",
+        "emoji": "🃏",
+        "cta": "Play Together",
+        "url": "https://REPLACE_WITH_AFFILIATE_LINK/card-game",
+        "color": "#fface8"
+      }
+    ]
+  },
+
+  "bestie-material": {
+    "headline": "Almost there — the potential is REAL ✨",
+    "subtext": "A little effort goes a long way. Start here.",
+    "products": [
+      {
+        "id": "bm-1",
+        "name": "We're Not Really Strangers Card Game",
+        "description": "The viral card game that deepens any friendship instantly.",
+        "price": "$25.00",
+        "badge": "🔥 Viral",
+        "emoji": "🃏",
+        "cta": "Get It Now",
+        "url": "https://REPLACE_WITH_AFFILIATE_LINK/wnrs",
+        "color": "#a78bfa"
+      },
+      {
+        "id": "bm-2",
+        "name": "Shared Bucket List Journal",
+        "description": "50 adventures to do together. Check them off as you go.",
+        "price": "$12.99",
+        "badge": "🗺️ Adventure",
+        "emoji": "📋",
+        "cta": "Start Exploring",
+        "url": "https://REPLACE_WITH_AFFILIATE_LINK/bucket-list",
+        "color": "#a78bfa"
+      }
+    ]
+  },
+
+  "food-only-friend": {
+    "headline": "All roads lead to snacks 🍔",
+    "subtext": "Food is love. We're not judging.",
+    "products": [
+      {
+        "id": "fof-1",
+        "name": "SnackMagic Build-Your-Own Box",
+        "description": "Choose 10+ snacks from 500+ options. Delivered in 2 days.",
+        "price": "$29.99",
+        "badge": "🍟 Best Seller",
+        "emoji": "📦",
+        "cta": "Build a Box",
+        "url": "https://REPLACE_WITH_AFFILIATE_LINK/snack-box",
+        "color": "#fb923c"
+      },
+      {
+        "id": "fof-2",
+        "name": "DoorDash Gift Card",
+        "description": "$25 DoorDash credit. Because food IS friendship.",
+        "price": "$25.00",
+        "badge": "🛵 Fast",
+        "emoji": "🚚",
+        "cta": "Send Food",
+        "url": "https://REPLACE_WITH_AFFILIATE_LINK/doordash-gift",
+        "color": "#fb923c"
+      },
+      {
+        "id": "fof-3",
+        "name": "International Snack Subscription Box",
+        "description": "Monthly box of snacks from 10 countries. Surprise every time.",
+        "price": "$19.99/mo",
+        "badge": "🌏 Discover",
+        "emoji": "🍜",
+        "cta": "Subscribe",
+        "url": "https://REPLACE_WITH_AFFILIATE_LINK/snack-sub",
+        "color": "#fb923c"
+      }
+    ]
+  },
+
+  "screenshot-friend": {
+    "headline": "Caught in 4K 📱",
+    "subtext": "If you're gonna screenshot, at least do it in style.",
+    "products": [
+      {
+        "id": "ssf-1",
+        "name": "Privacy Screen Protector",
+        "description": "No one peeks at your receipts. 180° privacy filter, anti-glare.",
+        "price": "$15.99",
+        "badge": "🔒 Privacy First",
+        "emoji": "🛡️",
+        "cta": "Stay Private",
+        "url": "https://REPLACE_WITH_AFFILIATE_LINK/privacy-screen",
+        "color": "#f472b6"
+      },
+      {
+        "id": "ssf-2",
+        "name": "Funny 'Delete Your Number' Mug",
+        "description": "Passive-aggressive and hilarious. Perfect for that one friend.",
+        "price": "$11.99",
+        "badge": "😂 Fan Fave",
+        "emoji": "☕",
+        "cta": "Get the Mug",
+        "url": "https://REPLACE_WITH_AFFILIATE_LINK/delete-mug",
+        "color": "#f472b6"
+      }
+    ]
+  },
+
+  "fake-friend": {
+    "headline": "The truth hurts — but at least it's funny 🎭",
+    "subtext": "Prank gifts for people who deserve it.",
+    "products": [
+      {
+        "id": "ff-1",
+        "name": "Glitter Bomb Prank Box",
+        "description": "Send a box that explodes with glitter when opened. Untraceable.",
+        "price": "$19.99",
+        "badge": "💣 Evil",
+        "emoji": "✨",
+        "cta": "Send Chaos",
+        "url": "https://REPLACE_WITH_AFFILIATE_LINK/glitter-bomb",
+        "color": "#ef4444"
+      },
+      {
+        "id": "ff-2",
+        "name": "'Toxic People' Survival Guide",
+        "description": "How to spot, handle, and remove fake friends. Bestselling self-help.",
+        "price": "$14.99",
+        "badge": "📖 Must Read",
+        "emoji": "🐍",
+        "cta": "Read It",
+        "url": "https://REPLACE_WITH_AFFILIATE_LINK/toxic-guide",
+        "color": "#ef4444"
+      },
+      {
+        "id": "ff-3",
+        "name": "Funny Farewell Card Pack",
+        "description": "10 hilariously savage goodbye cards. 'Hope you find better friends.'",
+        "price": "$9.99",
+        "badge": "😈 Petty",
+        "emoji": "👋",
+        "cta": "Say Goodbye",
+        "url": "https://REPLACE_WITH_AFFILIATE_LINK/farewell-cards",
+        "color": "#ef4444"
+      }
+    ]
+  },
+
+  "ghost-friend": {
+    "headline": "At least ghosts are consistent 👻",
+    "subtext": "These won't ghost back.",
+    "products": [
+      {
+        "id": "ghost-1",
+        "name": "Ghost Plushie — Glow in the Dark",
+        "description": "Because everyone needs a friend. Even if it's a ghost plushie.",
+        "price": "$12.99",
+        "badge": "👻 Mood",
+        "emoji": "🧸",
+        "cta": "Adopt One",
+        "url": "https://REPLACE_WITH_AFFILIATE_LINK/ghost-plushie",
+        "color": "#9ca3af"
+      },
+      {
+        "id": "ghost-2",
+        "name": "Digital Detox Journal",
+        "description": "Reconnect with people IRL. 30-day guided journaling challenge.",
+        "price": "$11.99",
+        "badge": "🌿 Growth",
+        "emoji": "📓",
+        "cta": "Start Fresh",
+        "url": "https://REPLACE_WITH_AFFILIATE_LINK/detox-journal",
+        "color": "#9ca3af"
+      }
+    ]
+  },
+
+  "blocked-friend": {
+    "headline": "Every ending is a new beginning 🚫",
+    "subtext": "Time to invest in yourself.",
+    "products": [
+      {
+        "id": "bf-1",
+        "name": "Atomic Habits — James Clear",
+        "description": "The #1 self-improvement book. Build better habits, become a better friend.",
+        "price": "$14.99",
+        "badge": "📚 Life-Changer",
+        "emoji": "⚡",
+        "cta": "Get the Book",
+        "url": "https://REPLACE_WITH_AFFILIATE_LINK/atomic-habits",
+        "color": "#6b7280"
+      },
+      {
+        "id": "bf-2",
+        "name": "Solo Activity Kit — Movie Night Box",
+        "description": "Curated self-care box. Popcorn, candle, blanket socks, and more.",
+        "price": "$27.99",
+        "badge": "🛁 Self Love",
+        "emoji": "🎬",
+        "cta": "Treat Yourself",
+        "url": "https://REPLACE_WITH_AFFILIATE_LINK/self-care-box",
+        "color": "#6b7280"
+      }
+    ]
+  },
+
+  "roast": {
+    "headline": "Still friends after that roast? Celebrate it 🔥",
+    "subtext": "Survivorship deserves a reward.",
+    "products": [
+      {
+        "id": "roast-1",
+        "name": "Custom Roast Certificate (Printable)",
+        "description": "Official-looking certificate: 'Survived the FriendCheck Roast'. Download instantly.",
+        "price": "$4.99",
+        "badge": "🏆 Memento",
+        "emoji": "📜",
+        "cta": "Download",
+        "url": "https://REPLACE_WITH_AFFILIATE_LINK/roast-cert",
+        "color": "#ff6600"
+      },
+      {
+        "id": "roast-2",
+        "name": "The Roast Book — 500 Jokes",
+        "description": "Roast anyone at any skill level. Covers 50 personality types.",
+        "price": "$9.99",
+        "badge": "😂 Comedy Gold",
+        "emoji": "📖",
+        "cta": "Get Roasting",
+        "url": "https://REPLACE_WITH_AFFILIATE_LINK/roast-book",
+        "color": "#ff6600"
+      }
+    ]
+  },
+
+  "court": {
+    "headline": "Justice served — celebrate the verdict ⚖️",
+    "subtext": "Winning (or losing) in court deserves a trophy.",
+    "products": [
+      {
+        "id": "court-1",
+        "name": "Novelty 'Judge' Gavel Set",
+        "description": "Miniature wooden gavel and sound block. Great desk décor / gag gift.",
+        "price": "$14.99",
+        "badge": "⚖️ Iconic",
+        "emoji": "🔨",
+        "cta": "Order Now",
+        "url": "https://REPLACE_WITH_AFFILIATE_LINK/gavel",
+        "color": "#a259ff"
+      },
+      {
+        "id": "court-2",
+        "name": "Custom 'Officially Forgiven' Certificate",
+        "description": "Printable. Give it to the friend who just won the case.",
+        "price": "$3.99",
+        "badge": "✅ Closure",
+        "emoji": "📜",
+        "cta": "Print It",
+        "url": "https://REPLACE_WITH_AFFILIATE_LINK/forgiven-cert",
+        "color": "#a259ff"
+      }
+    ]
+  },
+
+  "compatibility": {
+    "headline": "Your vibes are aligned — make it official 🧬",
+    "subtext": "Compatible friendships deserve compatible gifts.",
+    "products": [
+      {
+        "id": "compat-1",
+        "name": "Zodiac Compatibility Gift Set",
+        "description": "Crystals, incense, and a card matching your combined signs.",
+        "price": "$22.99",
+        "badge": "✨ Vibes",
+        "emoji": "🔮",
+        "cta": "Get Aligned",
+        "url": "https://REPLACE_WITH_AFFILIATE_LINK/zodiac-set",
+        "color": "#00eefc"
+      },
+      {
+        "id": "compat-2",
+        "name": "Matching Constellation Necklaces",
+        "description": "Your birth month constellations, one necklace each. Sterling silver.",
+        "price": "$28.99",
+        "badge": "⭐ Perfect Pair",
+        "emoji": "🌟",
+        "cta": "Shop Pair",
+        "url": "https://REPLACE_WITH_AFFILIATE_LINK/constellation-necklace",
+        "color": "#00eefc"
+      }
+    ]
+  },
+
+  "prediction": {
+    "headline": "The oracle has spoken — trust the prophecy 🔮",
+    "subtext": "What your future friendship needs.",
+    "products": [
+      {
+        "id": "pred-1",
+        "name": "Friendship Tarot Card Deck",
+        "description": "78-card deck with friendship-themed artwork. Comes with guidebook.",
+        "price": "$18.99",
+        "badge": "🌙 Mystical",
+        "emoji": "🃏",
+        "cta": "Get the Deck",
+        "url": "https://REPLACE_WITH_AFFILIATE_LINK/tarot-deck",
+        "color": "#a178ff"
+      },
+      {
+        "id": "pred-2",
+        "name": "Vision Board Kit for Two",
+        "description": "Plan your future adventures together. 200+ stickers and templates.",
+        "price": "$16.99",
+        "badge": "🎯 Goal Pair",
+        "emoji": "✂️",
+        "cta": "Create Together",
+        "url": "https://REPLACE_WITH_AFFILIATE_LINK/vision-board",
+        "color": "#a178ff"
+      }
+    ]
+  },
+
+  "certificate": {
+    "headline": "Make it even more official 📜",
+    "subtext": "Your friendship just got certified — now frame it.",
+    "products": [
+      {
+        "id": "cert-1",
+        "name": "A4 Certificate Frame — Gold Border",
+        "description": "Display your FriendCheck certificate in style. Wall-mountable.",
+        "price": "$12.99",
+        "badge": "🖼️ Frame It",
+        "emoji": "🏅",
+        "cta": "Get a Frame",
+        "url": "https://REPLACE_WITH_AFFILIATE_LINK/cert-frame",
+        "color": "#ffd700"
+      },
+      {
+        "id": "cert-2",
+        "name": "Personalized Friendship Plaque",
+        "description": "Custom engraved wooden plaque with your names and date.",
+        "price": "$24.99",
+        "badge": "🪵 Keepsake",
+        "emoji": "🌳",
+        "cta": "Engrave It",
+        "url": "https://REPLACE_WITH_AFFILIATE_LINK/custom-plaque",
+        "color": "#ffd700"
+      }
+    ]
+  },
+
+  "battle": {
+    "headline": "Battle over, winner certified ⚔️",
+    "subtext": "Champions deserve spoils.",
+    "products": [
+      {
+        "id": "battle-1",
+        "name": "Competitive Card Game Bundle",
+        "description": "5 competitive party games for 2–8 players. Hours of chaos.",
+        "price": "$32.99",
+        "badge": "🎮 Bundle",
+        "emoji": "🃏",
+        "cta": "Play More",
+        "url": "https://REPLACE_WITH_AFFILIATE_LINK/party-games",
+        "color": "#a259ff"
+      },
+      {
+        "id": "battle-2",
+        "name": "Champion Trophy — Custom Engraved",
+        "description": "Mini trophy with custom name. 'World's Best Friend' engraving.",
+        "price": "$17.99",
+        "badge": "🏆 Victory",
+        "emoji": "🥇",
+        "cta": "Claim Trophy",
+        "url": "https://REPLACE_WITH_AFFILIATE_LINK/mini-trophy",
+        "color": "#a259ff"
+      }
+    ]
+  },
+
+  "fake-investigator": {
+    "headline": "The investigation is complete 🔎",
+    "subtext": "Now you know — here's what to do with that info.",
+    "products": [
+      {
+        "id": "fi-1",
+        "name": "Untangle Your Friendships — Book",
+        "description": "Practical guide to evaluating and improving your social circle.",
+        "price": "$13.99",
+        "badge": "📖 Must Read",
+        "emoji": "🔍",
+        "cta": "Read It",
+        "url": "https://REPLACE_WITH_AFFILIATE_LINK/untangle-book",
+        "color": "#fface8"
+      },
+      {
+        "id": "fi-2",
+        "name": "Self-Care Starter Kit",
+        "description": "After cutting the fakers — treat yourself. Spa kit, journal, and candle.",
+        "price": "$29.99",
+        "badge": "🌸 Glow Up",
+        "emoji": "✨",
+        "cta": "Treat Yourself",
+        "url": "https://REPLACE_WITH_AFFILIATE_LINK/self-care-kit",
+        "color": "#fface8"
+      }
+    ]
+  },
+
+  "default": {
+    "headline": "Upgrade your friendship game 💖",
+    "subtext": "Handpicked picks for real ones.",
+    "products": [
+      {
+        "id": "def-1",
+        "name": "Friendship Test Kit — Physical Edition",
+        "description": "Printable card game based on the FriendCheck questions. Great gift.",
+        "price": "$9.99",
+        "badge": "🎁 Popular",
+        "emoji": "🃏",
+        "cta": "Get It",
+        "url": "https://REPLACE_WITH_AFFILIATE_LINK/ft-kit",
+        "color": "#a259ff"
+      },
+      {
+        "id": "def-2",
+        "name": "Friendship Coloring Book for Adults",
+        "description": "48 relaxing illustrations celebrating friendship. Stress-free fun.",
+        "price": "$8.99",
+        "badge": "🎨 Chill",
+        "emoji": "🖍️",
+        "cta": "Color Together",
+        "url": "https://REPLACE_WITH_AFFILIATE_LINK/color-book",
+        "color": "#a259ff"
+      }
+    ]
+  }
+}

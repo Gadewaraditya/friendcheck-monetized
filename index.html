@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- ── SEO ── -->
+  <title>FriendCheck — The #1 Friendship Test Hub | Free AI-Powered Quizzes</title>
+  <meta name="description" content="Take AI-powered friendship tests, generate roasts, run compatibility scans, and settle disputes in court. 1M+ tests taken. 100% free. Find out if you're a real friend or a fraud.">
+  <meta name="keywords" content="friendship test, BFF quiz, fake friend detector, friend battle, roast generator, friendship compatibility, friendship certificate, friendship court">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://friendship-check.in/">
+
+  <!-- Open Graph -->
+  <meta property="og:type"         content="website">
+  <meta property="og:url"          content="https://friendship-check.in/">
+  <meta property="og:title"        content="FriendCheck — Are You A Good Friend?">
+  <meta property="og:description"  content="1M+ friendship tests. Roasts, battles, certificates & more. All free. Find out where you stand.">
+  <meta property="og:image"        content="https://friendship-check.in/og-hub.png">
+  <meta property="og:image:width"  content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:site_name"    content="FriendCheck">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card"        content="summary_large_image">
+  <meta name="twitter:site"        content="@FriendCheckApp">
+  <meta name="twitter:title"       content="FriendCheck — Are You A Good Friend?">
+  <meta name="twitter:description" content="1M+ friendship tests. All free. Try it now.">
+  <meta name="twitter:image"       content="https://friendship-check.in/og-hub.png">
+
+  <!-- JSON-LD: WebSite + SiteLinksSearchBox -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "FriendCheck",
+    "url": "https://friendship-check.in/",
+    "description": "AI-powered friendship quizzes, roast generators, compatibility meters, and more.",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": "https://friendship-check.in/?q={search_term_string}",
+      "query-input": "required name=search_term_string"
+    }
+  }
+  </script>
+
+  <!-- ── SHARED DESIGN SYSTEM ── -->
+  <link rel="stylesheet" href="shared/fc-design-system.css">
+
+  <!-- ── FONTS: Outfit kept for backward compat ── -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg:       var(--fc-bg);
+      --surface:  var(--fc-surface);
+      --border:   var(--fc-border);
+      --primary:  var(--fc-accent);
+      --secondary:var(--fc-secondary);
+      --accent:   #ff2d7a;
+      --text:     var(--fc-text);
+      --muted:    var(--fc-muted);
+      --radius:   var(--fc-radius);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: var(--fc-font-body);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      overflow-x: hidden;
+      background-image:
+        radial-gradient(circle at 10% 20%, rgba(162,89,255,0.10), transparent 40%),
+        radial-gradient(circle at 90% 80%, rgba(0,210,255,0.10),  transparent 40%),
+        radial-gradient(circle at 50% 50%, rgba(255,45,122,0.05), transparent 60%);
+    }
+
+    .container {
+      max-width: 1200px;
+      width: 90%;
+      padding: calc(4rem + 60px) 1rem 4rem;
+      text-align: center;
+    }
+
+    header { margin-bottom: 2rem; }
+
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 7px;
+      padding: 5px 14px; border-radius: 999px;
+      background: rgba(255,255,255,0.07); border: 1px solid var(--border);
+      font-size: 0.72rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.08em; color: var(--muted); margin-bottom: 1.25rem;
+    }
+    .hero-badge-dot { width:7px; height:7px; border-radius:50%; background:var(--secondary); animation:pulseDot 2s ease-in-out infinite; }
+    @keyframes pulseDot { 0%,100%{transform:scale(1);opacity:1} 50%{transform:scale(1.5);opacity:0.5} }
+
+    h1 {
+      font-size: clamp(2.2rem, 6vw, 4.5rem);
+      font-weight: 900; line-height: 1.1; margin-bottom: 1rem;
+      background: linear-gradient(120deg, #ff2d7a, #a259ff, #00d2ff);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 0 20px rgba(162,89,255,0.4));
+    }
+
+    .subtitle { color: var(--muted); font-size: 1.05rem; max-width: 600px; margin: 0 auto; line-height: 1.6; }
+
+    /* ── Ad section wrapper ── */
+    .ad-section { width: 100%; max-width: 728px; margin: 1.5rem auto; }
+    .ad-section-native { max-width: 100%; margin: 2rem auto; }
+
+    /* ── Grid ── */
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; }
+
+    .card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 1.75rem;
+      text-align: left; text-decoration: none; color: var(--text);
+      will-change: transform;
+      transition: transform 0.3s cubic-bezier(0.25,0.8,0.25,1), box-shadow 0.3s cubic-bezier(0.25,0.8,0.25,1), border-color 0.3s;
+      position: relative; overflow: hidden;
+      backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+      display: flex; flex-direction: column;
+    }
+    .card::before {
+      content:''; position:absolute; top:0; left:0; width:100%; height:100%;
+      background:linear-gradient(135deg,rgba(255,255,255,0.05) 0%,transparent 100%);
+      opacity:0; transition:opacity .3s; pointer-events:none;
+    }
+    .card:hover { transform:translateY(-6px); box-shadow:0 20px 40px rgba(0,0,0,.5),0 0 20px rgba(162,89,255,.25); border-color:rgba(162,89,255,.5); }
+    .card:hover::before { opacity:1; }
+    .card:focus-visible { outline:2px solid var(--primary); outline-offset:3px; }
+
+    .card-hot { position:absolute; top:12px; right:12px; padding:2px 10px; border-radius:999px; font-size:.6rem; font-weight:800; text-transform:uppercase; letter-spacing:.07em; background:linear-gradient(90deg,#ff2d7a,#a259ff); color:#fff; }
+    .card > * { position:relative; z-index:1; }
+    .card-icon { font-size:2.8rem; margin-bottom:.9rem; }
+    .card-title { font-size:1.3rem; font-weight:800; margin-bottom:.5rem; background:linear-gradient(90deg,#fff,#e2e8f0); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+    .card-desc { color:var(--muted); font-size:.9rem; line-height:1.55; flex-grow:1; margin-bottom:1.25rem; }
+    .card-btn { display:inline-flex; align-items:center; justify-content:center; padding:.7rem 1.3rem; background:rgba(255,255,255,.05); border:1px solid var(--border); border-radius:12px; color:white; font-weight:700; font-size:.82rem; text-transform:uppercase; letter-spacing:.08em; transition:background .2s,border-color .2s,box-shadow .2s; margin-top:auto; }
+    .card:hover .card-btn { background:var(--primary); border-color:var(--primary); box-shadow:0 0 18px rgba(162,89,255,.45); }
+
+    @keyframes fadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+    .card { opacity:0; animation:fadeUp 0.5s cubic-bezier(0.16,1,0.3,1) forwards; }
+    .card:nth-child(1){animation-delay:.04s} .card:nth-child(2){animation-delay:.08s}
+    .card:nth-child(3){animation-delay:.12s} .card:nth-child(4){animation-delay:.16s}
+    .card:nth-child(5){animation-delay:.20s} .card:nth-child(6){animation-delay:.24s}
+    .card:nth-child(7){animation-delay:.28s} .card:nth-child(8){animation-delay:.32s}
+    .card:nth-child(9){animation-delay:.36s}
+
+    footer { width:100%; border-top:1px solid var(--border); padding:1.5rem 1.25rem; display:flex; flex-direction:column; align-items:center; gap:.75rem; margin-top:auto; }
+    .footer-links { display:flex; gap:1.25rem; flex-wrap:wrap; justify-content:center; }
+    .footer-links a { color:var(--muted); font-size:.8rem; text-decoration:none; transition:color .2s; }
+    .footer-links a:hover { color:var(--text); }
+    .footer-copy { color:var(--muted); font-size:.78rem; }
+
+    @media (max-width:639px) {
+      .grid { grid-template-columns:1fr; gap:1rem; }
+      h1 { font-size:clamp(1.9rem,8vw,2.6rem); }
+      .container { padding-top:calc(2.5rem + 60px); }
+    }
+    @media (min-width:640px) and (max-width:899px) { .grid { grid-template-columns:repeat(2,1fr); } }
+    @media (prefers-reduced-motion:reduce) { .card { animation:none; opacity:1; } }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <header>
+      <div class="hero-badge">
+        <span class="hero-badge-dot"></span>
+        1M+ Tests Taken This Month
+      </div>
+      <h1>Friendship Hub</h1>
+      <p class="subtitle">Test your bonds, roast your friends, and discover the truth behind your relationships.</p>
+    </header>
+
+    <!-- ── AD: After Hero (Banner) ── -->
+    <div class="ad-section">
+      <div id="ad-hero-banner"></div>
+    </div>
+
+    <main>
+      <div class="grid">
+
+        <a href="friendship-test.html" class="card">
+          <span class="card-hot">🔥 #1</span>
+          <div class="card-icon">📝</div>
+          <h2 class="card-title">Ultimate Friendship Test</h2>
+          <p class="card-desc">10 hilarious scenarios. One brutal verdict. Find out if you're a Soulmate BFF or a Blocked Friend.</p>
+          <div class="card-btn">Take Test</div>
+        </a>
+
+        <a href="fake-friend-investigator.html" class="card">
+          <div class="card-icon">🔎</div>
+          <h2 class="card-title">Friend Investigator</h2>
+          <p class="card-desc">Deep dive into social media interactions to uncover the hidden dynamics of your friendship.</p>
+          <div class="card-btn">Investigate</div>
+        </a>
+
+        <a href="friend-battle.html" class="card">
+          <div class="card-icon">⚔️</div>
+          <h2 class="card-title">Friend Battle</h2>
+          <p class="card-desc">The ultimate showdown across 20 chaotic categories. Who will emerge as the true victor?</p>
+          <div class="card-btn">Start Battle</div>
+        </a>
+
+        <a href="roast_generator.html" class="card">
+          <div class="card-icon">🔥</div>
+          <h2 class="card-title">Roast Generator</h2>
+          <p class="card-desc">Generate devastating, AI-powered roasts tailored specifically to your besties.</p>
+          <div class="card-btn">Generate Roast</div>
+        </a>
+
+        <a href="friendship_compatibility.html" class="card">
+          <div class="card-icon">🧬</div>
+          <h2 class="card-title">Compatibility Scanner</h2>
+          <p class="card-desc">Discover how genetically linked your vibes really are with our advanced algorithm.</p>
+          <div class="card-btn">Scan Vibes</div>
+        </a>
+
+        <a href="friendship_court.html" class="card">
+          <div class="card-icon">⚖️</div>
+          <h2 class="card-title">Friendship Court</h2>
+          <p class="card-desc">Settle petty disputes in a virtual courtroom. Let the AI judge decide who is right.</p>
+          <div class="card-btn">Hold Court</div>
+        </a>
+
+        <a href="friendship_prediction.html" class="card">
+          <div class="card-icon">🔮</div>
+          <h2 class="card-title">Prophecy Oracle</h2>
+          <p class="card-desc">Peer into the future of your friendship with eerily accurate digital prophecies.</p>
+          <div class="card-btn">Consult Oracle</div>
+        </a>
+
+        <a href="friendship_certificate_generator.html" class="card">
+          <div class="card-icon">📜</div>
+          <h2 class="card-title">Certificate Generator</h2>
+          <p class="card-desc">Solidify your bond with a certified, shareable, high-quality friendship document.</p>
+          <div class="card-btn">Generate</div>
+        </a>
+
+      </div>
+    </main>
+
+    <!-- ── AD: Before Footer (Native) ── -->
+    <div class="ad-section-native" style="margin-top:3rem;">
+      <div id="ad-pre-footer-native"></div>
+    </div>
+  </div>
+
+  <footer>
+    <nav class="footer-links" aria-label="Footer navigation">
+      <a href="#">Privacy Policy</a>
+      <a href="#">Terms of Service</a>
+      <a href="#">About</a>
+      <a href="#">Contact</a>
+    </nav>
+    <p class="footer-copy">© 2025 FriendCheck. Stay Viral 💖</p>
+  </footer>
+
+  <!-- ── STICKY FOOTER AD ── -->
+  <div id="ad-footer-sticky"></div>
+
+  <!-- ── UNIFIED SCRIPTS ── -->
+  <script src="shared/fc-utils.js"></script>
+  <script src="shared/fc-nav.js"></script>
+  <script src="shared/fc-ads.js"></script>
+  <script>
+    FCNav.init({ active: 'home' });
+
+    // ── Ad Placements ──────────────────────────────────────────────────────
+    // Homepage: after hero banner + native before footer + sticky footer
+    FCAds.initAll([
+      { type: 'banner', id: 'ad-hero-banner',       key: 'REPLACE_WITH_BANNER_KEY' },
+      { type: 'native', id: 'ad-pre-footer-native', key: 'REPLACE_WITH_NATIVE_KEY' },
+      { type: 'footer', id: 'ad-footer-sticky',     key: 'REPLACE_WITH_FOOTER_KEY', options: { sticky: true, closeable: true } },
+    ]);
+  </script>
+
+</body>
+</html>

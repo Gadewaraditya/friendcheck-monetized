@@ -1,0 +1,228 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   FRIENDCHECK UNIFIED DESIGN SYSTEM  v2.0
+   Import this ONCE in every page <head>, before page-specific <style> blocks.
+   All tokens use the --fc- prefix so they never collide with page locals.
+═══════════════════════════════════════════════════════════════════════════ */
+
+/* ─── 1. FONT IMPORT (single source of truth) ───────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+
+/* ─── 2. DESIGN TOKENS ──────────────────────────────────────────────────── */
+:root {
+  /* Brand background */
+  --fc-bg:            #09060f;
+
+  /* Surfaces */
+  --fc-surface:       rgba(255,255,255,0.04);
+  --fc-surface-hi:    rgba(255,255,255,0.07);
+  --fc-surface-low:   rgba(255,255,255,0.025);
+
+  /* Borders */
+  --fc-border:        rgba(255,255,255,0.09);
+  --fc-border-hi:     rgba(255,255,255,0.16);
+
+  /* Brand colours */
+  --fc-primary:       #fface8;
+  --fc-primary-hot:   #ff24e4;
+  --fc-secondary:     #00eefc;
+  --fc-accent:        #a259ff;
+  --fc-gold:          #ffd700;
+
+  /* Text */
+  --fc-text:          #e5e2e3;
+  --fc-muted:         #8888aa;
+  --fc-text-inv:      #0e0e0f;
+
+  /* State */
+  --fc-error:         #ff3b3b;
+  --fc-success:       #00ff9d;
+  --fc-warn:          #f59e0b;
+
+  /* Glow shadows */
+  --fc-glow-pink:     rgba(255,172,232,0.30);
+  --fc-glow-cyan:     rgba(0,238,252,0.30);
+  --fc-glow-purple:   rgba(162,89,255,0.30);
+  --fc-glow-gold:     rgba(255,215,0,0.40);
+
+  /* Shape */
+  --fc-radius:        20px;
+  --fc-radius-sm:     12px;
+  --fc-radius-pill:   9999px;
+
+  /* Nav */
+  --fc-nav-h:         60px;
+
+  /* Typography */
+  --fc-font-display:  'Sora',             'Outfit', sans-serif;
+  --fc-font-body:     'Plus Jakarta Sans', 'Outfit', 'Space Grotesk', sans-serif;
+}
+
+/* ─── 3. GLASS UTILITIES ────────────────────────────────────────────────── */
+.fc-glass {
+  background:          var(--fc-surface);
+  backdrop-filter:     blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border:              1px solid var(--fc-border);
+  border-radius:       var(--fc-radius);
+}
+.fc-glass-hi {
+  background:          var(--fc-surface-hi);
+  backdrop-filter:     blur(28px);
+  -webkit-backdrop-filter: blur(28px);
+  border:              1px solid var(--fc-border-hi);
+  border-radius:       var(--fc-radius);
+}
+.fc-glass-low {
+  background:          var(--fc-surface-low);
+  backdrop-filter:     blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border:              1px solid var(--fc-border);
+  border-radius:       var(--fc-radius-sm);
+}
+
+/* ─── 4. SHARED KEYFRAMES ───────────────────────────────────────────────── */
+@keyframes fc-float {
+  0%,100% { transform: translateY(0); }
+  50%      { transform: translateY(-10px); }
+}
+@keyframes fc-pulse-orb {
+  0%,100% { opacity:.20; transform:scale(1); }
+  50%      { opacity:.42; transform:scale(1.1); }
+}
+@keyframes fc-shimmer {
+  0%   { background-position:-200% center; }
+  100% { background-position: 200% center; }
+}
+@keyframes fc-spin-cw  { to { transform:rotate(360deg); } }
+@keyframes fc-spin-ccw { to { transform:rotate(-360deg); } }
+@keyframes fc-fade-up {
+  from { opacity:0; transform:translateY(24px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+@keyframes fc-slide-in {
+  from { opacity:0; transform:translateX(60px); }
+  to   { opacity:1; transform:translateX(0); }
+}
+@keyframes fc-slide-out {
+  from { opacity:1; transform:translateX(0); }
+  to   { opacity:0; transform:translateX(-60px); }
+}
+@keyframes fc-bounce-in {
+  0%   { opacity:0; transform:scale(0.3); }
+  50%  { transform:scale(1.05); }
+  70%  { transform:scale(0.95); }
+  100% { opacity:1; transform:scale(1); }
+}
+@keyframes fc-confetti-fall {
+  to { transform:translateY(110vh) rotate(720deg); opacity:0; }
+}
+@keyframes fc-gold-pulse {
+  0%,100% {
+    box-shadow: 0 0 25px rgba(255,215,0,.4), inset 0 0 15px rgba(255,215,0,.15);
+    border-color: rgba(255,215,0,.6);
+  }
+  50% {
+    box-shadow: 0 0 45px rgba(255,215,0,.85), 0 0 70px rgba(255,140,0,.4), inset 0 0 25px rgba(255,215,0,.35);
+    border-color: rgba(255,215,0,.95);
+  }
+}
+@keyframes fc-glow-pulse-pink {
+  0%,100% { box-shadow:0 0 20px rgba(255,172,232,.3); }
+  50%      { box-shadow:0 0 60px rgba(255,172,232,.6), 0 0 100px rgba(255,36,228,.3); }
+}
+@keyframes fc-btn-shine {
+  0%   { background-position:0%   50%; }
+  50%  { background-position:100% 50%; }
+  100% { background-position:0%   50%; }
+}
+@keyframes fc-twinkle {
+  0%,100% { opacity:.3; transform:scale(1); }
+  50%      { opacity:1;  transform:scale(1.35); }
+}
+
+/* Utility animation classes */
+.fc-animate-float       { animation: fc-float 5s ease-in-out infinite; }
+.fc-animate-pulse-orb   { animation: fc-pulse-orb 8s ease-in-out infinite; }
+.fc-animate-spin-cw     { animation: fc-spin-cw  18s linear infinite; }
+.fc-animate-spin-ccw    { animation: fc-spin-ccw 12s linear infinite; }
+.fc-animate-fade-up     { animation: fc-fade-up  .6s cubic-bezier(.16,1,.3,1) both; }
+.fc-animate-glow-pink   { animation: fc-glow-pulse-pink 2s ease-in-out infinite; }
+.fc-animate-gold-glow   { animation: fc-gold-pulse 2s ease-in-out infinite !important; border:2px solid var(--fc-gold)!important; }
+.fc-animate-twinkle     { animation: fc-twinkle 2.5s ease-in-out infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  .fc-animate-float,.fc-animate-pulse-orb,.fc-animate-spin-cw,
+  .fc-animate-spin-ccw,.fc-animate-glow-pink,.fc-animate-gold-glow,.fc-animate-twinkle {
+    animation: none !important;
+  }
+}
+
+/* ─── 5. PAGE BASE ──────────────────────────────────────────────────────── */
+.fc-page {
+  background-color: var(--fc-bg);
+  color:            var(--fc-text);
+  font-family:      var(--fc-font-body);
+  min-height:       100vh;
+  overflow-x:       hidden;
+}
+.fc-page-content { padding-top: calc(var(--fc-nav-h) + 8px); }
+
+/* ─── 6. NAVBAR STYLES ──────────────────────────────────────────────────── */
+.fc-nav {
+  position:fixed; top:0; left:0; right:0; z-index:1000;
+  height:var(--fc-nav-h);
+  display:flex; align-items:center; justify-content:space-between;
+  padding:0 1.25rem;
+  background:rgba(9,6,15,0.88);
+  backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--fc-border); gap:1rem;
+}
+.fc-nav-brand {
+  font-family:var(--fc-font-display); font-size:1.35rem; font-weight:800;
+  text-decoration:none;
+  background:linear-gradient(120deg,#ff2d7a,var(--fc-accent),var(--fc-secondary));
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+  white-space:nowrap; flex-shrink:0; transition:transform .2s;
+}
+.fc-nav-brand:hover { transform:scale(1.04); }
+.fc-nav-links { display:flex; list-style:none; gap:1.25rem; margin:0; padding:0; align-items:center; }
+.fc-nav-links a { color:var(--fc-muted); text-decoration:none; font-size:.82rem; font-weight:600; white-space:nowrap; transition:color .2s; }
+.fc-nav-links a:hover { color:var(--fc-text); }
+.fc-nav-links a.fc-nav-active { color:var(--fc-primary); border-bottom:2px solid var(--fc-primary); padding-bottom:1px; }
+.fc-hamburger { display:none; flex-direction:column; justify-content:center; gap:5px; width:32px; height:32px; background:none; border:none; cursor:pointer; padding:4px; flex-shrink:0; }
+.fc-hamburger span { display:block; width:22px; height:2px; background:var(--fc-text); border-radius:2px; transition:transform .3s,opacity .3s; }
+.fc-hamburger.open span:nth-child(1) { transform:translateY(7px) rotate(45deg); }
+.fc-hamburger.open span:nth-child(2) { opacity:0; }
+.fc-hamburger.open span:nth-child(3) { transform:translateY(-7px) rotate(-45deg); }
+.fc-mobile-nav { display:none; position:fixed; top:var(--fc-nav-h); left:0; right:0; z-index:999; background:rgba(9,6,15,0.97); border-bottom:1px solid var(--fc-border); flex-direction:column; max-height:0; overflow:hidden; transition:max-height .35s ease; }
+.fc-mobile-nav.open { max-height:400px; }
+.fc-mobile-nav a { padding:.85rem 1.5rem; color:var(--fc-muted); text-decoration:none; font-size:.9rem; font-weight:600; border-bottom:1px solid rgba(255,255,255,.04); transition:color .2s,background .2s; display:flex; align-items:center; gap:.5rem; }
+.fc-mobile-nav a:hover { color:var(--fc-text); background:rgba(255,255,255,.03); }
+.fc-mobile-nav a.fc-nav-active { color:var(--fc-primary); }
+
+/* ─── 7. AD SLOTS ───────────────────────────────────────────────────────── */
+.fc-ad-slot { width:100%; max-width:728px; margin:0 auto; min-height:90px; display:flex; align-items:center; justify-content:center; background:rgba(255,255,255,.02); border:1px dashed rgba(255,255,255,.05); border-radius:var(--fc-radius-sm); overflow:hidden; position:relative; }
+.fc-ad-slot::after { content:'Advertisement'; position:absolute; font-size:.58rem; color:rgba(255,255,255,.1); text-transform:uppercase; letter-spacing:.1em; pointer-events:none; }
+.fc-ad-slot-native { min-height:220px; max-width:none; border-radius:var(--fc-radius); }
+
+/* ─── 8. SHARED COMPONENTS ──────────────────────────────────────────────── */
+.fc-toast { position:fixed; bottom:2rem; left:50%; transform:translateX(-50%) translateY(120px); background:rgba(20,15,40,.95); border:1px solid rgba(255,255,255,.12); color:var(--fc-text); padding:.75rem 1.5rem; border-radius:var(--fc-radius-pill); font-size:.875rem; font-weight:600; z-index:9999; transition:transform .4s cubic-bezier(.36,1.5,.5,1); box-shadow:0 10px 40px rgba(162,89,255,.3); white-space:nowrap; backdrop-filter:blur(16px); }
+.fc-toast.show { transform:translateX(-50%) translateY(0); }
+.fc-back-pill { display:inline-flex; align-items:center; gap:.4rem; padding:.45rem 1rem; background:rgba(255,255,255,.06); border:1px solid var(--fc-border); border-radius:var(--fc-radius-pill); color:var(--fc-muted); text-decoration:none; font-size:.78rem; font-weight:600; transition:background .2s,color .2s; margin-bottom:.5rem; }
+.fc-back-pill:hover { background:rgba(255,255,255,.1); color:var(--fc-text); }
+.fc-section-tag { display:flex; align-items:center; gap:.75rem; font-size:.7rem; font-weight:800; text-transform:uppercase; letter-spacing:.12em; color:var(--fc-accent); margin:2rem 0 1rem; }
+.fc-section-tag::before,.fc-section-tag::after { content:''; flex:1; height:1px; background:var(--fc-border); }
+
+/* ─── 9. TYPOGRAPHY SCALE ───────────────────────────────────────────────── */
+.fc-display { font-family:var(--fc-font-display); font-weight:800; line-height:1.1; }
+.fc-body { font-family:var(--fc-font-body); line-height:1.6; }
+.fc-muted { color:var(--fc-muted); }
+.fc-gradient-text { background:linear-gradient(120deg,#ff2d7a,var(--fc-accent),var(--fc-secondary)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; filter:drop-shadow(0 0 20px rgba(162,89,255,.35)); }
+
+/* ─── 10. RESPONSIVE HELPERS ────────────────────────────────────────────── */
+@media (max-width:639px) {
+  .fc-nav-links { display:none; }
+  .fc-hamburger { display:flex; }
+  .fc-mobile-nav { display:flex; }
+  .fc-page-content { padding-top:calc(var(--fc-nav-h) + 4px); }
+}

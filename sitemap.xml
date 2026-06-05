@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+
+  <!-- ─── Homepage ─────────────────────────────────────────────────── -->
+  <url>
+    <loc>https://friendship-check.in/</loc>
+    <lastmod>2025-06-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+    <image:image>
+      <image:loc>https://friendship-check.in/og-hub.png</image:loc>
+      <image:title>FriendCheck — The #1 Friendship Test Hub</image:title>
+    </image:image>
+  </url>
+
+  <!-- ─── Friendship Test (highest traffic page) ───────────────────── -->
+  <url>
+    <loc>https://friendship-check.in/friendship-test.html</loc>
+    <lastmod>2025-06-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.95</priority>
+    <image:image>
+      <image:loc>https://friendship-check.in/og-friendship-test.png</image:loc>
+      <image:title>Ultimate Friendship Test — How Good Of A Friend Are You?</image:title>
+    </image:image>
+  </url>
+
+  <!-- ─── Friend Battle ────────────────────────────────────────────── -->
+  <url>
+    <loc>https://friendship-check.in/friend-battle.html</loc>
+    <lastmod>2025-06-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+    <image:image>
+      <image:loc>https://friendship-check.in/og-friend-battle.png</image:loc>
+      <image:title>Friend Battle ⚔️ — 20 Categories, 1 Winner</image:title>
+    </image:image>
+  </url>
+
+  <!-- ─── Fake Friend Investigator ─────────────────────────────────── -->
+  <url>
+    <loc>https://friendship-check.in/fake-friend-investigator.html</loc>
+    <lastmod>2025-06-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+    <image:image>
+      <image:loc>https://friendship-check.in/og-fake-friend.png</image:loc>
+      <image:title>Fake Friend Investigator — Find The Snake 🐍</image:title>
+    </image:image>
+  </url>
+
+  <!-- ─── Roast Generator ──────────────────────────────────────────── -->
+  <url>
+    <loc>https://friendship-check.in/roast_generator.html</loc>
+    <lastmod>2025-06-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.80</priority>
+    <image:image>
+      <image:loc>https://friendship-check.in/og-roast.png</image:loc>
+      <image:title>Roast Generator 🔥 — 100 Savage AI Roasts</image:title>
+    </image:image>
+  </url>
+
+  <!-- ─── Friendship Court ─────────────────────────────────────────── -->
+  <url>
+    <loc>https://friendship-check.in/friendship_court.html</loc>
+    <lastmod>2025-06-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.80</priority>
+    <image:image>
+      <image:loc>https://friendship-check.in/og-court.png</image:loc>
+      <image:title>Friendship Court ⚖️ — AI Judge Settles Your Drama</image:title>
+    </image:image>
+  </url>
+
+  <!-- ─── Compatibility Meter ──────────────────────────────────────── -->
+  <url>
+    <loc>https://friendship-check.in/friendship_compatibility.html</loc>
+    <lastmod>2025-06-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+    <image:image>
+      <image:loc>https://friendship-check.in/og-compatibility.png</image:loc>
+      <image:title>Friendship Compatibility Scanner 🧬</image:title>
+    </image:image>
+  </url>
+
+  <!-- ─── Prediction Machine ───────────────────────────────────────── -->
+  <url>
+    <loc>https://friendship-check.in/friendship_prediction.html</loc>
+    <lastmod>2025-06-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+    <image:image>
+      <image:loc>https://friendship-check.in/og-prediction.png</image:loc>
+      <image:title>Friendship Prediction Machine 🔮 — See Your Future</image:title>
+    </image:image>
+  </url>
+
+  <!-- ─── Certificate Generator ───────────────────────────────────── -->
+  <url>
+    <loc>https://friendship-check.in/friendship_certificate_generator.html</loc>
+    <lastmod>2025-06-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+    <image:image>
+      <image:loc>https://friendship-check.in/og-certificate.png</image:loc>
+      <image:title>Friendship Certificate Generator 📜</image:title>
+    </image:image>
+  </url>
+
+</urlset>

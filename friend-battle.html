@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FriendCheck | Friend Battle ⚔️ — Who Wins?</title>
+  <meta name="description" content="The ultimate AI-powered friend battle. Find out who between you and your friend is the real one. Viral results, rare badges, share instantly." />
+  <link rel="canonical" href="https://friendship-check.in/friend-battle"/>
+  <meta property="og:title"       content="Friend Battle ⚔️ — Who Wins?"/>
+  <meta property="og:description" content="20 chaotic categories. 1 winner. Zero chill. Find out who's better between you and your friend!"/>
+  <meta property="og:image"       content="https://friendship-check.in/og-friend-battle.png"/>
+  <meta property="og:type"        content="website"/>
+    <meta property="og:url" content="https://friendship-check.in/friend-battle.html"/>
+  <meta property="og:image" content="https://friendship-check.in/og-friend-battle.png"/>
+  <meta property="og:site_name" content="FriendCheck"/>
+  <meta name="twitter:url" content="https://friendship-check.in/friend-battle.html"/>
+  <meta name="twitter:image" content="https://friendship-check.in/og-friend-battle.png"/>
+  <meta name="twitter:card"       content="summary_large_image"/>
+
+  <!-- ── SHARED DESIGN SYSTEM ── -->
+  <link rel="stylesheet" href="shared/fc-design-system.css">
+
+  <!-- ── FONTS: Add Plus Jakarta Sans alongside Outfit ── -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800;900&family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet" />
+
+  <!-- html2canvas for image download -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+  <style>
+    /* ── Bridge page tokens → shared system ── */
+    :root {
+      --bg:       var(--fc-bg);
+      --surface:  var(--fc-surface);
+      --border:   var(--fc-border);
+      --p1:       #ff2d7a;
+      --p2:       #00d2ff;
+      --accent:   var(--fc-accent);
+      --gold:     var(--fc-gold);
+      --green:    var(--fc-success);
+      --orange:   #ff8c00;
+      --red:      var(--fc-error);
+      --text:     var(--fc-text);
+      --muted:    var(--fc-muted);
+      --radius:   var(--fc-radius);
+      --glow-p1:  rgba(255,45,122,0.5);
+      --glow-p2:  rgba(0,210,255,0.5);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      /* Unified font stack: PJS first, Outfit as fallback */
+      font-family: var(--fc-font-body);
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Animated background orbs */
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 10% 10%, rgba(162,89,255,0.15) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 50% at 90% 80%, rgba(0,210,255,0.10) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 40% at 50% 50%, rgba(255,45,122,0.07) 0%, transparent 70%);
+      z-index: 0; pointer-events: none;
+    }
+
+    /* ── Page wrap: top padding accounts for fixed nav (60px) ── */
+    .page-wrap {
+      position: relative; z-index: 1;
+      max-width: 860px;
+      margin: 0 auto;
+      padding: calc(2rem + 60px) 1rem 5rem;
+    }
+
+    .hidden { display: none !important; }
+
+    /* Re-use shared glass via local alias */
+    .glass {
+      background: var(--surface);
+      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--border); border-radius: var(--radius);
+    }
+
+    /* ── HEADER ── */
+    .site-header { text-align: center; padding: 2rem 0 1.5rem; }
+    .site-header .eyebrow { font-size: 0.75rem; letter-spacing: 4px; text-transform: uppercase; color: var(--muted); margin-bottom: 0.5rem; }
+    .site-header h1 {
+      font-size: clamp(2.4rem, 7vw, 4.8rem); font-weight: 900; line-height: 1;
+      background: linear-gradient(120deg, #ff2d7a 0%, #a259ff 40%, #00d2ff 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 0 30px rgba(162,89,255,0.5));
+    }
+    .site-header .tagline { margin-top: 0.8rem; color: var(--muted); font-size: 1.05rem; }
+
+    /* ── INPUT PANEL ── */
+    #input-panel { padding: 2.5rem 2rem; margin-bottom: 1.5rem; }
+    .input-row { display: flex; align-items: center; justify-content: center; gap: 1.2rem; flex-wrap: wrap; margin-bottom: 2rem; }
+    .player-input-wrap { display: flex; flex-direction: column; align-items: center; gap: 0.5rem; flex: 1; min-width: 180px; }
+    .player-label { font-size: 0.7rem; letter-spacing: 3px; text-transform: uppercase; color: var(--muted); }
+    .p1-label { color: var(--p1); } .p2-label { color: var(--p2); }
+
+    input[type="text"] {
+      width: 100%; max-width: 240px;
+      background: rgba(0,0,0,0.4); border: 2px solid var(--border);
+      border-radius: 14px; padding: 1.1rem 1.4rem;
+      font-size: 1.1rem; color: var(--text);
+      font-family: var(--fc-font-body); font-weight: 600;
+      outline: none; transition: all .3s; text-align: center;
+    }
+    #your-name:focus   { border-color: var(--p1); box-shadow: 0 0 20px var(--glow-p1); }
+    #friend-name:focus { border-color: var(--p2); box-shadow: 0 0 20px var(--glow-p2); }
+
+    .vs-badge { font-size: 1.8rem; font-weight: 900; color: var(--accent); text-shadow: 0 0 20px var(--accent); flex-shrink: 0; animation: vsPulse 2s ease-in-out infinite; }
+    @keyframes vsPulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.15)} }
+
+    .battle-btn {
+      display: block; margin: 0 auto;
+      background: linear-gradient(45deg, var(--p1), var(--accent), var(--p2));
+      background-size: 200%;
+      animation: btnShine 3s linear infinite;
+      border: none; border-radius: 14px;
+      padding: 1.2rem 3.5rem; font-size: 1.3rem; font-weight: 900;
+      color: white; cursor: pointer; letter-spacing: 1px; text-transform: uppercase;
+      box-shadow: 0 10px 30px rgba(162,89,255,0.5);
+      transition: transform .25s, box-shadow .25s;
+      font-family: var(--fc-font-body);
+    }
+    .battle-btn:hover { transform: translateY(-4px) scale(1.04); box-shadow: 0 18px 40px rgba(162,89,255,0.7); }
+    .battle-btn:active { transform: scale(.97); }
+    @keyframes btnShine { 0%{background-position:0% 50%} 50%{background-position:100% 50%} 100%{background-position:0% 50%} }
+
+    /* ── AI SCAN OVERLAY ── */
+    #ai-scan { position:fixed; inset:0; background:rgba(7,4,15,0.97); z-index:9999; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:2rem; }
+    .scan-orb { width:160px; height:160px; border-radius:50%; background:radial-gradient(circle,rgba(162,89,255,0.4) 0%,transparent 70%); position:relative; display:flex; align-items:center; justify-content:center; font-size:3.5rem; }
+    .scan-orb::before,.scan-orb::after { content:''; position:absolute; border-radius:50%; border:2px solid var(--accent); animation:orbPing 1.6s ease-out infinite; }
+    .scan-orb::before { width:100%; height:100%; animation-delay:0s; }
+    .scan-orb::after  { width:130%; height:130%; animation-delay:0.5s; }
+    @keyframes orbPing { 0%{transform:scale(0.8);opacity:1} 100%{transform:scale(1.8);opacity:0} }
+    .scan-title { font-size:1.4rem; font-weight:800; background:linear-gradient(90deg,#ff2d7a,#a259ff,#00d2ff); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+    .scan-log { font-size:0.9rem; color:var(--green); font-family:monospace; text-align:center; min-height:1.5em; letter-spacing:1px; }
+    .scan-bar-wrap { width:min(380px,90vw); background:rgba(255,255,255,0.07); border-radius:30px; height:10px; overflow:hidden; }
+    .scan-bar { height:100%; width:0%; border-radius:30px; background:linear-gradient(90deg,var(--p1),var(--accent),var(--p2)); transition:width .3s ease; box-shadow:0 0 10px var(--accent); }
+    .scan-percent { font-size:1.1rem; font-weight:800; color:var(--muted); }
+
+    /* ── RESULTS PANEL ── */
+    #results-panel { padding: 2rem 1.5rem; }
+
+    /* ── WINNER HERO ── */
+    .winner-hero { text-align:center; padding:2.5rem 1.5rem; margin-bottom:1.5rem; position:relative; overflow:hidden; border-radius:var(--radius); background:rgba(0,0,0,0.3); border:1px solid rgba(255,255,255,0.07); }
+    @keyframes goldGlowPulse {
+      0%,100%{box-shadow:0 0 25px rgba(255,215,0,0.4),inset 0 0 15px rgba(255,215,0,0.2);border-color:rgba(255,215,0,0.6)}
+      50%{box-shadow:0 0 45px rgba(255,215,0,0.85),0 0 70px rgba(255,140,0,0.4),inset 0 0 25px rgba(255,215,0,0.4);border-color:rgba(255,215,0,0.95)}
+    }
+    .rare-golden-glow { animation:goldGlowPulse 2s ease-in-out infinite !important; border:2px solid #ffd700 !important; background:radial-gradient(ellipse 80% 60% at 50% 50%,rgba(255,215,0,0.15) 0%,transparent 60%),rgba(10,5,0,0.5) !important; }
+    .winner-hero::before { content:''; position:absolute; inset:-60%; background:radial-gradient(circle,rgba(162,89,255,0.18) 0%,transparent 55%); animation:heroGlow 8s linear infinite; }
+    @keyframes heroGlow { 0%{transform:rotate(0deg) scale(1)} 50%{transform:rotate(180deg) scale(1.2)} 100%{transform:rotate(360deg) scale(1)} }
+    .winner-hero > * { position:relative; z-index:1; }
+    .winner-eyebrow { font-size:0.7rem; letter-spacing:4px; text-transform:uppercase; color:var(--muted); margin-bottom:0.5rem; }
+    .winner-crown { font-size:3.5rem; animation:crownBounce 1s cubic-bezier(.36,1.5,.5,1) forwards; }
+    @keyframes crownBounce { from{transform:scale(0) rotate(-20deg);opacity:0} to{transform:scale(1) rotate(0deg);opacity:1} }
+    .winner-name-display { font-size:clamp(2.5rem,6vw,4rem); font-weight:900; background:linear-gradient(120deg,#fff 30%,#e0c5ff); -webkit-background-clip:text; -webkit-text-fill-color:transparent; line-height:1.1; margin-bottom:0.3rem; }
+    .winner-subtitle { color:var(--muted); font-size:0.95rem; margin-bottom:1.5rem; }
+    .score-strip { display:flex; align-items:center; justify-content:center; gap:0.8rem; font-size:1.8rem; font-weight:900; margin-bottom:1.8rem; flex-wrap:wrap; }
+    .score-p1 { color:var(--p1); text-shadow:0 0 12px var(--p1); }
+    .score-p2 { color:var(--p2); text-shadow:0 0 12px var(--p2); }
+    .score-sep { color:var(--muted); font-size:1.2rem; }
+    .rare-badge { display:inline-flex; align-items:center; gap:0.5rem; background:linear-gradient(135deg,#ffd700,#ff8c00); color:#0a0a0a; font-weight:900; font-size:0.85rem; padding:0.5rem 1.2rem; border-radius:30px; text-transform:uppercase; letter-spacing:1px; box-shadow:0 0 20px rgba(255,215,0,0.6); margin-bottom:1.5rem; animation:badgePop .6s cubic-bezier(.36,1.5,.5,1) forwards; }
+    @keyframes badgePop { from{transform:scale(0);opacity:0} to{transform:scale(1);opacity:1} }
+
+    /* ── VIBE METERS ── */
+    .vibe-grid { display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-bottom:1.5rem; }
+    @media(max-width:480px){ .vibe-grid{grid-template-columns:1fr} }
+    .vibe-card { background:rgba(0,0,0,0.3); border:1px solid var(--border); border-radius:16px; padding:1.2rem 1.4rem; }
+    .vibe-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:0.6rem; }
+    .vibe-label { font-size:0.75rem; text-transform:uppercase; letter-spacing:2px; font-weight:600; }
+    .vibe-winner { font-size:0.8rem; font-weight:700; padding:0.2rem 0.7rem; border-radius:20px; }
+    .vibe-bar-track { background:rgba(255,255,255,0.07); border-radius:30px; height:8px; overflow:hidden; margin-bottom:0.5rem; }
+    .vibe-bar-fill { height:100%; border-radius:30px; width:0%; transition:width 1.2s cubic-bezier(.4,0,.2,1); }
+    .vibe-scores-row { display:flex; justify-content:space-between; font-size:0.8rem; color:var(--muted); font-weight:600; }
+
+    /* ── CATEGORY RESULTS ── */
+    .section-heading { font-size:1.2rem; font-weight:800; margin-bottom:1rem; color:var(--text); display:flex; align-items:center; gap:0.5rem; }
+    .cat-grid { display:grid; grid-template-columns:1fr 1fr; gap:0.9rem; margin-bottom:1.8rem; }
+    @media(max-width:520px){ .cat-grid{grid-template-columns:1fr} }
+    .cat-card { background:rgba(255,255,255,0.03); border:1px solid var(--border); border-radius:14px; padding:0.9rem 1rem; display:flex; justify-content:space-between; align-items:center; opacity:0; transform:translateY(16px); transition:opacity .4s ease,transform .4s ease,background .2s; }
+    .cat-card.visible { opacity:1; transform:translateY(0); }
+    .cat-card:hover { background:rgba(255,255,255,0.07); border-color:rgba(255,255,255,0.15); }
+    .cat-emoji { font-size:1.1rem; margin-right:0.4rem; }
+    .cat-name { font-size:0.88rem; color:var(--muted); font-weight:500; }
+    .cat-win-tag { font-weight:800; font-size:0.92rem; padding:0.25rem 0.75rem; border-radius:20px; white-space:nowrap; }
+    .tag-p1 { background:rgba(255,45,122,0.15); color:var(--p1); }
+    .tag-p2 { background:rgba(0,210,255,0.15);  color:var(--p2); }
+
+    /* ── ACTION BUTTONS ── */
+    .actions-row { display:flex; gap:1rem; flex-wrap:wrap; justify-content:center; padding-top:0.5rem; }
+    .btn { display:flex; align-items:center; gap:0.5rem; border:none; border-radius:12px; padding:1rem 1.6rem; font-size:0.95rem; font-weight:700; font-family:var(--fc-font-body); cursor:pointer; transition:transform .25s,box-shadow .25s; text-transform:uppercase; letter-spacing:0.5px; }
+    .btn:hover{transform:translateY(-3px)} .btn:active{transform:scale(.96)}
+    .btn-share    { background:linear-gradient(45deg,#00c6ff,#0072ff); color:white; box-shadow:0 8px 20px rgba(0,114,255,0.4); }
+    .btn-download { background:linear-gradient(45deg,#00ff9d,#00b36b); color:#07040f; box-shadow:0 8px 20px rgba(0,255,157,0.3); }
+    .btn-again    { background:rgba(255,255,255,0.08); color:white; border:1px solid var(--border); }
+
+    /* ── CONFETTI ── */
+    .confetti-piece { position:fixed; top:-10px; width:10px; height:10px; border-radius:2px; animation:confettiFall linear forwards; z-index:9998; pointer-events:none; }
+    @keyframes confettiFall { to{transform:translateY(110vh) rotate(720deg);opacity:0} }
+
+    /* ── DOWNLOAD SNAPSHOT CARD (off-screen) ── */
+    #snapshot-card { position:fixed; left:-9999px; top:0; width:640px; padding:40px; background:linear-gradient(135deg,#0f0a1f,#1a0f35); font-family:var(--fc-font-body); color:white; border-radius:0; }
+    #snapshot-card .snap-title { font-size:2.2rem; font-weight:900; background:linear-gradient(120deg,#ff2d7a,#a259ff,#00d2ff); -webkit-background-clip:text; -webkit-text-fill-color:transparent; margin-bottom:1rem; text-align:center; }
+    #snapshot-card .snap-winner-block { background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); border-radius:16px; padding:24px; text-align:center; margin-bottom:1.2rem; }
+    #snapshot-card .snap-crown { font-size:3rem; }
+    #snapshot-card .snap-winner { font-size:2.5rem; font-weight:900; color:#fff; margin:4px 0; }
+    #snapshot-card .snap-score { font-size:1.4rem; font-weight:800; color:#a259ff; }
+    #snapshot-card .snap-vibes { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:1.2rem; }
+    #snapshot-card .snap-vibe { background:rgba(255,255,255,0.06); border-radius:12px; padding:12px 16px; font-size:0.9rem; }
+    #snapshot-card .snap-vibe-label { color:#8888aa; font-size:0.75rem; }
+    #snapshot-card .snap-vibe-val { font-weight:800; font-size:1.1rem; }
+    #snapshot-card .snap-footer { text-align:center; font-size:0.8rem; color:#555577; margin-top:1rem; }
+    #snapshot-card .snap-cats { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:1rem; }
+    #snapshot-card .snap-cat { background:rgba(255,255,255,0.03); border-radius:8px; padding:8px 10px; font-size:0.75rem; display:flex; justify-content:space-between; }
+    #snapshot-card .snap-cat-name { color:#8888aa; }
+    #snapshot-card .snap-cat-win { font-weight:700; }
+
+    /* ── RESPONSIVE ── */
+    @media(max-width:600px) {
+      #input-panel { padding:1.5rem 1rem; }
+      .input-row { flex-direction:column; gap:0.8rem; }
+      input[type="text"] { max-width:100%; }
+      .site-header h1 { font-size:2.2rem; }
+    }
+  </style>
+
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org","@type":"WebApplication",
+    "name":"FriendCheck Friend Battle","url":"https://friendship-check.in/friend-battle.html",
+    "description":"20 chaotic categories, 1 battle, zero chill. Find out who wins between you and your friend.",
+    "applicationCategory":"Game","browserRequirements":"Requires JavaScript","isAccessibleForFree":true
+  }
+  </script>
+</head>
+<body>
+
+<!-- fc-nav.js injects the unified navbar automatically -->
+
+<!-- ── AI SCAN OVERLAY ── -->
+<div id="ai-scan" class="hidden">
+  <div class="scan-orb">🧠</div>
+  <div class="scan-title">AI Analyzing Friendship…</div>
+  <div class="scan-log" id="scan-log">Initializing neural network…</div>
+  <div class="scan-bar-wrap"><div class="scan-bar" id="scan-bar"></div></div>
+  <div class="scan-percent" id="scan-pct">0%</div>
+</div>
+
+<!-- ── HIDDEN SNAPSHOT CARD ── -->
+<div id="snapshot-card">
+  <div class="snap-title">⚔️ Friend Battle ⚔️</div>
+  <div class="snap-winner-block" id="snap-winner-block">
+    <div class="snap-crown" id="snap-crown">👑</div>
+    <div class="snap-winner" id="snap-winner-name">Name</div>
+    <div class="snap-score" id="snap-score-text">10 — 10</div>
+    <div id="snap-rare-badge" style="margin-top:10px;font-weight:800;font-size:0.9rem;color:#ffd700;"></div>
+  </div>
+  <div class="snap-vibes" id="snap-vibes"></div>
+  <div class="snap-cats"  id="snap-cats"></div>
+  <div class="snap-footer">Generated by FriendCheck • friendship-check.in</div>
+</div>
+
+<!-- ── MAIN PAGE ── -->
+<div class="page-wrap">
+  <header class="site-header">
+    <div class="eyebrow">Powered by chaotic AI energy ✨</div>
+    <h1>⚔️ Friend Battle</h1>
+    <p class="tagline">20 categories. 1 winner. Zero chill.</p>
+  </header>
+
+  <!-- INPUT PANEL -->
+  <div class="glass" id="input-panel">
+    <div class="input-row">
+      <div class="player-input-wrap">
+        <span class="player-label p1-label">🔴 Player 1</span>
+        <input type="text" id="your-name" placeholder="Your Name" autocomplete="off" maxlength="18"/>
+      </div>
+      <div class="vs-badge">VS</div>
+      <div class="player-input-wrap">
+        <span class="player-label p2-label">🔵 Friend</span>
+        <input type="text" id="friend-name" placeholder="Friend's Name" autocomplete="off" maxlength="18"/>
+      </div>
+    </div>
+    <button class="battle-btn" id="battle-btn" onclick="initBattle()">⚔️ Start Battle!</button>
+  </div>
+
+  <!-- RESULTS PANEL -->
+  <div id="results-panel" class="glass hidden">
+    <div class="winner-hero" id="winner-hero">
+      <div class="winner-eyebrow">OVERALL WINNER</div>
+      <div class="winner-crown" id="winner-crown">👑</div>
+      <div class="winner-name-display" id="overall-winner-name">—</div>
+      <div class="winner-subtitle" id="winner-subtitle">dominates the battlefield</div>
+      <div class="score-strip">
+        <span class="score-p1" id="score-p1-display">—</span>
+        <span class="score-sep">  WINS  </span>
+        <span class="score-p2" id="score-p2-display">—</span>
+      </div>
+      <div id="rare-badge-wrap"></div>
+    </div>
+
+    <div class="section-heading" style="margin-bottom:0.8rem">🎭 Vibe Meters</div>
+    <div class="vibe-grid" id="vibe-grid"></div>
+
+    <div class="section-heading">🏆 Battle Results</div>
+    <div class="cat-grid" id="cat-grid"></div>
+
+    <div class="actions-row">
+      <button class="btn btn-share"    onclick="shareResults()">📤 Share</button>
+      <button class="btn btn-download" onclick="downloadImage()">💾 Save Image</button>
+      <button class="btn btn-again"    onclick="resetBattle()">🔄 Again</button>
+      <button class="btn btn-again"    onclick="location.reload()">🆕 New Battle</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ── DATA ── */
+const CATEGORIES = [
+  {emoji:"💬",name:"Replies Faster",          vibe:"meme"},
+  {emoji:"💸",name:"Borrows More Money",       vibe:"chaos"},
+  {emoji:"😭",name:"Cries During Movies",      vibe:"drama"},
+  {emoji:"🗺️",name:"Gets Lost First",          vibe:"chaos"},
+  {emoji:"🚔",name:"Gets Arrested First",       vibe:"chaos"},
+  {emoji:"💰",name:"Becomes Rich First",        vibe:"loyalty"},
+  {emoji:"📱",name:"Sends More Memes",          vibe:"meme"},
+  {emoji:"🎭",name:"Starts Drama",              vibe:"drama"},
+  {emoji:"😴",name:"Falls Asleep First",        vibe:"chaos"},
+  {emoji:"🍔",name:"Eats More Junk Food",       vibe:"meme"},
+  {emoji:"🚫",name:"Cancels Plans Last Minute", vibe:"loyalty"},
+  {emoji:"😤",name:"Complains About Everything",vibe:"drama"},
+  {emoji:"🧟",name:"Survives Zombie Apocalypse",vibe:"loyalty"},
+  {emoji:"💄",name:"Takes Longer to Get Ready", vibe:"drama"},
+  {emoji:"🎂",name:"Forgets Birthdays",         vibe:"loyalty"},
+  {emoji:"🧠",name:"Gives Better Advice",       vibe:"loyalty"},
+  {emoji:"📲",name:"Most Addicted to Phone",    vibe:"meme"},
+  {emoji:"👊",name:"Wins a Fist Fight",         vibe:"chaos"},
+  {emoji:"🌐",name:"More Likely to Go Viral",   vibe:"meme"},
+  {emoji:"🎵",name:"Worse Taste in Music",      vibe:"chaos"},
+];
+const RARE_BADGES = [
+  {icon:"🕵️‍♂️",label:"FBI Watchlist Energy"},
+  {icon:"👑",label:"Chaos King"},
+  {icon:"💀",label:"Certified Menace"},
+  {icon:"🛡️",label:"Plot Armor Owner"},
+  {icon:"🤣",label:"Meme God"},
+];
+const SCAN_MESSAGES = [
+  "Scanning social media history…","Analyzing meme databases…","Cross-referencing drama archives…",
+  "Calculating chaos quotients…","Measuring loyalty wavelengths…","Detecting hidden talents…",
+  "Compiling embarrassing memories…","Running friendship compatibility AI…",
+  "Stress-testing loyalty algorithms…","Generating battle results…",
+];
+
+/* ── STATE ── */
+let p1Name="",p2Name="",battleResults=[],vibeData={},p1Score=0,p2Score=0,isRareBattle=false,rareBadgeObj=null;
+
+/* ── ENTRY ── */
+function initBattle(){
+  p1Name=document.getElementById("your-name").value.trim();
+  p2Name=document.getElementById("friend-name").value.trim();
+  if(!p1Name||!p2Name){ FCToast.show("⚠️ Enter both names first!"); return; }
+  runScan();
+}
+
+/* ── SCAN ── */
+function runScan(){
+  const overlay=document.getElementById("ai-scan"),bar=document.getElementById("scan-bar"),
+        log=document.getElementById("scan-log"),pct=document.getElementById("scan-pct");
+  overlay.classList.remove("hidden"); bar.style.width="0%";
+  let progress=0,msgIdx=0;
+  const interval=setInterval(()=>{
+    progress+=Math.random()*14+4; if(progress>100)progress=100;
+    bar.style.width=progress+"%"; pct.textContent=Math.floor(progress)+"%";
+    if(msgIdx<SCAN_MESSAGES.length&&progress>msgIdx*10){ log.textContent=SCAN_MESSAGES[msgIdx]; msgIdx++; }
+    if(progress>=100){ clearInterval(interval); setTimeout(()=>{ overlay.classList.add("hidden"); buildResults(); },600); }
+  },240);
+}
+
+/* ── BUILD RESULTS ── */
+function buildResults(){
+  p1Score=0; p2Score=0;
+  battleResults=CATEGORIES.map(cat=>{
+    const p1wins=Math.random()<0.5;
+    if(p1wins)p1Score++;else p2Score++;
+    return{...cat,winner:p1wins?p1Name:p2Name,p1wins};
+  });
+  isRareBattle=Math.random()<0.10;
+  rareBadgeObj=isRareBattle?RARE_BADGES[Math.floor(Math.random()*RARE_BADGES.length)]:null;
+  const vibes=["meme","chaos","loyalty","drama"];
+  vibeData={};
+  vibes.forEach(v=>{
+    const rel=battleResults.filter(r=>r.vibe===v);
+    const p1v=rel.filter(r=>r.p1wins).length;
+    vibeData[v]={p1:p1v,p2:rel.length-p1v,total:rel.length};
+  });
+  let winner,subtitle;
+  if(p1Score>p2Score){winner=p1Name;subtitle="dominates the battlefield 🔥";}
+  else if(p2Score>p1Score){winner=p2Name;subtitle="obliterates the competition 💀";}
+  else{winner="IT'S A TIE!";subtitle="perfect chaos energy detected ⚡";}
+  document.getElementById("overall-winner-name").textContent=winner;
+  document.getElementById("winner-subtitle").textContent=subtitle;
+  document.getElementById("score-p1-display").textContent=p1Name+"  "+p1Score;
+  document.getElementById("score-p2-display").textContent=p2Score+"  "+p2Name;
+  renderRareBadge(); renderVibeMeters(); renderCategoryCards(); fillSnapshotCard(winner);
+  document.getElementById("input-panel").classList.add("hidden");
+  document.getElementById("results-panel").classList.remove("hidden");
+  window.scrollTo({top:0,behavior:"smooth"});
+  launchConfetti();
+  setTimeout(animateVibeBars,400);
+  setTimeout(revealCatCards,200);
+}
+
+function renderRareBadge(){
+  const wrap=document.getElementById("rare-badge-wrap"),hero=document.getElementById("winner-hero");
+  wrap.innerHTML=""; hero.classList.remove("rare-golden-glow");
+  if(isRareBattle&&rareBadgeObj){
+    wrap.innerHTML=`<div class="rare-badge">${rareBadgeObj.icon} ${rareBadgeObj.label} ${rareBadgeObj.icon}</div>`;
+    hero.classList.add("rare-golden-glow");
+  }
+}
+
+const VIBE_META={meme:{label:"Meme Energy",color:"#ff2d7a",icon:"📱"},chaos:{label:"Chaos Score",color:"#ff8c00",icon:"💥"},loyalty:{label:"Loyalty Score",color:"#00ff9d",icon:"💚"},drama:{label:"Drama Score",color:"#a259ff",icon:"🎭"}};
+
+function renderVibeMeters(){
+  const grid=document.getElementById("vibe-grid"); grid.innerHTML="";
+  Object.keys(VIBE_META).forEach(key=>{
+    const meta=VIBE_META[key],d=vibeData[key],winner=d.p1>=d.p2?p1Name:p2Name,winColor=d.p1>=d.p2?"var(--p1)":"var(--p2)";
+    grid.innerHTML+=`<div class="vibe-card"><div class="vibe-header"><span class="vibe-label" style="color:${meta.color}">${meta.icon} ${meta.label}</span><span class="vibe-winner" style="background:rgba(255,255,255,0.07);color:${winColor}">${winner}</span></div><div class="vibe-bar-track"><div class="vibe-bar-fill" id="vbar-${key}" style="background:linear-gradient(90deg,${meta.color},${meta.color}88)"></div></div><div class="vibe-scores-row"><span style="color:var(--p1)">${p1Name}: ${d.p1}/${d.total}</span><span style="color:var(--p2)">${p2Name}: ${d.p2}/${d.total}</span></div></div>`;
+  });
+}
+
+function animateVibeBars(){
+  Object.keys(vibeData).forEach(key=>{
+    const d=vibeData[key],pct=d.total?(d.p1/d.total)*100:50,bar=document.getElementById("vbar-"+key);
+    if(bar)bar.style.width=pct+"%";
+  });
+}
+
+function renderCategoryCards(){
+  const grid=document.getElementById("cat-grid"); grid.innerHTML="";
+  battleResults.forEach((r)=>{
+    const tagClass=r.p1wins?"tag-p1":"tag-p2",div=document.createElement("div");
+    div.className="cat-card";
+    div.innerHTML=`<span><span class="cat-emoji">${r.emoji}</span><span class="cat-name">${r.name}</span></span><span class="cat-win-tag ${tagClass}">${r.winner}</span>`;
+    grid.appendChild(div);
+  });
+}
+function revealCatCards(){ document.querySelectorAll(".cat-card").forEach((c,i)=>setTimeout(()=>c.classList.add("visible"),i*60)); }
+
+function launchConfetti(){
+  const colors=isRareBattle?["#ffd700","#ffaa00","#fffbeb","#e6c300"]:["#ff2d7a","#a259ff","#00d2ff","#ffd700","#00ff9d","#ff8c00"];
+  for(let i=0;i<(isRareBattle?100:80);i++){
+    const el=document.createElement("div"); el.className="confetti-piece";
+    el.style.cssText=`left:${Math.random()*100}vw;background:${colors[Math.floor(Math.random()*colors.length)]};width:${6+Math.random()*8}px;height:${6+Math.random()*8}px;border-radius:${Math.random()>0.5?"50%":"2px"};animation-duration:${1.5+Math.random()*2.5}s;animation-delay:${Math.random()*0.8}s;`;
+    document.body.appendChild(el); setTimeout(()=>el.remove(),5000);
+  }
+}
+
+function fillSnapshotCard(winner){
+  document.getElementById("snap-winner-name").textContent=winner;
+  document.getElementById("snap-score-text").textContent=p1Name+" "+p1Score+"  —  "+p2Score+" "+p2Name;
+  const snapBadge=document.getElementById("snap-rare-badge"),snapBlock=document.getElementById("snap-winner-block"),snapCard=document.getElementById("snapshot-card");
+  snapBadge.textContent=""; snapBlock.style.border=snapBlock.style.boxShadow=snapCard.style.border=snapCard.style.boxShadow="";
+  if(isRareBattle&&rareBadgeObj){ snapBadge.textContent="★ "+rareBadgeObj.label+" ★"; snapBlock.style.border="2px solid #ffd700"; snapBlock.style.boxShadow="0 0 20px rgba(255,215,0,0.4)"; snapCard.style.border="3px solid #ffd700"; snapCard.style.boxShadow="0 0 40px rgba(255,215,0,0.5)"; }
+  const sv=document.getElementById("snap-vibes"); sv.innerHTML="";
+  Object.keys(VIBE_META).forEach(key=>{ const meta=VIBE_META[key],d=vibeData[key],w=d.p1>=d.p2?p1Name:p2Name; sv.innerHTML+=`<div class="snap-vibe"><div class="snap-vibe-label">${meta.icon} ${meta.label}</div><div class="snap-vibe-val" style="color:${meta.color}">${w}</div></div>`; });
+  const sc=document.getElementById("snap-cats"); sc.innerHTML="";
+  battleResults.slice(0,10).forEach(r=>{ sc.innerHTML+=`<div class="snap-cat"><span class="snap-cat-name">${r.emoji} ${r.name}</span><span class="snap-cat-win" style="color:${r.p1wins?"#ff2d7a":"#00d2ff"}">${r.winner}</span></div>`; });
+}
+
+/* ── DOWNLOAD — delegates to shared FCCapture utility ── */
+function downloadImage(){
+  FCCapture.download(document.getElementById("snapshot-card"), `friend-battle-${p1Name}-vs-${p2Name}.png`);
+}
+
+/* ── SHARE — delegates to shared FCShare utility ── */
+function shareResults(){
+  const winner=document.getElementById("overall-winner-name").textContent;
+  const vibeLines=Object.keys(VIBE_META).map(k=>{ const d=vibeData[k],w=d.p1>=d.p2?p1Name:p2Name; return `${VIBE_META[k].icon} ${VIBE_META[k].label}: ${w}`; }).join("\n");
+  const text=[`⚔️ FRIEND BATTLE RESULTS ⚔️`,``,`${p1Name} vs ${p2Name}`,``,`🏆 WINNER: ${winner}`,`📊 Score: ${p1Name} ${p1Score} — ${p2Score} ${p2Name}`,``,vibeLines,``,`Try it yourself! 👇`].join("\n");
+  FCShare.native("Friend Battle Results", text, "https://friendship-check.in/friend-battle");
+}
+
+/* ── RESET ── */
+function resetBattle(){
+  document.getElementById("results-panel").classList.add("hidden");
+  document.getElementById("input-panel").classList.remove("hidden");
+  document.getElementById("your-name").value=""; document.getElementById("friend-name").value="";
+  document.getElementById("rare-badge-wrap").innerHTML="";
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+
+/* ── KEYBOARD ── */
+["your-name","friend-name"].forEach(id=>{ document.getElementById(id).addEventListener("keydown",e=>{ if(e.key==="Enter")initBattle(); }); });
+</script>
+
+<!-- ── UNIFIED NAV + UTILS ── -->
+<script src="shared/fc-utils.js"></script>
+<script src="shared/fc-nav.js"></script>
+<script>FCNav.init({ active: 'friend-battle' });</script>
+
+
+  <!-- ═══════════════════════════════════════════════════════════
+       MONETIZATION LAYER — ads + affiliate recommendations
+       Injected by friendcheck-monetized build
+  ════════════════════════════════════════════════════════════ -->
+
+  <!-- AD: Mid-content (placed before result area) -->
+  <div id="ad-mid-banner" style="width:100%;max-width:728px;margin:2rem auto;padding:0 1rem;box-sizing:border-box;"></div>
+
+  <!-- AFFILIATE: After result card -->
+  <div id="fc-affiliate-strip"></div>
+
+  <!-- AD: Native after result -->
+  <div id="ad-post-result" style="width:100%;max-width:900px;margin:0 auto 2rem;padding:0 1rem;box-sizing:border-box;"></div>
+
+  <!-- STICKY FOOTER AD -->
+  <div id="ad-footer-sticky"></div>
+
+  <!-- ── MONETIZATION SCRIPTS ── -->
+  <script src="shared/fc-ads.js"></script>
+  <script src="shared/fc-affiliate.js"></script>
+  <script>
+    // Init ads
+    FCAds.initAll([
+      { type: 'banner', id: 'ad-mid-banner',    key: 'REPLACE_WITH_BANNER_KEY' },
+      { type: 'native', id: 'ad-post-result',   key: 'REPLACE_WITH_NATIVE_KEY' },
+      { type: 'footer', id: 'ad-footer-sticky', key: 'REPLACE_WITH_FOOTER_KEY', options: { sticky: true, closeable: true } },
+    ]);
+
+    // Affiliate strip — renders after page-specific result trigger
+    // Call this from your result-reveal function:
+    //   FCAffiliate.render('fc-affiliate-strip', 'battle');
+    // OR wire to a result event:
+    window.addEventListener('fc-result-shown', function() {
+      FCAffiliate.render('fc-affiliate-strip', 'battle');
+    });
+
+    // Auto-show affiliate on page if result is already visible
+    document.addEventListener('DOMContentLoaded', function() {
+      var resultEl = document.querySelector('[id*="result"], [class*="result"], [id*="verdict"], [id*="certificate"]');
+      if (resultEl && getComputedStyle(resultEl).display !== 'none') {
+        FCAffiliate.render('fc-affiliate-strip', 'battle');
+      }
+    });
+  </script>
+</body>

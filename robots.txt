@@ -1,0 +1,30 @@
+# ─────────────────────────────────────────────
+# robots.txt — FriendCheck (friendship-check.in)
+# ─────────────────────────────────────────────
+
+User-agent: *
+Allow: /
+
+# Block development / build artifacts
+Disallow: /shared/apply-patches.js
+Disallow: /shared/fc-ads.js
+Disallow: /shared/fc-affiliate.js
+Disallow: /shared/fc-nav.js
+Disallow: /shared/fc-utils.js
+
+# Allow all tool pages
+Allow: /index.html
+Allow: /friendship-test.html
+Allow: /friend-battle.html
+Allow: /fake-friend-investigator.html
+Allow: /friendship_court.html
+Allow: /roast_generator.html
+Allow: /friendship_compatibility.html
+Allow: /friendship_prediction.html
+Allow: /friendship_certificate_generator.html
+
+# Sitemap
+Sitemap: https://friendship-check.in/sitemap.xml
+
+# Crawl delay (optional — helps with server load)
+Crawl-delay: 1

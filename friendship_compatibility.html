@@ -1,0 +1,984 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>FriendCheck | Friendship Compatibility Meter ⚡</title>
+<meta name="description" content="Scan your friendship and get scored on Trust, Loyalty, Chaos, and Meme Energy. Find out if you're Best Friends, a Chaotic Duo, or a Dangerous Combination."/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Cinzel:wght@700;900&family=Dancing+Script:wght@700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:#0d0b12;color:#e5e2e3;min-height:100vh;overflow-x:hidden}
+
+/* ── STARFIELD ── */
+.starfield{position:fixed;inset:0;pointer-events:none;z-index:0;
+  background-image:
+    radial-gradient(1.5px 1.5px at 8% 12%,rgba(255,255,255,.5) 0%,transparent 100%),
+    radial-gradient(1px 1px at 22% 38%,rgba(255,255,255,.3) 0%,transparent 100%),
+    radial-gradient(2px 2px at 38% 6%,rgba(209,188,255,.42) 0%,transparent 100%),
+    radial-gradient(1px 1px at 53% 63%,rgba(255,255,255,.38) 0%,transparent 100%),
+    radial-gradient(1.5px 1.5px at 68% 22%,rgba(0,238,252,.3) 0%,transparent 100%),
+    radial-gradient(1px 1px at 80% 52%,rgba(255,255,255,.3) 0%,transparent 100%),
+    radial-gradient(2px 2px at 91% 78%,rgba(255,172,232,.35) 0%,transparent 100%),
+    radial-gradient(1px 1px at 14% 73%,rgba(255,255,255,.25) 0%,transparent 100%),
+    radial-gradient(1px 1px at 60% 86%,rgba(255,255,255,.3) 0%,transparent 100%),
+    radial-gradient(1.5px 1.5px at 33% 91%,rgba(209,188,255,.28) 0%,transparent 100%),
+    radial-gradient(1px 1px at 76% 44%,rgba(255,172,232,.22) 0%,transparent 100%),
+    radial-gradient(2px 2px at 46% 55%,rgba(0,238,252,.18) 0%,transparent 100%)}
+
+/* ── GLASS ── */
+.glass{background:rgba(255,255,255,.04);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.1)}
+.glass-el{background:rgba(255,255,255,.06);backdrop-filter:blur(28px);border:1px solid rgba(255,255,255,.14)}
+
+/* ── KEYFRAMES ── */
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+@keyframes pulse-orb{0%,100%{opacity:.18;transform:scale(1)}50%{opacity:.38;transform:scale(1.1)}}
+@keyframes spin-cw{to{transform:rotate(360deg)}}
+@keyframes spin-ccw{to{transform:rotate(-360deg)}}
+@keyframes twinkle{0%,100%{opacity:.28;transform:scale(1)}50%{opacity:1;transform:scale(1.35)}}
+@keyframes shimmer-btn{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+@keyframes slide-up{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:translateY(0)}}
+@keyframes scale-pop{0%{opacity:0;transform:scale(.82)}65%{transform:scale(1.06)}100%{opacity:1;transform:scale(1)}}
+@keyframes bar-fill{from{width:0%}to{width:var(--w)}}
+@keyframes confetti-fall{0%{opacity:1;transform:translateY(0) rotate(0deg)}100%{opacity:0;transform:translateY(220px) rotate(720deg)}}
+@keyframes scan-sweep{0%{top:-4px}100%{top:calc(100% + 4px)}}
+@keyframes scan-outer-glow{0%,100%{box-shadow:0 0 0 0 rgba(0,238,252,.4)}50%{box-shadow:0 0 0 12px rgba(0,238,252,0)}}
+@keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-9px)}40%{transform:translateX(9px)}60%{transform:translateX(-5px)}80%{transform:translateX(5px)}}
+@keyframes result-slam{0%{opacity:0;transform:scale(2.2) rotate(-6deg);filter:blur(8px)}65%{transform:scale(.95) rotate(1deg);opacity:1;filter:blur(0)}85%{transform:scale(1.03)}100%{transform:scale(1) rotate(0);opacity:1}}
+@keyframes neon-pulse{0%,100%{text-shadow:0 0 10px var(--nc),0 0 20px var(--nc)}50%{text-shadow:0 0 20px var(--nc),0 0 45px var(--nc),0 0 70px var(--nc)}}
+@keyframes score-count{from{opacity:0;transform:scale(.7)}to{opacity:1;transform:scale(1)}}
+@keyframes ring-fill{from{stroke-dashoffset:var(--full)}to{stroke-dashoffset:var(--offset)}}
+@keyframes radar-sweep{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
+@keyframes particle-burst{0%{transform:translate(0,0) scale(1);opacity:1}100%{transform:translate(var(--dx),var(--dy)) scale(0);opacity:0}}
+
+.animate-float{animation:float 5s ease-in-out infinite}
+.animate-twinkle{animation:twinkle 2.6s ease-in-out infinite}
+.animate-cw{animation:spin-cw 16s linear infinite}
+.animate-ccw{animation:spin-ccw 11s linear infinite}
+.animate-cw-fast{animation:spin-cw 3s linear infinite}
+
+/* ── SCANNER OVERLAY ── */
+#scannerOverlay{position:fixed;inset:0;z-index:9999;background:rgba(8,6,18,.94);backdrop-filter:blur(12px);display:none;align-items:center;justify-content:center;flex-direction:column;gap:28px}
+#scannerOverlay.active{display:flex}
+
+.scanner-box{
+  position:relative;width:320px;height:120px;
+  border:2px solid rgba(0,238,252,.4);border-radius:14px;
+  background:rgba(0,238,252,.03);overflow:hidden}
+.scanner-line{
+  position:absolute;left:0;right:0;height:3px;
+  background:linear-gradient(90deg,transparent,#00eefc,rgba(255,172,232,.8),#00eefc,transparent);
+  box-shadow:0 0 16px rgba(0,238,252,.8),0 0 32px rgba(0,238,252,.4);
+  animation:scan-sweep 1.2s ease-in-out infinite alternate}
+.scanner-corner{position:absolute;width:18px;height:18px}
+.sc-tl{top:-1px;left:-1px;border-top:3px solid #00eefc;border-left:3px solid #00eefc;border-radius:4px 0 0 0}
+.sc-tr{top:-1px;right:-1px;border-top:3px solid #00eefc;border-right:3px solid #00eefc;border-radius:0 4px 0 0}
+.sc-bl{bottom:-1px;left:-1px;border-bottom:3px solid #00eefc;border-left:3px solid #00eefc;border-radius:0 0 0 4px}
+.sc-br{bottom:-1px;right:-1px;border-bottom:3px solid #00eefc;border-right:3px solid #00eefc;border-radius:0 0 4px 0}
+
+/* ── INPUT ── */
+.compat-input{
+  display:block;width:100%;padding:15px 52px 15px 22px;
+  background:rgba(255,172,232,.07);border:1.5px solid rgba(255,172,232,.22);border-radius:9999px;
+  color:#e5e2e3;font-family:'Sora',sans-serif;font-size:16px;font-weight:600;transition:all .3s}
+.compat-input::placeholder{color:rgba(221,190,209,.38);font-family:'Plus Jakarta Sans',sans-serif;font-weight:400}
+.compat-input:focus{outline:none;border-color:rgba(255,172,232,.7);background:rgba(255,172,232,.11);
+  box-shadow:0 0 0 3px rgba(255,172,232,.16),0 0 24px rgba(255,172,232,.1)}
+select.compat-input{appearance:none;cursor:pointer;padding-right:44px}
+
+/* ── SCAN BTN ── */
+.scan-btn{
+  width:100%;padding:16px;border-radius:9999px;border:none;cursor:pointer;
+  font-family:'Sora',sans-serif;font-size:18px;font-weight:800;color:#0d0b12;
+  background:linear-gradient(270deg,#fface8,#ff24e4,#a178ff,#00eefc,#ff24e4,#fface8);
+  background-size:400% 400%;animation:shimmer-btn 5s ease infinite;
+  box-shadow:0 0 40px rgba(255,172,232,.45),0 8px 30px rgba(0,0,0,.4);
+  display:flex;align-items:center;justify-content:center;gap:10px;transition:transform .2s,box-shadow .2s}
+.scan-btn:hover{transform:scale(1.02);box-shadow:0 0 60px rgba(255,172,232,.6)}
+.scan-btn:active{transform:scale(.97)}
+
+/* ── PROGRESS BARS ── */
+.bar-track{height:14px;border-radius:9999px;background:rgba(255,255,255,.07);overflow:hidden;position:relative}
+.bar-fill-el{height:100%;border-radius:9999px;width:0%;transition:width 1.2s cubic-bezier(.22,1,.36,1)}
+.bar-glow{position:absolute;top:0;right:0;bottom:0;width:20px;
+  background:linear-gradient(to right,transparent,rgba(255,255,255,.4));
+  border-radius:9999px;filter:blur(3px)}
+
+/* category colours */
+.bar-trust{background:linear-gradient(90deg,#4ade80,#00eefc)}
+.bar-loyalty{background:linear-gradient(90deg,#fface8,#ff24e4)}
+.bar-chaos{background:linear-gradient(90deg,#f97316,#ef4444)}
+.bar-meme{background:linear-gradient(90deg,#a178ff,#00eefc)}
+
+/* ── RESULT CARD ── */
+.result-card{
+  position:relative;border-radius:24px;overflow:hidden;padding:36px;
+  box-shadow:0 0 80px var(--rc,rgba(255,172,232,.2)),0 30px 80px rgba(0,0,0,.65)}
+.result-card::before{content:'';position:absolute;inset:0;z-index:0;
+  background:var(--rbg,radial-gradient(ellipse at 30% 30%,rgba(255,172,232,.2) 0%,transparent 55%))}
+.result-badge{animation:result-slam .55s cubic-bezier(.22,1,.36,1) both}
+
+/* ── RADAR CHART ── */
+.radar-container{position:relative;width:180px;height:180px;flex-shrink:0}
+.radar-sweep{position:absolute;inset:0;border-radius:50%;overflow:hidden}
+.radar-sweep-line{position:absolute;top:50%;left:50%;width:50%;height:2px;
+  background:linear-gradient(to right,transparent,rgba(0,238,252,.7));
+  transform-origin:0 50%;animation:radar-sweep 2s linear infinite}
+
+/* ── OVERALL RING ── */
+.overall-wrap{position:relative;width:160px;height:160px}
+.overall-svg{transform:rotate(-90deg);display:block}
+.overall-center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+
+/* ── CORNER ORNAMENTS ── */
+.c-orn{position:absolute;width:44px;height:44px}
+.c-tl{top:12px;left:12px;border-top:2px solid;border-left:2px solid;border-radius:2px 0 0 0}
+.c-tr{top:12px;right:12px;border-top:2px solid;border-right:2px solid;border-radius:0 2px 0 0}
+.c-bl{bottom:12px;left:12px;border-bottom:2px solid;border-left:2px solid;border-radius:0 0 0 2px}
+.c-br{bottom:12px;right:12px;border-bottom:2px solid;border-right:2px solid;border-radius:0 0 2px 0}
+
+/* ── STARS on card ── */
+.card-stars{position:absolute;inset:0;pointer-events:none;border-radius:inherit;
+  background-image:
+    radial-gradient(1px 1px at 9% 14%,rgba(255,255,255,.22) 0%,transparent 100%),
+    radial-gradient(2px 2px at 76% 9%,rgba(209,188,255,.28) 0%,transparent 100%),
+    radial-gradient(1px 1px at 46% 82%,rgba(255,255,255,.18) 0%,transparent 100%),
+    radial-gradient(1px 1px at 88% 62%,rgba(0,238,252,.22) 0%,transparent 100%),
+    radial-gradient(1.5px 1.5px at 23% 88%,rgba(255,172,232,.22) 0%,transparent 100%)}
+
+/* ── MATERIAL SYMBOLS ── */
+.material-symbols-outlined{font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24;user-select:none}
+.msf{font-variation-settings:'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 24}
+
+/* ── MISC ── */
+::-webkit-scrollbar{width:5px}
+::-webkit-scrollbar-track{background:#0d0b12}
+::-webkit-scrollbar-thumb{background:rgba(255,172,232,.3);border-radius:9999px}
+.confetti-p{position:fixed;pointer-events:none;z-index:9998;animation:confetti-fall linear forwards}
+.do-shake{animation:shake .5s ease both}
+select option{background:#201f20;color:#e5e2e3}
+
+/* Rare Golden Glow Pulse style */
+@keyframes rare-gold-pulse {
+    0%, 100% {
+        box-shadow: 0 0 25px rgba(255, 215, 0, 0.4), inset 0 0 15px rgba(255, 215, 0, 0.15);
+        border-color: rgba(255, 215, 0, 0.6);
+    }
+    50% {
+        box-shadow: 0 0 45px rgba(255, 215, 0, 0.85), 0 0 70px rgba(255, 140, 0, 0.4), inset 0 0 25px rgba(255, 215, 0, 0.35);
+        border-color: rgba(255, 215, 0, 0.95);
+    }
+}
+.rare-golden-glow {
+    animation: rare-gold-pulse 2s ease-in-out infinite !important;
+    border: 2.5px solid #ffd700 !important;
+}
+</style>
+
+<script>
+tailwind.config={darkMode:'class',theme:{extend:{
+  colors:{"primary":"#fface8","primary-container":"#ff24e4","on-primary":"#5e0053","secondary":"#d3fbff","secondary-container":"#00eefc","on-secondary-container":"#00686f","tertiary":"#d1bcff","tertiary-container":"#a178ff","on-tertiary":"#3c0090","error":"#ffb4ab","surface":"#131314","surface-container-lowest":"#0e0e0f","surface-container-low":"#1c1b1c","surface-container":"#201f20","surface-container-high":"#2a2a2b","surface-container-highest":"#353436","on-surface":"#e5e2e3","on-surface-variant":"#ddbed1","outline":"#a5889b","background":"#131314","on-background":"#e5e2e3"},
+  fontFamily:{sora:["Sora","sans-serif"],jakarta:["Plus Jakarta Sans","sans-serif"],cinzel:["Cinzel","serif"],dancing:["Dancing Script","cursive"]}
+}}}
+</script>
+  <link rel="canonical" href="https://friendship-check.in/compatibility"/>
+  <meta property="og:type"        content="website"/>
+  <meta property="og:title"       content="FriendCheck | Friendship Compatibility Meter ⚡"/>
+  <meta property="og:description" content="Scan your friendship and get scored on Trust, Loyalty, Chaos, and Meme Energy."/>
+  <meta property="og:image"       content="https://friendship-check.in/og-compatibility.png"/>
+    <meta property="og:url" content="https://friendship-check.in/friendship_compatibility.html"/>
+  <meta property="og:image" content="https://friendship-check.in/og-compatibility.png"/>
+  <meta property="og:site_name" content="FriendCheck"/>
+  <meta name="twitter:url" content="https://friendship-check.in/friendship_compatibility.html"/>
+  <meta name="twitter:image" content="https://friendship-check.in/og-compatibility.png"/>
+  <meta name="twitter:card"       content="summary_large_image"/>
+  <meta name="twitter:title"      content="FriendCheck | Friendship Compatibility Meter ⚡"/>
+  <meta name="twitter:description" content="Scan your friendship and get scored on Trust, Loyalty, Chaos, and Meme Energy."/>
+  <!-- UNIFIED DESIGN SYSTEM -->
+  <link rel="stylesheet" href="shared/fc-design-system.css">
+
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org","@type":"WebApplication",
+    "name":"FriendCheck Compatibility Meter","url":"https://friendship-check.in/friendship_compatibility.html",
+    "description":"Scan your friendship and get scored on Trust, Loyalty, Chaos, and Meme Energy.",
+    "applicationCategory":"Game","browserRequirements":"Requires JavaScript","isAccessibleForFree":true
+  }
+  </script>
+</head>
+
+<body style="background:radial-gradient(ellipse 80% 45% at 50% -5%,rgba(255,172,232,.12) 0%,transparent 60%),radial-gradient(ellipse 60% 50% at 10% 80%,rgba(161,120,255,.1) 0%,transparent 55%),radial-gradient(ellipse 55% 50% at 90% 20%,rgba(0,238,252,.08) 0%,transparent 55%),#0d0b12">
+
+<div class="starfield"></div>
+<div class="fixed top-20 left-1/3 w-96 h-96 rounded-full pointer-events-none z-0" style="background:radial-gradient(circle,rgba(255,172,232,.07),transparent 70%);animation:pulse-orb 8s ease-in-out infinite"></div>
+<div class="fixed bottom-20 right-1/4 w-96 h-96 rounded-full pointer-events-none z-0" style="background:radial-gradient(circle,rgba(0,238,252,.06),transparent 70%);animation:pulse-orb 6s ease-in-out infinite;animation-delay:-3s"></div>
+<div id="mouseGlow" class="fixed pointer-events-none w-[440px] h-[440px] rounded-full z-0" style="background:radial-gradient(circle,rgba(255,172,232,.05) 0%,transparent 70%);transform:translate(-50%,-50%);opacity:0;transition:opacity 1s ease"></div>
+
+<!-- ═══ SCANNER OVERLAY ═══ -->
+<div id="scannerOverlay">
+  <!-- Scanner Box -->
+  <div class="flex flex-col items-center gap-5">
+    <div class="scanner-box">
+      <div class="scanner-line"></div>
+      <div class="scanner-corner sc-tl"></div>
+      <div class="scanner-corner sc-tr"></div>
+      <div class="scanner-corner sc-bl"></div>
+      <div class="scanner-corner sc-br"></div>
+      <div class="absolute inset-0 flex flex-col items-center justify-center gap-1 z-10 px-5">
+        <p id="scanName1" class="font-sora font-black text-[20px] text-on-surface text-center" style="text-shadow:0 0 14px rgba(0,238,252,.6)">—</p>
+        <div class="flex items-center gap-3 w-full">
+          <div class="h-px flex-1" style="background:linear-gradient(to right,transparent,rgba(0,238,252,.5))"></div>
+          <span class="text-[16px] animate-twinkle">⚡</span>
+          <div class="h-px flex-1" style="background:linear-gradient(to left,transparent,rgba(0,238,252,.5))"></div>
+        </div>
+        <p id="scanName2" class="font-sora font-black text-[20px] text-on-surface text-center" style="text-shadow:0 0 14px rgba(255,172,232,.6)">—</p>
+      </div>
+    </div>
+
+    <!-- Spinning rings -->
+    <div class="relative" style="width:80px;height:80px">
+      <div class="absolute inset-0 rounded-full animate-cw-fast" style="border:3px solid transparent;border-top-color:rgba(0,238,252,.7);border-right-color:rgba(255,172,232,.5)"></div>
+      <div class="absolute inset-2.5 rounded-full" style="animation:spin-ccw 2s linear infinite;border:2px solid transparent;border-bottom-color:rgba(255,172,232,.6);border-left-color:rgba(161,120,255,.5)"></div>
+      <div class="absolute inset-0 flex items-center justify-center text-[26px]">⚡</div>
+    </div>
+
+    <div class="text-center">
+      <p id="scanStatus" class="font-cinzel font-black text-[18px] mb-1" style="color:#00eefc">Scanning Friendship…</p>
+      <p id="scanSub" class="font-jakarta text-[13px]" style="color:#a5889b">Analysing compatibility signals…</p>
+    </div>
+
+    <!-- Progress bar -->
+    <div class="w-64 h-2 rounded-full overflow-hidden" style="background:rgba(255,255,255,.08)">
+      <div id="scanBar" class="h-full rounded-full" style="width:0%;background:linear-gradient(90deg,#fface8,#ff24e4,#a178ff,#00eefc);transition:width .12s linear"></div>
+    </div>
+    <p id="scanPct" class="font-sora font-bold text-[13px]" style="color:#fface8">0%</p>
+  </div>
+</div>
+  <!-- Unified nav injected by fc-nav.js (see bottom of body) -->
+
+<!-- ═══ HERO ═══ -->
+<header class="relative pt-32 pb-8 px-6 text-center overflow-hidden z-10">
+  <div class="max-w-4xl mx-auto">
+    <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass mb-6 animate-float" style="border:1px solid rgba(255,172,232,.3)">
+      <span class="text-[14px]">⚡</span>
+      <span class="font-jakarta font-bold text-[12px] uppercase tracking-[.2em]" style="color:#fface8">Advanced Friendship Compatibility Engine</span>
+      <span class="text-[14px]">⚡</span>
+    </div>
+
+    <!-- Radar icon -->
+    <div class="flex justify-center mb-7">
+      <div class="relative" style="width:150px;height:150px">
+        <!-- Outer ring -->
+        <div class="absolute inset-0 rounded-full animate-cw" style="border:2px solid rgba(255,172,232,.2)"></div>
+        <!-- Mid ring -->
+        <div class="absolute inset-5 rounded-full animate-ccw" style="border:1.5px solid rgba(0,238,252,.25)"></div>
+        <!-- Inner ring -->
+        <div class="absolute inset-10 rounded-full animate-cw" style="border:1px dashed rgba(255,172,232,.3)"></div>
+        <!-- Cross lines -->
+        <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+          <div class="w-full h-px" style="background:rgba(0,238,252,.15)"></div>
+        </div>
+        <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+          <div class="h-full w-px" style="background:rgba(0,238,252,.15)"></div>
+        </div>
+        <!-- Radar sweep -->
+        <div class="absolute inset-0 rounded-full overflow-hidden">
+          <div class="radar-sweep-line"></div>
+        </div>
+        <!-- Center dot -->
+        <div class="absolute inset-0 flex items-center justify-center">
+          <div class="w-5 h-5 rounded-full" style="background:radial-gradient(circle,#fface8,#ff24e4);box-shadow:0 0 14px rgba(255,172,232,.8)"></div>
+        </div>
+        <!-- Blips -->
+        <div class="absolute" style="top:25%;left:65%;width:6px;height:6px;border-radius:50%;background:#00eefc;box-shadow:0 0 8px #00eefc;animation:twinkle 1.8s ease-in-out infinite"></div>
+        <div class="absolute" style="top:60%;left:25%;width:5px;height:5px;border-radius:50%;background:#fface8;box-shadow:0 0 8px #fface8;animation:twinkle 2.3s ease-in-out infinite;animation-delay:.5s"></div>
+        <div class="absolute" style="top:70%;left:68%;width:4px;height:4px;border-radius:50%;background:#a178ff;box-shadow:0 0 6px #a178ff;animation:twinkle 2s ease-in-out infinite;animation-delay:1s"></div>
+      </div>
+    </div>
+
+    <h1 class="font-sora text-[40px] md:text-[62px] font-extrabold leading-[1.08] mb-5">
+      <span style="background:linear-gradient(135deg,#fface8,#ff24e4,#a178ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent">Friendship</span><br/>
+      <span class="text-on-surface">Compatibility</span>
+      <span style="background:linear-gradient(135deg,#00eefc,#fface8);-webkit-background-clip:text;-webkit-text-fill-color:transparent"> Meter</span>
+    </h1>
+    <p class="font-jakarta text-[17px] md:text-[19px] text-on-surface-variant max-w-2xl mx-auto leading-relaxed">
+      Enter two names. Let the scanner <strong style="color:#fface8">analyse your friendship DNA</strong> across Trust, Loyalty, Chaos & Meme Energy — and reveal your true compatibility.
+    </p>
+
+    <!-- Category pills preview -->
+    <div class="flex flex-wrap justify-center gap-3 mt-6">
+      <span class="font-jakarta text-[13px] font-bold px-3 py-1.5 rounded-full" style="background:rgba(74,222,128,.12);border:1px solid rgba(74,222,128,.35);color:#4ade80">🛡️ Trust</span>
+      <span class="font-jakarta text-[13px] font-bold px-3 py-1.5 rounded-full" style="background:rgba(255,172,232,.12);border:1px solid rgba(255,172,232,.35);color:#fface8">❤️ Loyalty</span>
+      <span class="font-jakarta text-[13px] font-bold px-3 py-1.5 rounded-full" style="background:rgba(249,115,22,.12);border:1px solid rgba(249,115,22,.35);color:#f97316">🌀 Chaos</span>
+      <span class="font-jakarta text-[13px] font-bold px-3 py-1.5 rounded-full" style="background:rgba(161,120,255,.12);border:1px solid rgba(161,120,255,.35);color:#a178ff">😂 Meme Energy</span>
+    </div>
+  </div>
+</header>
+
+<!-- ═══ MAIN ═══ -->
+<main class="px-4 md:px-6 pb-28 max-w-3xl mx-auto relative z-10">
+
+  <!-- INPUT FORM -->
+  <div class="glass-el rounded-3xl p-7 md:p-10 mb-8" style="border:1px solid rgba(255,172,232,.2);box-shadow:0 0 55px rgba(255,172,232,.06)">
+    <div class="text-center mb-7">
+      <h2 class="font-sora text-[22px] font-bold mb-1" style="color:#fface8">Enter Two Names to Scan</h2>
+      <p class="font-jakarta text-[14px] text-on-surface-variant">The scanner will analyse your friendship across 4 dimensions</p>
+    </div>
+
+    <div class="space-y-5">
+      <!-- Your Name -->
+      <div>
+        <label class="font-jakarta text-[12px] font-bold uppercase tracking-wider text-on-surface-variant mb-2 flex items-center gap-1.5">
+          <span style="color:#fface8">⚡</span> Your Name
+        </label>
+        <div class="relative">
+          <input type="text" id="yourName" class="compat-input" placeholder="Your name here…" maxlength="20"
+            oninput="onNameInput()" onkeydown="if(event.key==='Enter')document.getElementById('friendName').focus()"/>
+          <span class="absolute right-5 top-1/2 -translate-y-1/2 text-[20px] pointer-events-none" id="yourEmoji">👤</span>
+        </div>
+      </div>
+
+      <!-- VS divider -->
+      <div class="flex items-center gap-3">
+        <div class="h-px flex-1" style="background:linear-gradient(to right,transparent,rgba(255,172,232,.4))"></div>
+        <div class="w-10 h-10 rounded-full flex items-center justify-center font-sora font-black text-[13px]" style="background:rgba(255,172,232,.12);border:1.5px solid rgba(255,172,232,.4);color:#fface8">VS</div>
+        <div class="h-px flex-1" style="background:linear-gradient(to left,transparent,rgba(255,172,232,.4))"></div>
+      </div>
+
+      <!-- Friend Name -->
+      <div>
+        <label class="font-jakarta text-[12px] font-bold uppercase tracking-wider text-on-surface-variant mb-2 flex items-center gap-1.5">
+          <span style="color:#00eefc">⚡</span> Friend's Name
+        </label>
+        <div class="relative">
+          <input type="text" id="friendName" class="compat-input" placeholder="Their name here…" maxlength="20"
+            oninput="onNameInput()"/>
+          <span class="absolute right-5 top-1/2 -translate-y-1/2 text-[20px] pointer-events-none" id="friendEmoji">👤</span>
+        </div>
+      </div>
+
+      <!-- Scan btn -->
+      <button class="scan-btn" onclick="startScan()">
+        <span class="material-symbols-outlined msf text-[22px]">radar</span>
+        ⚡ Scan Compatibility ⚡
+      </button>
+    </div>
+  </div>
+
+  <!-- RESULT SECTION -->
+  <div id="resultSection" style="display:none">
+
+    <!-- Result Card (for download) -->
+    <div id="resultCard" class="result-card mb-5">
+      <div class="card-stars"></div>
+      <!-- corner ornaments injected by JS -->
+      <div class="c-orn c-tl" id="oc-tl"></div>
+      <div class="c-orn c-tr" id="oc-tr"></div>
+      <div class="c-orn c-bl" id="oc-bl"></div>
+      <div class="c-orn c-br" id="oc-br"></div>
+
+      <!-- Top header -->
+      <div class="relative z-10 text-center mb-6">
+        <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full mb-3" id="cardBadge" style="background:rgba(255,172,232,.12);border:1px solid rgba(255,172,232,.3)">
+          <span>⚡</span>
+          <span class="font-jakarta text-[11px] font-bold uppercase tracking-[.2em]" style="color:#fface8">Compatibility Report</span>
+        </div>
+        <h2 class="font-cinzel text-[20px] md:text-[26px] font-black uppercase tracking-wider text-on-surface mb-1">Friendship Analysis</h2>
+        <div class="flex items-center justify-center gap-3">
+          <div class="h-px w-20" id="divL" style="background:linear-gradient(to right,transparent,rgba(255,172,232,.5))"></div>
+          <span class="animate-twinkle text-[16px]" id="divEmoji">⚡</span>
+          <div class="h-px w-20" id="divR" style="background:linear-gradient(to left,transparent,rgba(255,172,232,.5))"></div>
+        </div>
+      </div>
+
+      <!-- Names row -->
+      <div class="relative z-10 flex items-center justify-center gap-5 mb-6 flex-wrap">
+        <div class="text-center">
+          <div class="text-[36px] mb-1" id="cardYourEmoji">👤</div>
+          <h3 id="cardYourName" class="font-cinzel text-[22px] md:text-[28px] font-black" style="color:#fface8">You</h3>
+        </div>
+        <div class="flex flex-col items-center">
+          <div class="text-[28px]" id="cardVsEmoji">⚡</div>
+          <p class="font-jakarta text-[10px] uppercase tracking-widest text-on-surface-variant">+</p>
+        </div>
+        <div class="text-center">
+          <div class="text-[36px] mb-1" id="cardFriendEmoji">👤</div>
+          <h3 id="cardFriendName" class="font-cinzel text-[22px] md:text-[28px] font-black" style="color:#00eefc">Friend</h3>
+        </div>
+      </div>
+
+      <!-- Overall ring + result label -->
+      <div class="relative z-10 flex items-center justify-center gap-8 mb-7 flex-wrap">
+        <!-- Overall ring -->
+        <div class="flex flex-col items-center gap-2">
+          <div class="overall-wrap">
+            <svg class="overall-svg" viewBox="0 0 160 160" width="160" height="160">
+              <defs>
+                <linearGradient id="og" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop id="ogS1" offset="0%" stop-color="#fface8"/>
+                  <stop id="ogS2" offset="50%" stop-color="#ff24e4"/>
+                  <stop id="ogS3" offset="100%" stop-color="#00eefc"/>
+                </linearGradient>
+              </defs>
+              <circle cx="80" cy="80" r="68" fill="none" stroke="rgba(255,255,255,.07)" stroke-width="10"/>
+              <circle id="overallArc" cx="80" cy="80" r="68" fill="none" stroke="url(#og)" stroke-width="10"
+                stroke-linecap="round" stroke-dasharray="427.3" stroke-dashoffset="427.3"
+                style="transition:stroke-dashoffset 1.6s cubic-bezier(.22,1,.36,1)"/>
+            </svg>
+            <div class="overall-center">
+              <span id="overallNum" class="font-sora text-[34px] font-extrabold" style="color:#fface8">—</span>
+              <span class="font-jakarta text-[9px] uppercase tracking-wider text-on-surface-variant">Overall</span>
+            </div>
+          </div>
+          <p id="overallGrade" class="font-jakarta text-[13px] font-bold" style="color:#fface8">Scanning…</p>
+        </div>
+
+        <!-- Result label -->
+        <div class="text-center flex flex-col items-center gap-3 flex-1" style="min-width:160px">
+          <div id="resultEmoji" class="text-[60px] result-badge">🤝</div>
+          <h3 id="resultTitle" class="font-cinzel text-[22px] md:text-[26px] font-black text-on-surface leading-tight"></h3>
+          <p id="resultDesc" class="font-jakarta text-[13px] text-on-surface-variant leading-relaxed max-w-[200px]"></p>
+        </div>
+      </div>
+
+      <!-- Score bars -->
+      <div class="relative z-10 space-y-4 mb-6">
+        <!-- Trust -->
+        <div>
+          <div class="flex justify-between items-center mb-1.5">
+            <span class="font-sora text-[14px] font-bold flex items-center gap-2">
+              <span>🛡️</span> Trust
+            </span>
+            <span id="trustScore" class="font-sora text-[15px] font-extrabold" style="color:#4ade80">—</span>
+          </div>
+          <div class="bar-track">
+            <div id="trustBar" class="bar-fill-el bar-trust"></div>
+          </div>
+          <p id="trustLabel" class="font-jakarta text-[11px] text-on-surface-variant mt-1 italic"></p>
+        </div>
+        <!-- Loyalty -->
+        <div>
+          <div class="flex justify-between items-center mb-1.5">
+            <span class="font-sora text-[14px] font-bold flex items-center gap-2">
+              <span>❤️</span> Loyalty
+            </span>
+            <span id="loyaltyScore" class="font-sora text-[15px] font-extrabold" style="color:#fface8">—</span>
+          </div>
+          <div class="bar-track">
+            <div id="loyaltyBar" class="bar-fill-el bar-loyalty"></div>
+          </div>
+          <p id="loyaltyLabel" class="font-jakarta text-[11px] text-on-surface-variant mt-1 italic"></p>
+        </div>
+        <!-- Chaos -->
+        <div>
+          <div class="flex justify-between items-center mb-1.5">
+            <span class="font-sora text-[14px] font-bold flex items-center gap-2">
+              <span>🌀</span> Chaos Level
+            </span>
+            <span id="chaosScore" class="font-sora text-[15px] font-extrabold" style="color:#f97316">—</span>
+          </div>
+          <div class="bar-track">
+            <div id="chaosBar" class="bar-fill-el bar-chaos"></div>
+          </div>
+          <p id="chaosLabel" class="font-jakarta text-[11px] text-on-surface-variant mt-1 italic"></p>
+        </div>
+        <!-- Meme Energy -->
+        <div>
+          <div class="flex justify-between items-center mb-1.5">
+            <span class="font-sora text-[14px] font-bold flex items-center gap-2">
+              <span>😂</span> Meme Energy
+            </span>
+            <span id="memeScore" class="font-sora text-[15px] font-extrabold" style="color:#a178ff">—</span>
+          </div>
+          <div class="bar-track">
+            <div id="memeBar" class="bar-fill-el bar-meme"></div>
+          </div>
+          <p id="memeLabel" class="font-jakarta text-[11px] text-on-surface-variant mt-1 italic"></p>
+        </div>
+      </div>
+
+      <!-- Extra stats row -->
+      <div class="relative z-10 grid grid-cols-3 gap-3 mb-5">
+        <div class="rounded-xl p-3 text-center" style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08)">
+          <p class="font-jakarta text-[10px] uppercase tracking-wider text-on-surface-variant mb-0.5">Friendship Age</p>
+          <p id="statAge" class="font-sora text-[14px] font-bold text-on-surface"></p>
+        </div>
+        <div class="rounded-xl p-3 text-center" style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08)">
+          <p class="font-jakarta text-[10px] uppercase tracking-wider text-on-surface-variant mb-0.5">Survival Chance</p>
+          <p id="statSurvival" class="font-sora text-[14px] font-bold text-on-surface"></p>
+        </div>
+        <div class="rounded-xl p-3 text-center" style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08)">
+          <p class="font-jakarta text-[10px] uppercase tracking-wider text-on-surface-variant mb-0.5">Vibe Match</p>
+          <p id="statVibe" class="font-sora text-[14px] font-bold text-on-surface"></p>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div class="relative z-10 flex justify-between items-end flex-wrap gap-4">
+        <div class="text-center">
+          <p class="font-dancing text-[22px]" style="color:#fface8;opacity:.82">FriendCheck AI</p>
+          <p class="font-jakarta text-[10px] uppercase tracking-wider text-on-surface-variant">Compatibility Engine v2.0</p>
+        </div>
+        <div class="relative mx-auto" style="width:72px;height:72px">
+          <div class="absolute inset-0 rounded-full animate-cw" style="border:2px solid rgba(255,172,232,.4)"></div>
+          <div class="absolute inset-2 rounded-full animate-ccw" style="border:1.5px dashed rgba(0,238,252,.35)"></div>
+          <div class="absolute inset-0 flex items-center justify-center text-[26px]">⚡</div>
+        </div>
+        <div class="text-right">
+          <p id="cardDate" class="font-jakarta text-[13px] text-on-surface" style="opacity:.82"></p>
+          <p class="font-jakarta text-[10px] uppercase tracking-wider text-on-surface-variant">Date of Scan</p>
+          <p id="cardId" class="font-mono text-[10px] mt-0.5" style="color:rgba(165,136,155,.4)">SCAN-XXXX</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Action buttons -->
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+      <button onclick="rescan()" class="py-3.5 rounded-full font-sora font-bold text-[14px] flex items-center justify-center gap-2 hover:scale-[1.02] active:scale-[.98] transition-transform" style="background:linear-gradient(135deg,#ff24e4,#fface8);color:#0d0b12;box-shadow:0 0 24px rgba(255,172,232,.4)">
+        <span class="material-symbols-outlined msf text-[18px]">radar</span> Rescan
+      </button>
+      <button id="shareBtn" onclick="shareResult(this)" class="py-3.5 rounded-full font-sora font-bold text-[14px] text-on-surface flex items-center justify-center gap-2 hover:bg-white/5 hover:scale-[1.02] active:scale-[.98] transition-all glass">
+        <span class="material-symbols-outlined text-[18px]" style="color:#fface8">share</span> Share Result
+      </button>
+<button class="py-3.5 rounded-full font-sora font-bold text-[14px] text-on-surface flex items-center justify-center gap-2 hover:bg-white/5 hover:scale-[1.02] active:scale-[.98] transition-all glass" onclick="location.reload()">Try with another friend</button>
+      <button id="dlBtn" onclick="downloadResult(this)" class="py-3.5 rounded-full font-sora font-bold text-[14px] text-on-surface flex items-center justify-center gap-2 hover:bg-white/5 hover:scale-[1.02] active:scale-[.98] transition-all glass">
+        <span class="material-symbols-outlined text-[18px]" style="color:#00eefc">download</span> Download
+      </button>
+    </div>
+  </div>
+</main>
+
+<!-- FOOTER -->
+<footer class="border-t z-10 relative" style="background:#07060e;border-color:rgba(255,255,255,.06)">
+  <div class="flex flex-col md:flex-row justify-between items-center px-8 py-10 max-w-6xl mx-auto gap-6">
+    <div>
+      <span class="font-sora text-[20px] font-extrabold block mb-1" style="color:#fface8">FriendCheck</span>
+      <p class="font-jakarta text-[13px] text-on-surface-variant">The world's #1 destination for friendship drama.</p>
+    </div>
+    <div class="flex flex-wrap justify-center gap-6">
+      <a href="#" class="font-jakarta text-[13px] text-on-surface-variant hover:text-primary transition-colors">Privacy</a>
+      <a href="#" class="font-jakarta text-[13px] text-on-surface-variant hover:text-primary transition-colors">Terms</a>
+      <a href="#" class="font-jakarta text-[13px] text-on-surface-variant hover:text-primary transition-colors">Support</a>
+    </div>
+    <p class="font-jakarta text-[12px]" style="color:#d1bcff">© 2025 FriendCheck. Stay Compatible.</p>
+  </div>
+</footer>
+
+<!-- ══════════ JAVASCRIPT ══════════ -->
+<script>
+// ─── RESULT TYPES ──────────────────────────────────────────────────
+const RARE_RESULTS = [
+  {
+    key: 'soulfriends', emoji: '🌟', title: 'Soul Friends',
+    desc: 'Your souls are copy-pasted. You communicate in weird noises, shared glances, and finish each other\'s sentences. A mythical connection! ✨',
+    col: '#FFD700', rgb: '255,215,0',
+    bg: 'radial-gradient(ellipse at 25% 25%,rgba(255,215,0,.25) 0%,transparent 55%),radial-gradient(ellipse at 75% 75%,rgba(255,172,0,.2) 0%,transparent 55%),#100b00',
+    grade: 'SS · Soul Friends'
+  },
+  {
+    key: 'separated', emoji: '♊', title: 'Separated At Birth',
+    desc: 'Literally the same person born in different families. Your parents are confused, your friends are scared, and the universe is glitched. 🧬',
+    col: '#FFD700', rgb: '255,215,0',
+    bg: 'radial-gradient(ellipse at 25% 25%,rgba(255,215,0,.25) 0%,transparent 55%),radial-gradient(ellipse at 75% 75%,rgba(255,172,0,.2) 0%,transparent 55%),#100b00',
+    grade: 'SS · Twin Souls'
+  },
+  {
+    key: 'dangerous_duo', emoji: '☠️', title: 'Dangerous Duo',
+    desc: 'The FBI has a dedicated task force just watching your chats. If you two are together in a room, peace is no longer an option. 💥',
+    col: '#FFD700', rgb: '255,215,0',
+    bg: 'radial-gradient(ellipse at 25% 25%,rgba(255,215,0,.25) 0%,transparent 55%),radial-gradient(ellipse at 75% 75%,rgba(255,172,0,.2) 0%,transparent 55%),#100b00',
+    grade: 'SS · Menacing Duo'
+  },
+  {
+    key: 'internet_legends', emoji: '🌐', title: 'Internet Legends',
+    desc: 'Your dynamic is so top-tier it belongs in a museum of modern internet culture. Your memes are premium, your banter is gold. 👑',
+    col: '#FFD700', rgb: '255,215,0',
+    bg: 'radial-gradient(ellipse at 25% 25%,rgba(255,215,0,.25) 0%,transparent 55%),radial-gradient(ellipse at 75% 75%,rgba(255,172,0,.2) 0%,transparent 55%),#100b00',
+    grade: 'SS · Meme Lords'
+  }
+];
+
+const RESULTS = [
+  {
+    key:'legendary',range:[88,100],emoji:'👑',title:'Legendary Duo',
+    desc:'You two are the stuff of friendship legends. Completely unbeatable.',
+    col:'#FFD700',rgb:'255,215,0',
+    bg:'radial-gradient(ellipse at 25% 25%,rgba(255,215,0,.2) 0%,transparent 55%),radial-gradient(ellipse at 75% 75%,rgba(255,172,0,.15) 0%,transparent 55%),#0f0a00',
+    grade:'S+ · Cosmic Bond'
+  },
+  {
+    key:'bestfriends',range:[74,87],emoji:'💛',title:'Best Friends',
+    desc:'Solid, dependable, and annoyingly good together. The real deal.',
+    col:'#fface8',rgb:'255,172,232',
+    bg:'radial-gradient(ellipse at 25% 25%,rgba(255,172,232,.18) 0%,transparent 55%),radial-gradient(ellipse at 75% 75%,rgba(255,36,228,.12) 0%,transparent 55%),#0f0308',
+    grade:'A · Rock Solid'
+  },
+  {
+    key:'chaotic',range:[60,73],emoji:'🌪️',title:'Chaotic Duo',
+    desc:'You\'re wild, unpredictable, and absolutely unforgettable together.',
+    col:'#f97316',rgb:'249,115,22',
+    bg:'radial-gradient(ellipse at 25% 25%,rgba(249,115,22,.2) 0%,transparent 55%),radial-gradient(ellipse at 75% 75%,rgba(239,68,68,.15) 0%,transparent 55%),#0f0400',
+    grade:'B · High Voltage'
+  },
+  {
+    key:'food',range:[45,59],emoji:'🍕',title:'Food Partners',
+    desc:'Your strongest bond is in restaurants. Everything else is negotiable.',
+    col:'#4ade80',rgb:'74,222,128',
+    bg:'radial-gradient(ellipse at 25% 25%,rgba(74,222,128,.18) 0%,transparent 55%),radial-gradient(ellipse at 75% 75%,rgba(0,238,252,.12) 0%,transparent 55%),#00080a',
+    grade:'C · Situational'
+  },
+  {
+    key:'dangerous',range:[30,44],emoji:'💀',title:'Dangerous Combination',
+    desc:'You shouldn\'t work — but somehow you absolutely do. Chaotically.',
+    col:'#ef4444',rgb:'239,68,68',
+    bg:'radial-gradient(ellipse at 25% 25%,rgba(239,68,68,.2) 0%,transparent 55%),radial-gradient(ellipse at 75% 75%,rgba(161,120,255,.15) 0%,transparent 55%),#0a0000',
+    grade:'D · Handle with Care'
+  },
+  {
+    key:'strangers',range:[0,29],emoji:'🤷',title:'Accidental Acquaintances',
+    desc:'The Oracle says: you two just need more time. Or a shared pizza.',
+    col:'#a178ff',rgb:'161,120,255',
+    bg:'radial-gradient(ellipse at 25% 25%,rgba(161,120,255,.18) 0%,transparent 55%),radial-gradient(ellipse at 75% 75%,rgba(0,238,252,.1) 0%,transparent 55%),#04020f',
+    grade:'F · Early Stages'
+  },
+];
+
+// Per-category labels
+const TRUST_LABELS  = ['Sharing secrets? Bold of you.','Growing trust — keep going.','Solid foundation. Worthy.','Fort Knox-level trust.','You could share your passwords.'];
+const LOYAL_LABELS  = ['They\'d leave you at IKEA.','Shows up… occasionally.','Reliable when it counts.','Would take a bullet. A small one.','Die-hard. Certified ride or die.'];
+const CHAOS_LABELS  = ['Suspiciously well-behaved.','Mild shenanigans only.','Weekend warriors of chaos.','Full send, every time.','Government watchlist energy.'];
+const MEME_LABELS   = ['Different frequencies entirely.','Occasional crossover hits.','Good meme alignment.','Curated chaos in sync.','Shared brain cell confirmed.'];
+const SURVIVAL      = ['22%','41%','58%','72%','85%','94%','99%'];
+const VIBES         = ['🌊 Oceanic','🔥 Volcanic','💎 Crystal Clear','🌈 Prismatic','⚡ Electric','🌙 Lunar','🌀 Swirling'];
+const AGES          = ['Est. Last Tuesday','Est. 3–6 months','Est. 1–2 years','Est. Decade+','Est. Past Lives','Est. Before Time'];
+const NAME_EMOJIS   = ['🌙','⭐','💫','🌟','✨','🔮','🌈','💎','🦋','🌺','🌊','🔥','💜','🎯','🎨','🎭','🌸','⚡','🦊','🐺'];
+const SCAN_STEPS    = [
+  'Scanning friendship DNA…','Measuring trust wavelength…','Calculating loyalty coefficient…',
+  'Detecting chaos signature…','Analysing meme frequency…','Cross-referencing vibe matrix…',
+  'Running compatibility algorithm…','Finalising friendship report…'
+];
+
+let scanCount = 0, currentN1='', currentN2='';
+
+// ─── HELPERS ─────────────────────────────────────────────────────
+function nameEmoji(n){
+  if(!n) return '👤';
+  return NAME_EMOJIS[n.split('').reduce((a,c)=>a+c.charCodeAt(0),0)%NAME_EMOJIS.length];
+}
+
+// Seeded score from two names → deterministic-ish but feels random
+function nameHash(n1,n2,salt){
+  const s=n1.toLowerCase()+n2.toLowerCase()+salt;
+  let h=0;
+  for(let i=0;i<s.length;i++){h=(Math.imul(31,h)+s.charCodeAt(i))|0;}
+  return Math.abs(h);
+}
+function seededScore(n1,n2,salt,min=30,max=99){
+  return min+nameHash(n1,n2,salt)%(max-min+1);
+}
+
+function getResult(overall){
+  return RESULTS.find(r=>overall>=r.range[0]&&overall<=r.range[1])||RESULTS[RESULTS.length-1];
+}
+
+function lerp(arr, pct){ // pick from array by percentage
+  return arr[Math.min(arr.length-1,Math.floor((pct/100)*arr.length))];
+}
+
+function animNum(id, target, suffix, dur){
+  const el=document.getElementById(id);
+  const s=Date.now();
+  const tick=()=>{
+    const t=Math.min(1,(Date.now()-s)/dur);
+    const ease=1-Math.pow(1-t,3);
+    el.textContent=Math.floor(target*ease)+suffix;
+    if(t<1) requestAnimationFrame(tick);
+  };
+  requestAnimationFrame(tick);
+}
+
+function animBar(id, pct, delay=0){
+  setTimeout(()=>{
+    const el=document.getElementById(id);
+    el.style.transition='width 1.2s cubic-bezier(.22,1,.36,1)';
+    el.style.width=pct+'%';
+  },delay);
+}
+
+// ─── INPUT HANDLER ───────────────────────────────────────────────
+function onNameInput(){
+  const n1=document.getElementById('yourName').value;
+  const n2=document.getElementById('friendName').value;
+  document.getElementById('yourEmoji').textContent=n1?nameEmoji(n1):'👤';
+  document.getElementById('friendEmoji').textContent=n2?nameEmoji(n2):'👤';
+}
+
+// ─── SCAN OVERLAY ────────────────────────────────────────────────
+function runScanOverlay(n1,n2,cb){
+  const ov=document.getElementById('scannerOverlay');
+  const bar=document.getElementById('scanBar');
+  const pct=document.getElementById('scanPct');
+  const status=document.getElementById('scanStatus');
+  document.getElementById('scanName1').textContent=n1;
+  document.getElementById('scanName2').textContent=n2;
+  ov.classList.add('active');
+  let p=0;
+  const iv=setInterval(()=>{
+    p+=Math.random()*13+5;
+    if(p>100) p=100;
+    bar.style.width=p+'%';
+    pct.textContent=Math.floor(p)+'%';
+    const si=Math.min(SCAN_STEPS.length-1,Math.floor((p/100)*SCAN_STEPS.length));
+    status.textContent=SCAN_STEPS[si];
+    if(p>=100){
+      clearInterval(iv);
+      setTimeout(()=>{ov.classList.remove('active');bar.style.width='0%';pct.textContent='0%';cb();},450);
+    }
+  },175);
+}
+
+// ─── MAIN SCAN ───────────────────────────────────────────────────
+function startScan(){
+  const n1=document.getElementById('yourName').value.trim();
+  const n2=document.getElementById('friendName').value.trim();
+  if(!n1||!n2){
+    if(!n1){const e=document.getElementById('yourName');e.classList.add('do-shake');setTimeout(()=>e.classList.remove('do-shake'),600);}
+    if(!n2){const e=document.getElementById('friendName');e.classList.add('do-shake');setTimeout(()=>e.classList.remove('do-shake'),600);}
+    return;
+  }
+  currentN1=n1; currentN2=n2;
+  runScanOverlay(n1,n2,()=>renderResult(n1,n2));
+}
+
+function rescan(){
+  if(currentN1&&currentN2) runScanOverlay(currentN1,currentN2,()=>renderResult(currentN1,currentN2));
+}
+
+// ─── RENDER RESULT ────────────────────────────────────────────────
+function renderResult(n1,n2){
+  // Generate scores (seeded = consistent for same pair)
+  let trust, loyalty, chaos, meme, clampedOverall, res, isRareResult = false;
+
+  const isRare = (nameHash(n1, n2, 'rare_check') % 100) < 10;
+  if (isRare) {
+    isRareResult = true;
+    trust = seededScore(n1,n2,'trust',95,99);
+    loyalty = seededScore(n1,n2,'loyalty',95,99);
+    chaos = seededScore(n1,n2,'chaos',95,99);
+    meme = seededScore(n1,n2,'meme',95,99);
+    clampedOverall = 98 + (nameHash(n1, n2, 'overall_seed') % 2);
+    const rareIdx = nameHash(n1, n2, 'rare_choice') % RARE_RESULTS.length;
+    res = RARE_RESULTS[rareIdx];
+  } else {
+    trust   = seededScore(n1,n2,'trust',35,98);
+    loyalty = seededScore(n1,n2,'loyalty',30,99);
+    chaos   = seededScore(n1,n2,'chaos',20,100);
+    meme    = seededScore(n1,n2,'meme',28,99);
+    const overall = Math.round((trust+loyalty+(100-chaos*.3)+meme)/3.7);
+    clampedOverall = Math.min(99,Math.max(22,overall));
+    res = getResult(clampedOverall);
+  }
+
+  // Apply card theme
+  const card = document.getElementById('resultCard');
+  if (isRareResult) {
+    card.classList.add('rare-golden-glow');
+  } else {
+    card.classList.remove('rare-golden-glow');
+  }
+  card.style.setProperty('--rc','rgba('+res.rgb+',.25)');
+  card.style.setProperty('--rbg',res.bg);
+
+  // Corner colours
+  ['oc-tl','oc-tr','oc-bl','oc-br'].forEach(id=>{
+    const el=document.getElementById(id);
+    el.style.borderColor='rgba('+res.rgb+',.55)';
+  });
+
+  // Names
+  document.getElementById('cardYourName').textContent=n1;
+  document.getElementById('cardFriendName').textContent=n2;
+  document.getElementById('cardYourEmoji').textContent=nameEmoji(n1);
+  document.getElementById('cardFriendEmoji').textContent=nameEmoji(n2);
+  document.getElementById('cardVsEmoji').textContent='⚡';
+
+  // Dividers
+  document.getElementById('divL').style.background=`linear-gradient(to right,transparent,rgba(${res.rgb},.55))`;
+  document.getElementById('divR').style.background=`linear-gradient(to left,transparent,rgba(${res.rgb},.55))`;
+  document.getElementById('divEmoji').textContent=res.emoji;
+
+  // Overall ring
+  const circ=427.3, offset=circ-(clampedOverall/100)*circ;
+  const arc=document.getElementById('overallArc');
+  arc.style.strokeDashoffset=circ;
+  setTimeout(()=>{arc.style.strokeDashoffset=offset;},80);
+  animNum('overallNum',clampedOverall,'%',1400);
+  document.getElementById('overallGrade').textContent=res.grade;
+  document.getElementById('overallGrade').style.color=res.col;
+
+  // Result badge
+  const rEmoji=document.getElementById('resultEmoji');
+  rEmoji.textContent=res.emoji;
+  rEmoji.classList.remove('result-badge');
+  void rEmoji.offsetWidth;
+  rEmoji.classList.add('result-badge');
+  document.getElementById('resultTitle').textContent=res.title;
+  document.getElementById('resultDesc').textContent=res.desc;
+  document.getElementById('resultTitle').style.color=res.col;
+
+  // Bars (staggered)
+  setTimeout(()=>{ document.getElementById('trustBar').style.width=trust+'%'; },200);
+  setTimeout(()=>{ document.getElementById('loyaltyBar').style.width=loyalty+'%'; },400);
+  setTimeout(()=>{ document.getElementById('chaosBar').style.width=chaos+'%'; },600);
+  setTimeout(()=>{ document.getElementById('memeBar').style.width=meme+'%'; },800);
+
+  // Scores
+  setTimeout(()=>{ animNum('trustScore',trust,'%',900); },200);
+  setTimeout(()=>{ animNum('loyaltyScore',loyalty,'%',900); },400);
+  setTimeout(()=>{ animNum('chaosScore',chaos,'%',900); },600);
+  setTimeout(()=>{ animNum('memeScore',meme,'%',900); },800);
+
+  // Category labels
+  setTimeout(()=>{
+    document.getElementById('trustLabel').textContent  = lerp(TRUST_LABELS,trust);
+    document.getElementById('loyaltyLabel').textContent= lerp(LOYAL_LABELS,loyalty);
+    document.getElementById('chaosLabel').textContent  = lerp(CHAOS_LABELS,chaos);
+    document.getElementById('memeLabel').textContent   = lerp(MEME_LABELS,meme);
+  },1000);
+
+  // Extra stats
+  const seed=(n1+n2).split('').reduce((a,c)=>a+c.charCodeAt(0),0);
+  document.getElementById('statAge').textContent=AGES[seed%AGES.length];
+  document.getElementById('statSurvival').textContent=SURVIVAL[Math.min(6,Math.floor(clampedOverall/15))];
+  document.getElementById('statVibe').textContent=VIBES[(seed*2)%VIBES.length];
+
+  // Meta
+  document.getElementById('cardDate').textContent=new Date().toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'});
+  scanCount++;
+  document.getElementById('cardId').textContent='SCAN-'+String(scanCount).padStart(4,'0')+'-'+Math.random().toString(36).substring(2,5).toUpperCase();
+
+  // Show result section
+  const sec=document.getElementById('resultSection');
+  sec.style.display='block';
+  sec.style.animation='slide-up .6s cubic-bezier(.22,1,.36,1) both';
+  setTimeout(()=>sec.scrollIntoView({behavior:'smooth',block:'start'}),130);
+  spawnConfetti(res.col);
+}
+
+// ─── SHARE ────────────────────────────────────────────────────────
+function shareResult(btn){
+  const n1=document.getElementById('cardYourName').textContent;
+  const n2=document.getElementById('cardFriendName').textContent;
+  const title=document.getElementById('resultTitle').textContent;
+  const trust=document.getElementById('trustScore').textContent;
+  const loyalty=document.getElementById('loyaltyScore').textContent;
+  const chaos=document.getElementById('chaosScore').textContent;
+  const meme=document.getElementById('memeScore').textContent;
+  const overall=document.getElementById('overallNum').textContent;
+  const msg=`⚡ FriendCheck scanned ${n1} & ${n2}!\n\n🛡️ Trust: ${trust}  ❤️ Loyalty: ${loyalty}\n🌀 Chaos: ${chaos}  😂 Memes: ${meme}\n\n✦ Overall: ${overall} — ${title}\n\nScan YOUR friendship →`;
+  const orig=btn.innerHTML;
+  if(navigator.share){navigator.share({title:'Friendship Compatibility Scan ⚡',text:msg,url:'https://friendship-check.in/friendship_compatibility.html'}).catch(()=>{});}
+  else{
+    navigator.clipboard.writeText(msg+'\n'+'https://friendship-check.in/friendship_compatibility.html').then(()=>{
+      btn.innerHTML='<span class="material-symbols-outlined msf text-[18px]" style="color:#4ade80">check_circle</span> Copied!';
+      setTimeout(()=>btn.innerHTML=orig,2600);
+    });
+  }
+}
+
+// ─── DOWNLOAD ────────────────────────────────────────────────────
+async function downloadResult(btn){
+  const orig=btn.innerHTML;
+  btn.innerHTML='<span class="material-symbols-outlined text-[18px]" style="color:#00eefc;display:inline-block;animation:spin-cw 1s linear infinite">sync</span> Saving…';
+  btn.disabled=true;
+  try{
+    const c=await html2canvas(document.getElementById('resultCard'),{scale:2.5,backgroundColor:'#0d0b12',logging:false,useCORS:true,allowTaint:true});
+    const a=document.createElement('a');
+    a.download=`compat-${currentN1.replace(/\s/g,'_')}-${currentN2.replace(/\s/g,'_')}.png`;
+    a.href=c.toDataURL('image/png');
+    a.click();
+    spawnConfetti('#00eefc');
+  }catch(e){alert('Download failed — try a screenshot instead!');}
+  finally{btn.innerHTML=orig;btn.disabled=false;}
+}
+
+// ─── CONFETTI ────────────────────────────────────────────────────
+function spawnConfetti(col){
+  const cols=[col,'#fface8','#00eefc','#a178ff','#ffffff','#FFD700'];
+  const shapes=['⚡','✦','★','✨','💫','•'];
+  for(let i=0;i<28;i++){
+    const p=document.createElement('div');
+    p.className='confetti-p';
+    const sz=Math.random()*13+6;
+    p.style.cssText=`left:${Math.random()*100}vw;top:${Math.random()*20+8}vh;color:${cols[Math.floor(Math.random()*cols.length)]};font-size:${sz}px;animation-duration:${1+Math.random()*1.5}s;animation-delay:${Math.random()*.5}s`;
+    p.textContent=shapes[Math.floor(Math.random()*shapes.length)];
+    document.body.appendChild(p);
+    setTimeout(()=>p.remove(),2800);
+  }
+}
+
+// ─── MOUSE GLOW ───────────────────────────────────────────────────
+const mg=document.getElementById('mouseGlow');
+document.addEventListener('mousemove',e=>{mg.style.left=e.clientX+'px';mg.style.top=e.clientY+'px';mg.style.opacity='1';});
+
+// ─── spin-cw for download button fallback ────────────────────────
+const s=document.createElement('style');
+s.textContent='@keyframes spin-cw{to{transform:rotate(360deg)}}';
+document.head.appendChild(s);
+</script>
+
+  <!-- ── UNIFIED NAV + UTILS ── -->
+  <script src="shared/fc-utils.js"></script>
+  <script src="shared/fc-nav.js"></script>
+  <script>FCNav.init({ active: 'compatibility' });</script>
+  <!-- ═══════════════════════════════════════════════════════════
+       MONETIZATION LAYER — ads + affiliate recommendations
+       Injected by friendcheck-monetized build
+  ════════════════════════════════════════════════════════════ -->
+
+  <!-- AD: Mid-content (placed before result area) -->
+  <div id="ad-mid-banner" style="width:100%;max-width:728px;margin:2rem auto;padding:0 1rem;box-sizing:border-box;"></div>
+
+  <!-- AFFILIATE: After result card -->
+  <div id="fc-affiliate-strip"></div>
+
+  <!-- AD: Native after result -->
+  <div id="ad-post-result" style="width:100%;max-width:900px;margin:0 auto 2rem;padding:0 1rem;box-sizing:border-box;"></div>
+
+  <!-- STICKY FOOTER AD -->
+  <div id="ad-footer-sticky"></div>
+
+  <!-- ── MONETIZATION SCRIPTS ── -->
+  <script src="shared/fc-ads.js"></script>
+  <script src="shared/fc-affiliate.js"></script>
+  <script>
+    // Init ads
+    FCAds.initAll([
+      { type: 'banner', id: 'ad-mid-banner',    key: 'REPLACE_WITH_BANNER_KEY' },
+      { type: 'native', id: 'ad-post-result',   key: 'REPLACE_WITH_NATIVE_KEY' },
+      { type: 'footer', id: 'ad-footer-sticky', key: 'REPLACE_WITH_FOOTER_KEY', options: { sticky: true, closeable: true } },
+    ]);
+
+    // Affiliate strip — renders after page-specific result trigger
+    // Call this from your result-reveal function:
+    //   FCAffiliate.render('fc-affiliate-strip', 'compatibility');
+    // OR wire to a result event:
+    window.addEventListener('fc-result-shown', function() {
+      FCAffiliate.render('fc-affiliate-strip', 'compatibility');
+    });
+
+    // Auto-show affiliate on page if result is already visible
+    document.addEventListener('DOMContentLoaded', function() {
+      var resultEl = document.querySelector('[id*="result"], [class*="result"], [id*="verdict"], [id*="certificate"]');
+      if (resultEl && getComputedStyle(resultEl).display !== 'none') {
+        FCAffiliate.render('fc-affiliate-strip', 'compatibility');
+      }
+    });
+  </script>
+
+</body>
+</html>

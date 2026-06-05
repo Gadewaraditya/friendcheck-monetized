@@ -1,0 +1,976 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>FriendCheck | Friendship Prediction Machine 🔮</title>
+<meta name="description" content="See the future of your friendship. AI-powered predictions based on your unique bond."/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Cinzel:wght@700;900&family=Dancing+Script:wght@700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:#0a070f;color:#e5e2e3;min-height:100vh;overflow-x:hidden}
+
+/* Glass */
+.glass{background:rgba(255,255,255,.04);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.1)}
+.glass-el{background:rgba(255,255,255,.06);backdrop-filter:blur(28px);border:1px solid rgba(255,255,255,.14)}
+
+/* Starfield */
+.starfield{position:fixed;inset:0;pointer-events:none;z-index:0;
+background-image:
+  radial-gradient(1.5px 1.5px at 10% 15%,rgba(255,255,255,.5) 0%,transparent 100%),
+  radial-gradient(1px 1px at 25% 40%,rgba(255,255,255,.3) 0%,transparent 100%),
+  radial-gradient(2px 2px at 40% 8%,rgba(209,188,255,.4) 0%,transparent 100%),
+  radial-gradient(1px 1px at 55% 65%,rgba(255,255,255,.4) 0%,transparent 100%),
+  radial-gradient(1.5px 1.5px at 70% 25%,rgba(0,238,252,.3) 0%,transparent 100%),
+  radial-gradient(1px 1px at 82% 55%,rgba(255,255,255,.3) 0%,transparent 100%),
+  radial-gradient(2px 2px at 90% 80%,rgba(255,172,232,.35) 0%,transparent 100%),
+  radial-gradient(1px 1px at 15% 75%,rgba(255,255,255,.25) 0%,transparent 100%),
+  radial-gradient(1px 1px at 62% 88%,rgba(255,255,255,.3) 0%,transparent 100%),
+  radial-gradient(1.5px 1.5px at 35% 92%,rgba(209,188,255,.3) 0%,transparent 100%)}
+
+/* Animations */
+@keyframes pulse-orb{0%,100%{opacity:.2;transform:scale(1)}50%{opacity:.42;transform:scale(1.1)}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+@keyframes spin-cw{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+@keyframes spin-ccw{from{transform:rotate(360deg)}to{transform:rotate(0deg)}}
+@keyframes twinkle{0%,100%{opacity:.3;transform:scale(1)}50%{opacity:1;transform:scale(1.35)}}
+@keyframes shimmer-btn{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+@keyframes crystal-spin{to{transform:rotate(360deg)}}
+@keyframes mist-move{0%,100%{transform:rotate(0deg) scale(1);opacity:.7}50%{transform:rotate(180deg) scale(1.15);opacity:.5}}
+@keyframes orb-float{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-14px) scale(1.03)}}
+@keyframes orb-glow{0%,100%{box-shadow:0 0 60px rgba(161,120,255,.45),0 0 120px rgba(161,120,255,.2)}
+  50%{box-shadow:0 0 90px rgba(161,120,255,.75),0 0 180px rgba(161,120,255,.35)}}
+@keyframes scan-prog{from{transform:translateY(-100%)}to{transform:translateY(500%)}}
+@keyframes slide-up{from{opacity:0;transform:translateY(36px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pred-in{from{opacity:0;transform:translateX(-18px)}to{opacity:1;transform:translateX(0)}}
+@keyframes card-flip{0%{opacity:0;transform:perspective(900px) rotateY(-80deg)}
+  65%{transform:perspective(900px) rotateY(6deg)}100%{opacity:1;transform:perspective(900px) rotateY(0deg)}}
+@keyframes confetti-drop{0%{opacity:1;transform:translateY(0) rotate(0)}100%{opacity:0;transform:translateY(210px) rotate(720deg)}}
+@keyframes num-count{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+.animate-float{animation:float 5s ease-in-out infinite}
+.animate-twinkle{animation:twinkle 2.5s ease-in-out infinite}
+.animate-cw{animation:spin-cw 18s linear infinite}
+.animate-ccw{animation:spin-ccw 12s linear infinite}
+.orb-animate{animation:orb-float 4s ease-in-out infinite,orb-glow 4s ease-in-out infinite}
+
+/* Crystal ball */
+.crystal-ball{
+  width:190px;height:190px;border-radius:50%;cursor:pointer;position:relative;overflow:hidden;
+  background:radial-gradient(circle at 33% 33%,rgba(255,255,255,.18) 0%,rgba(161,120,255,.35) 30%,rgba(0,238,252,.18) 62%,rgba(60,30,120,.85) 100%);
+  box-shadow:0 0 55px rgba(161,120,255,.5),0 0 110px rgba(161,120,255,.2),inset 0 0 35px rgba(255,255,255,.04),inset 12px 12px 28px rgba(255,255,255,.07);
+  transition:box-shadow .3s ease}
+.crystal-ball:hover{box-shadow:0 0 80px rgba(161,120,255,.7),0 0 160px rgba(161,120,255,.35)}
+.crystal-ball::before{content:'';position:absolute;top:14%;left:18%;width:38%;height:22%;
+  background:radial-gradient(ellipse,rgba(255,255,255,.38) 0%,transparent 70%);border-radius:50%;transform:rotate(-18deg)}
+.crystal-ball::after{content:'';position:absolute;inset:0;
+  background:conic-gradient(from 0deg,transparent 0%,rgba(161,120,255,.12) 25%,transparent 50%,rgba(0,238,252,.12) 75%,transparent 100%);
+  animation:crystal-spin 7s linear infinite}
+.crystal-mist{position:absolute;inset:0;
+  background:radial-gradient(circle at 50% 68%,rgba(161,120,255,.28) 0%,transparent 60%);
+  animation:mist-move 4s ease-in-out infinite}
+.crystal-emoji{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:62px;z-index:2}
+.crystal-base{width:115px;height:22px;margin:-6px auto 0;border-radius:50%;
+  background:linear-gradient(135deg,#2a1a4a,#1a0a2e,#3a2060);box-shadow:0 8px 24px rgba(0,0,0,.65)}
+
+/* Input */
+.oracle-input{
+  display:block;width:100%;padding:14px 52px 14px 22px;
+  background:rgba(161,120,255,.09);border:1.5px solid rgba(161,120,255,.3);border-radius:9999px;
+  color:#e5e2e3;font-family:'Sora',sans-serif;font-size:16px;font-weight:600;transition:all .3s ease}
+.oracle-input::placeholder{color:rgba(221,190,209,.38);font-family:'Plus Jakarta Sans',sans-serif;font-weight:400}
+.oracle-input:focus{outline:none;border-color:rgba(161,120,255,.75);background:rgba(161,120,255,.13);
+  box-shadow:0 0 0 3px rgba(161,120,255,.18),0 0 28px rgba(161,120,255,.1)}
+select.oracle-input{padding-right:44px;appearance:none;cursor:pointer}
+select option{background:#201f20;color:#e5e2e3}
+
+/* Oracle button */
+.oracle-btn{
+  width:100%;padding:16px;border-radius:9999px;border:none;cursor:pointer;
+  font-family:'Sora',sans-serif;font-size:18px;font-weight:800;color:#fff;
+  background:linear-gradient(270deg,#5700c9,#a178ff,#fface8,#a178ff,#5700c9);
+  background-size:300% 300%;animation:shimmer-btn 5s ease infinite;
+  box-shadow:0 0 40px rgba(161,120,255,.5),0 8px 30px rgba(0,0,0,.4);
+  display:flex;align-items:center;justify-content:center;gap:10px;transition:transform .2s,box-shadow .2s}
+.oracle-btn:hover{transform:scale(1.02);box-shadow:0 0 60px rgba(161,120,255,.65)}
+.oracle-btn:active{transform:scale(.97)}
+
+/* Scan overlay */
+#scanOverlay{
+  position:fixed;inset:0;z-index:9999;
+  background:rgba(10,7,15,.93);backdrop-filter:blur(10px);
+  display:none;align-items:center;justify-content:center;flex-direction:column;gap:22px}
+#scanOverlay.show{display:flex}
+.scan-ring-outer{width:140px;height:140px;border-radius:50%;border:3px solid transparent;
+  border-top-color:rgba(161,120,255,.75);border-right-color:rgba(0,238,252,.55);
+  animation:spin-cw .75s linear infinite;position:absolute;top:0;left:0}
+.scan-ring-inner{width:92px;height:92px;border-radius:50%;border:2.5px solid transparent;
+  border-bottom-color:rgba(255,172,232,.65);border-left-color:rgba(209,188,255,.45);
+  animation:spin-ccw .55s linear infinite;position:absolute;top:24px;left:24px}
+.scan-orb-wrap{position:relative;width:140px;height:140px;flex-shrink:0}
+.scan-center-emoji{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:44px;z-index:2}
+.scan-swipe{position:absolute;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,transparent,rgba(161,120,255,.9),transparent);
+  animation:scan-prog 1.6s linear infinite}
+
+/* Prediction card */
+.pred-card{
+  background:radial-gradient(ellipse at 18% 18%,rgba(161,120,255,.18) 0%,transparent 50%),
+    radial-gradient(ellipse at 82% 82%,rgba(0,238,252,.13) 0%,transparent 50%),
+    radial-gradient(ellipse at 50% 50%,rgba(255,172,232,.07) 0%,transparent 60%),#0c0818;
+  border:2px solid rgba(161,120,255,.42);
+  box-shadow:0 0 80px rgba(161,120,255,.18),0 30px 80px rgba(0,0,0,.7)}
+
+.card-anim{animation:card-flip .7s cubic-bezier(.22,1,.36,1) both}
+
+/* Corner ornaments */
+.c-orn{position:absolute;width:46px;height:46px}
+.c-tl{top:14px;left:14px;border-top:2px solid rgba(161,120,255,.55);border-left:2px solid rgba(161,120,255,.55);border-radius:2px 0 0 0}
+.c-tr{top:14px;right:14px;border-top:2px solid rgba(161,120,255,.55);border-right:2px solid rgba(161,120,255,.55);border-radius:0 2px 0 0}
+.c-bl{bottom:14px;left:14px;border-bottom:2px solid rgba(161,120,255,.55);border-left:2px solid rgba(161,120,255,.55);border-radius:0 0 0 2px}
+.c-br{bottom:14px;right:14px;border-bottom:2px solid rgba(161,120,255,.55);border-right:2px solid rgba(161,120,255,.55);border-radius:0 0 2px 0}
+
+/* Stars on card */
+.card-stars{position:absolute;inset:0;pointer-events:none;border-radius:inherit;
+  background-image:
+    radial-gradient(1px 1px at 8% 14%,rgba(255,255,255,.22) 0%,transparent 100%),
+    radial-gradient(2px 2px at 77% 9%,rgba(209,188,255,.28) 0%,transparent 100%),
+    radial-gradient(1px 1px at 45% 82%,rgba(255,255,255,.18) 0%,transparent 100%),
+    radial-gradient(1px 1px at 89% 64%,rgba(0,238,252,.22) 0%,transparent 100%),
+    radial-gradient(1.5px 1.5px at 22% 87%,rgba(255,172,232,.22) 0%,transparent 100%)}
+
+/* Compatibility SVG ring */
+.compat-wrap{position:relative;width:124px;height:124px}
+.compat-svg{transform:rotate(-90deg);display:block}
+.compat-center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+
+/* Prediction item */
+.pred-row{animation:pred-in .45s ease both}
+
+/* Watermark */
+.wm{position:absolute;bottom:12px;right:16px;font-family:'Sora',sans-serif;font-size:11px;font-weight:700;letter-spacing:.08em;opacity:.22;text-transform:uppercase;color:#a178ff;pointer-events:none}
+
+/* Material symbols */
+.material-symbols-outlined{font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24;user-select:none}
+.msf{font-variation-settings:'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 24}
+
+/* Misc */
+::-webkit-scrollbar{width:5px}
+::-webkit-scrollbar-track{background:#0a070f}
+::-webkit-scrollbar-thumb{background:rgba(161,120,255,.3);border-radius:9999px}
+.confetti-p{position:fixed;pointer-events:none;z-index:9998;animation:confetti-drop linear forwards}
+
+/* Shake */
+@keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-8px)}40%{transform:translateX(8px)}60%{transform:translateX(-5px)}80%{transform:translateX(5px)}}
+.do-shake{animation:shake .5s ease both}
+
+/* Rare Golden Glow Pulse style */
+@keyframes rare-gold-pulse {
+    0%, 100% {
+        box-shadow: 0 0 25px rgba(255, 215, 0, 0.4), inset 0 0 15px rgba(255, 215, 0, 0.15);
+        border-color: rgba(255, 215, 0, 0.6);
+    }
+    50% {
+        box-shadow: 0 0 45px rgba(255, 215, 0, 0.85), 0 0 70px rgba(255, 140, 0, 0.4), inset 0 0 25px rgba(255, 215, 0, 0.35);
+        border-color: rgba(255, 215, 0, 0.95);
+    }
+}
+.rare-golden-glow {
+    animation: rare-gold-pulse 2s ease-in-out infinite !important;
+    border: 2.5px solid #ffd700 !important;
+}
+</style>
+<script>
+tailwind.config={darkMode:'class',theme:{extend:{
+  colors:{"primary":"#fface8","primary-container":"#ff24e4","on-primary":"#5e0053","secondary":"#d3fbff","secondary-container":"#00eefc","on-secondary-container":"#00686f","tertiary":"#d1bcff","tertiary-container":"#a178ff","on-tertiary":"#3c0090","error":"#ffb4ab","surface":"#131314","surface-container-lowest":"#0e0e0f","surface-container-low":"#1c1b1c","surface-container":"#201f20","surface-container-high":"#2a2a2b","surface-container-highest":"#353436","on-surface":"#e5e2e3","on-surface-variant":"#ddbed1","outline":"#a5889b","background":"#131314","on-background":"#e5e2e3"},
+  fontFamily:{sora:["Sora","sans-serif"],jakarta:["Plus Jakarta Sans","sans-serif"],cinzel:["Cinzel","serif"],dancing:["Dancing Script","cursive"]}
+}}}
+</script>
+  <link rel="canonical" href="https://friendship-check.in/prediction"/>
+  <meta property="og:type"        content="website"/>
+  <meta property="og:title"       content="FriendCheck | Friendship Prediction Machine 🔮"/>
+  <meta property="og:description" content="See the future of your friendship. AI-powered predictions based on your unique bond."/>
+  <meta property="og:image"       content="https://friendship-check.in/og-prediction.png"/>
+    <meta property="og:url" content="https://friendship-check.in/friendship_prediction.html"/>
+  <meta property="og:image" content="https://friendship-check.in/og-prediction.png"/>
+  <meta property="og:site_name" content="FriendCheck"/>
+  <meta name="twitter:url" content="https://friendship-check.in/friendship_prediction.html"/>
+  <meta name="twitter:image" content="https://friendship-check.in/og-prediction.png"/>
+  <meta name="twitter:card"       content="summary_large_image"/>
+  <meta name="twitter:title"      content="FriendCheck | Friendship Prediction Machine 🔮"/>
+  <meta name="twitter:description" content="See the future of your friendship. AI-powered predictions based on your unique bond."/>
+  <!-- UNIFIED DESIGN SYSTEM -->
+  <link rel="stylesheet" href="shared/fc-design-system.css">
+
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org","@type":"WebApplication",
+    "name":"FriendCheck Friendship Prediction Machine","url":"https://friendship-check.in/friendship_prediction.html",
+    "description":"AI-powered predictions about the future of your friendship. Eerily accurate.",
+    "applicationCategory":"Game","browserRequirements":"Requires JavaScript","isAccessibleForFree":true
+  }
+  </script>
+</head>
+<body style="background:radial-gradient(ellipse 80% 55% at 20% 10%,rgba(161,120,255,.14) 0%,transparent 55%),radial-gradient(ellipse 65% 55% at 80% 90%,rgba(0,238,252,.09) 0%,transparent 55%),#0a070f">
+
+<div class="starfield"></div>
+<div class="fixed top-0 left-1/4 w-96 h-96 rounded-full pointer-events-none z-0" style="background:radial-gradient(circle,rgba(161,120,255,.07),transparent 70%);animation:pulse-orb 9s ease-in-out infinite"></div>
+<div class="fixed bottom-0 right-1/4 w-96 h-96 rounded-full pointer-events-none z-0" style="background:radial-gradient(circle,rgba(0,238,252,.05),transparent 70%);animation:pulse-orb 7s ease-in-out infinite;animation-delay:-3s"></div>
+<div id="mouseGlow" class="fixed pointer-events-none w-[480px] h-[480px] rounded-full z-0" style="background:radial-gradient(circle,rgba(161,120,255,.05) 0%,transparent 70%);transform:translate(-50%,-50%);opacity:0;transition:opacity 1s ease"></div>
+
+<!-- SCAN OVERLAY -->
+<div id="scanOverlay">
+  <div class="scan-orb-wrap">
+    <div class="scan-ring-outer"></div>
+    <div class="scan-ring-inner"></div>
+    <div class="scan-swipe" style="top:50%"></div>
+    <div class="scan-center-emoji">🔮</div>
+  </div>
+  <div class="text-center px-4">
+    <p id="scanTitle" class="font-cinzel font-black text-[20px] mb-1" style="color:#d1bcff">Reading Cosmic Energies…</p>
+    <p id="scanSub" class="font-jakarta text-[13px]" style="color:#a5889b">Analysing your friendship's destiny…</p>
+  </div>
+  <div class="w-64 h-2 rounded-full overflow-hidden" style="background:rgba(255,255,255,.08)">
+    <div id="scanBar" class="h-full rounded-full" style="width:0%;background:linear-gradient(90deg,#5700c9,#a178ff,#00eefc);transition:width .12s linear"></div>
+  </div>
+  <p id="scanPct" class="font-sora font-bold text-[14px]" style="color:#a178ff">0%</p>
+</div>
+  <!-- Unified nav injected by fc-nav.js (see bottom of body) -->
+
+<!-- HERO -->
+<header class="relative pt-32 pb-8 px-6 text-center overflow-hidden z-10">
+  <div class="max-w-4xl mx-auto">
+    <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass mb-6 animate-float" style="border:1px solid rgba(161,120,255,.35)">
+      <span class="animate-twinkle text-[14px]">✨</span>
+      <span class="font-jakarta font-bold text-[12px] uppercase tracking-[.2em]" style="color:#d1bcff">Powered by Cosmic AI · The Oracle Awaits</span>
+      <span class="animate-twinkle text-[14px]" style="animation-delay:.9s">✨</span>
+    </div>
+
+    <!-- Crystal Ball -->
+    <div class="flex justify-center mb-8">
+      <div style="display:inline-block;position:relative">
+        <div class="crystal-ball orb-animate" id="crystalBall" onclick="pulseOrb()">
+          <div class="crystal-mist"></div>
+          <div class="crystal-emoji">🔮</div>
+        </div>
+        <div class="crystal-base"></div>
+      </div>
+    </div>
+
+    <h1 class="font-cinzel text-[36px] md:text-[56px] font-black uppercase tracking-wide leading-[1.1] mb-5">
+      <span style="background:linear-gradient(135deg,#d1bcff,#a178ff,#fface8);-webkit-background-clip:text;-webkit-text-fill-color:transparent">Friendship</span><br/>
+      <span class="text-on-surface">Prediction</span>
+      <span style="background:linear-gradient(135deg,#00eefc,#d1bcff);-webkit-background-clip:text;-webkit-text-fill-color:transparent"> Machine</span>
+    </h1>
+    <p class="font-jakarta text-[17px] md:text-[19px] text-on-surface-variant max-w-2xl mx-auto leading-relaxed">
+      The Oracle has been expecting you. Enter two names and witness the <strong style="color:#d1bcff">exact future</strong> of your friendship — road trips, arguments, lost chargers, and much more.
+    </p>
+  </div>
+</header>
+
+<!-- MAIN -->
+<main class="px-4 md:px-6 pb-28 max-w-3xl mx-auto relative z-10">
+
+  <!-- INPUT CARD -->
+  <div class="glass-el rounded-3xl p-7 md:p-10 mb-8" style="border:1px solid rgba(161,120,255,.25);box-shadow:0 0 55px rgba(161,120,255,.08)">
+    <div class="text-center mb-8">
+      <h2 class="font-cinzel text-[22px] font-bold mb-1" style="color:#d1bcff">Summon Your Destiny</h2>
+      <p class="font-jakarta text-[14px] text-on-surface-variant">The Oracle requires two names to begin its reading</p>
+    </div>
+
+    <div class="space-y-5">
+      <!-- Your Name -->
+      <div>
+        <label class="font-jakarta text-[12px] font-bold uppercase tracking-wider text-on-surface-variant mb-2 flex items-center gap-1.5">
+          <span style="color:#fface8">✦</span> Your Name
+        </label>
+        <div class="relative">
+          <input type="text" id="yourName" class="oracle-input" placeholder="Enter your name…" maxlength="25"
+            oninput="onInput('yourName')"
+            onkeydown="if(event.key==='Enter')document.getElementById('friendNameInput').focus()"/>
+          <span class="absolute right-5 top-1/2 -translate-y-1/2 text-[20px] pointer-events-none" id="yourEmoji">👤</span>
+        </div>
+      </div>
+
+      <!-- Divider -->
+      <div class="flex items-center gap-3">
+        <div class="h-px flex-1" style="background:linear-gradient(to right,transparent,rgba(161,120,255,.4))"></div>
+        <div class="w-10 h-10 rounded-full flex items-center justify-center" style="background:rgba(161,120,255,.15);border:1.5px solid rgba(161,120,255,.4)">
+          <span class="text-[18px]" id="connectorEmoji">💜</span>
+        </div>
+        <div class="h-px flex-1" style="background:linear-gradient(to left,transparent,rgba(161,120,255,.4))"></div>
+      </div>
+
+      <!-- Friend Name -->
+      <div>
+        <label class="font-jakarta text-[12px] font-bold uppercase tracking-wider text-on-surface-variant mb-2 flex items-center gap-1.5">
+          <span style="color:#00eefc">✦</span> Friend's Name
+        </label>
+        <div class="relative">
+          <input type="text" id="friendNameInput" class="oracle-input" placeholder="Enter their name…" maxlength="25"
+            oninput="onInput('friendNameInput')"/>
+          <span class="absolute right-5 top-1/2 -translate-y-1/2 text-[20px] pointer-events-none" id="friendEmoji">👤</span>
+        </div>
+      </div>
+
+      <!-- Timeframe -->
+      <div>
+        <label class="font-jakarta text-[12px] font-bold uppercase tracking-wider text-on-surface-variant mb-2 block">
+          <span style="color:#d1bcff">✦</span> Prediction Timeframe
+        </label>
+        <div class="relative">
+          <select id="timeframe" class="oracle-input" style="padding:13px 44px 13px 22px">
+            <option value="6m">Next 6 Months</option>
+            <option value="1y" selected>Next 1 Year</option>
+            <option value="5y">Next 5 Years</option>
+            <option value="lifetime">Lifetime</option>
+          </select>
+          <span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-on-surface-variant text-[20px]">expand_more</span>
+        </div>
+      </div>
+
+      <!-- CTA -->
+      <button class="oracle-btn" onclick="summonOracle()">
+        <span class="text-[22px]">🔮</span>
+        Consult the Oracle
+        <span class="text-[22px]">✨</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- PREDICTION RESULT -->
+  <div id="resultSection" style="display:none">
+
+    <!-- Card -->
+    <div id="predCard" class="pred-card relative rounded-3xl p-8 md:p-10 mb-5 overflow-hidden">
+      <div class="card-stars"></div>
+      <div class="c-orn c-tl"></div><div class="c-orn c-tr"></div>
+      <div class="c-orn c-bl"></div><div class="c-orn c-br"></div>
+      <div class="wm">FriendCheck Oracle™</div>
+
+      <!-- Card header -->
+      <div class="relative z-10 text-center mb-6">
+        <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full mb-3" style="background:rgba(161,120,255,.12);border:1px solid rgba(161,120,255,.3)">
+          <span>🔮</span>
+          <span class="font-jakarta text-[11px] font-bold uppercase tracking-[.2em]" style="color:#d1bcff">Official Cosmic Forecast</span>
+        </div>
+        <h2 class="font-cinzel text-[22px] md:text-[28px] font-black uppercase tracking-wider text-on-surface mb-2">Friendship Prophecy</h2>
+        <div class="flex items-center justify-center gap-3">
+          <div class="h-px w-20" style="background:linear-gradient(to right,transparent,rgba(161,120,255,.6))"></div>
+          <span class="animate-twinkle text-[16px]">✦</span>
+          <div class="h-px w-20" style="background:linear-gradient(to left,transparent,rgba(161,120,255,.6))"></div>
+        </div>
+      </div>
+
+      <!-- Names -->
+      <div class="relative z-10 flex items-center justify-center gap-6 mb-6 flex-wrap">
+        <div class="text-center">
+          <div class="text-[38px] mb-1" id="cardYourEmoji">👤</div>
+          <h3 id="cardYourName" class="font-cinzel text-[24px] md:text-[30px] font-black" style="color:#fface8;text-shadow:0 0 22px rgba(255,172,232,.4)">You</h3>
+        </div>
+        <div class="flex flex-col items-center gap-1">
+          <div class="text-[28px]" id="bondEmoji">💜</div>
+          <span class="font-jakarta text-[10px] uppercase tracking-widest text-on-surface-variant">+</span>
+        </div>
+        <div class="text-center">
+          <div class="text-[38px] mb-1" id="cardFriendEmoji">👤</div>
+          <h3 id="cardFriendName" class="font-cinzel text-[24px] md:text-[30px] font-black" style="color:#00eefc;text-shadow:0 0 22px rgba(0,238,252,.4)">Friend</h3>
+        </div>
+      </div>
+
+      <!-- Compat ring + stats -->
+      <div class="relative z-10 flex items-center justify-center gap-8 mb-8 flex-wrap">
+        <!-- Ring -->
+        <div class="flex flex-col items-center gap-2">
+          <div class="compat-wrap">
+            <svg class="compat-svg" viewBox="0 0 124 124" width="124" height="124">
+              <defs>
+                <linearGradient id="cg" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stop-color="#a178ff"/>
+                  <stop offset="50%" stop-color="#fface8"/>
+                  <stop offset="100%" stop-color="#00eefc"/>
+                </linearGradient>
+              </defs>
+              <circle cx="62" cy="62" r="52" fill="none" stroke="rgba(255,255,255,.08)" stroke-width="9"/>
+              <circle id="compatArc" cx="62" cy="62" r="52" fill="none" stroke="url(#cg)" stroke-width="9"
+                stroke-linecap="round" stroke-dasharray="326.7" stroke-dashoffset="326.7"
+                style="transition:stroke-dashoffset 1.4s cubic-bezier(.22,1,.36,1)"/>
+            </svg>
+            <div class="compat-center">
+              <span id="compatNum" class="font-sora text-[30px] font-extrabold" style="color:#d1bcff">—</span>
+              <span class="font-jakarta text-[9px] uppercase tracking-wider" style="color:#a5889b">Compat.</span>
+            </div>
+          </div>
+          <p id="compatLabel" class="font-jakarta text-[12px] font-bold" style="color:#a178ff">Reading…</p>
+        </div>
+
+        <!-- Side stats -->
+        <div class="flex flex-col gap-2.5" style="min-width:165px">
+          <div class="rounded-xl px-4 py-2.5 text-center" style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08)">
+            <p class="font-jakarta text-[10px] uppercase tracking-wider text-on-surface-variant mb-0.5">Oracle Mood</p>
+            <p id="oracleMood" class="font-sora text-[15px] font-bold text-on-surface"></p>
+          </div>
+          <div class="rounded-xl px-4 py-2.5 text-center" style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08)">
+            <p class="font-jakarta text-[10px] uppercase tracking-wider text-on-surface-variant mb-0.5">Bond Energy</p>
+            <p id="bondEnergy" class="font-sora text-[15px] font-bold" style="color:#a178ff"></p>
+          </div>
+          <div class="rounded-xl px-4 py-2.5 text-center" style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08)">
+            <p class="font-jakarta text-[10px] uppercase tracking-wider text-on-surface-variant mb-0.5">Timeframe</p>
+            <p id="timeframeLabel" class="font-sora text-[14px] font-bold text-on-surface"></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Divider -->
+      <div class="flex items-center gap-3 justify-center mb-5 relative z-10">
+        <div class="h-px flex-1" style="background:linear-gradient(to right,transparent,rgba(161,120,255,.5))"></div>
+        <span class="font-cinzel text-[11px] font-bold uppercase tracking-widest text-on-surface-variant">The Oracle Foresees</span>
+        <div class="h-px flex-1" style="background:linear-gradient(to left,transparent,rgba(161,120,255,.5))"></div>
+      </div>
+
+      <!-- Predictions -->
+      <div id="predList" class="relative z-10 space-y-2.5 mb-6"></div>
+
+      <!-- Oracle whisper -->
+      <div class="relative z-10 rounded-2xl px-5 py-4 mb-6 text-center" style="background:rgba(161,120,255,.08);border:1.5px dashed rgba(161,120,255,.32)">
+        <p class="font-jakarta text-[11px] uppercase tracking-widest text-on-surface-variant mb-1.5">🌟 Oracle's Private Reading</p>
+        <p id="whisperText" class="font-sora text-[15px] font-semibold" style="color:#d1bcff;font-style:italic"></p>
+      </div>
+
+      <!-- Card footer -->
+      <div class="relative z-10 flex justify-between items-end flex-wrap gap-4">
+        <div class="text-center">
+          <p class="font-dancing text-[24px]" style="color:#fface8;opacity:.82">Oracle AI</p>
+          <p class="font-jakarta text-[10px] uppercase tracking-wider text-on-surface-variant">Chief Cosmic Seer</p>
+        </div>
+        <div class="relative mx-auto" style="width:82px;height:82px">
+          <div class="absolute inset-0 rounded-full animate-cw" style="border:2px solid rgba(161,120,255,.4)"></div>
+          <div class="absolute inset-2.5 rounded-full animate-ccw" style="border:1.5px dashed rgba(0,238,252,.3)"></div>
+          <div class="absolute inset-0 flex items-center justify-center text-[30px]">🔮</div>
+        </div>
+        <div class="text-right">
+          <p id="cardDate" class="font-jakarta text-[13px] text-on-surface" style="opacity:.82"></p>
+          <p class="font-jakarta text-[10px] uppercase tracking-wider text-on-surface-variant">Date of Prophecy</p>
+          <p id="predId" class="font-mono text-[10px] mt-0.5" style="color:rgba(165,136,155,.4)">PRED-XXXX</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Action buttons -->
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+      <button onclick="regenerate()" class="py-3.5 rounded-full font-sora font-bold text-[14px] text-white flex items-center justify-center gap-2 hover:scale-[1.02] active:scale-[.98] transition-transform" style="background:linear-gradient(135deg,#5700c9,#a178ff);box-shadow:0 0 24px rgba(161,120,255,.4)">
+        <span class="text-[18px]">🔮</span> New Prophecy
+      </button>
+      <button id="shareBtn" onclick="shareCard(this)" class="py-3.5 rounded-full font-sora font-bold text-[14px] text-on-surface flex items-center justify-center gap-2 hover:bg-white/5 hover:scale-[1.02] active:scale-[.98] transition-all glass">
+        <span class="material-symbols-outlined text-[18px]" style="color:#fface8">share</span> Share Prophecy
+      </button>
+<button class="py-3.5 rounded-full font-sora font-bold text-[14px] text-on-surface flex items-center justify-center gap-2 hover:bg-white/5 hover:scale-[1.02] active:scale-[.98] transition-all glass" onclick="location.reload()">Try with another friend</button>
+      <button id="dlBtn" onclick="downloadCard(this)" class="py-3.5 rounded-full font-sora font-bold text-[14px] text-on-surface flex items-center justify-center gap-2 hover:bg-white/5 hover:scale-[1.02] active:scale-[.98] transition-all glass">
+        <span class="material-symbols-outlined text-[18px]" style="color:#00eefc">download</span> Download Card
+      </button>
+    </div>
+  </div>
+</main>
+
+<!-- FOOTER -->
+<footer class="border-t z-10 relative" style="background:#070510;border-color:rgba(255,255,255,.06)">
+  <div class="flex flex-col md:flex-row justify-between items-center px-8 py-10 max-w-6xl mx-auto gap-6">
+    <div>
+      <span class="font-sora text-[20px] font-extrabold block mb-1" style="color:#fface8">FriendCheck</span>
+      <p class="font-jakarta text-[13px] text-on-surface-variant">The world's #1 destination for friendship drama.</p>
+    </div>
+    <div class="flex flex-wrap justify-center gap-6">
+      <a href="#" class="font-jakarta text-[13px] text-on-surface-variant hover:text-primary transition-colors">Privacy</a>
+      <a href="#" class="font-jakarta text-[13px] text-on-surface-variant hover:text-primary transition-colors">Terms</a>
+      <a href="#" class="font-jakarta text-[13px] text-on-surface-variant hover:text-primary transition-colors">Support</a>
+    </div>
+    <p class="font-jakarta text-[12px]" style="color:#d1bcff">© 2025 FriendCheck. Stay Cosmic.</p>
+  </div>
+</footer>
+
+<script>
+// ─── SILENT EMOTION ENGINE ─────────────────────────────────────────
+const _t0 = Date.now();
+const _klog = {yourName:[], friendNameInput:[]};
+
+function detectEmotion(n1, n2) {
+  const h = new Date().getHours(), dow = new Date().getDay();
+  const elapsed = (Date.now() - _t0) / 1000;
+  let timeEmo = h>=5&&h<9?'hopeful':h>=9&&h<12?'productive':h>=12&&h<15?'playful':h>=15&&h<18?'reflective':h>=18&&h<21?'nostalgic':h>=21?'deep':'mysterious';
+  const n1l=n1.toLowerCase(), n2l=n2.toLowerCase();
+  const sharedL=[...new Set(n1l)].filter(c=>n2l.includes(c)).length;
+  const sameStart=n1l[0]===n2l[0];
+  const vowelR=(n1l+n2l).split('').filter(c=>'aeiou'.includes(c)).length/((n1.length+n2.length)||1);
+  const l1=_klog.yourName, l2=_klog.friendNameInput;
+  const sp1=l1.length>1?(l1[l1.length-1]-l1[0])/l1.length:500;
+  const sp2=l2.length>1?(l2[l2.length-1]-l2[0])/l2.length:500;
+  const avgSp=(sp1+sp2)/2;
+  const typEmo=avgSp<150?'excited':avgSp<380?'calm':'thoughtful';
+  const wkEmo=(dow===0||dow===6)?'relaxed':'busy';
+  return {timeEmo,typEmo,wkEmo,sharedL,sameStart,vowelR,deliberate:elapsed>12,lenDiff:Math.abs(n1.length-n2.length)};
+}
+
+// ─── PREDICTION POOL ──────────────────────────────────────────────
+const POOL = [
+  // Adventures
+  {i:'🛣️',t:'Road trip together that somehow gets more chaotic with every pit stop',cat:'adventure',base:70},
+  {i:'✈️',t:'Spontaneous travel plan that takes 6 months to actually book',cat:'adventure',base:60},
+  {i:'🏕️',t:'A camping trip that absolutely nobody was prepared for',cat:'adventure',base:56},
+  {i:'🎢',t:'Theme park visit — at least one person regrets the roller coaster',cat:'adventure',base:65},
+  {i:'🌅',t:'Late-night drive that accidentally becomes a 3AM life-changing conversation',cat:'adventure',base:80},
+  {i:'🏖️',t:'Beach day that somehow turns into an all-night bonfire',cat:'adventure',base:52},
+  {i:'🎭',t:'A concert you both claim you will never forget',cat:'adventure',base:62},
+  {i:'🗺️',t:'Getting completely lost together and refusing to admit it for 45 minutes',cat:'adventure',base:72},
+  // Arguments
+  {i:'🍕',t:'2 arguments about where to eat that last longer than the actual meal',cat:'argument',base:96},
+  {i:'🎬',t:'A heated debate about a movie ending that affects the friendship for a whole week',cat:'argument',base:85},
+  {i:'🃏',t:'One board game session that becomes dangerously competitive',cat:'argument',base:78},
+  {i:'📺',t:'3 disagreements about what to watch — followed by both falling asleep during it',cat:'argument',base:88},
+  {i:'💬',t:'One misread text that sparks a 40-minute group chat analysis session',cat:'argument',base:82},
+  {i:'🎵',t:'An argument about music taste so severe it reshapes both playlists permanently',cat:'argument',base:74},
+  // Digital
+  {i:'😂',t:'500 memes shared that only the two of you will ever truly understand',cat:'digital',base:98},
+  {i:'📸',t:'A shared photo folder that grows uncontrollably and is never once organised',cat:'digital',base:88},
+  {i:'🎵',t:'An 847-song playlist that perfectly captures your collective unhinged taste',cat:'digital',base:76},
+  {i:'📱',t:'200+ voice notes left unlistened-to for "later" that never comes',cat:'digital',base:80},
+  {i:'🤳',t:'At least 60 screenshots of conversations filed under "need to remember this"',cat:'digital',base:85},
+  {i:'📲',t:'A group chat that goes quiet every month but is never, ever deleted',cat:'digital',base:91},
+  {i:'🎮',t:'An online game session that lasts until 3AM against everyone\'s better judgment',cat:'digital',base:72},
+  // Petty
+  {i:'🔌',t:'One lost charger that becomes a 2-week diplomatic incident',cat:'petty',base:90},
+  {i:'🎂',t:'One forgotten birthday that gets referenced for the next three years minimum',cat:'petty',base:76},
+  {i:'💸',t:'An unpaid debt of small change that neither of you will ever officially bring up again',cat:'petty',base:82},
+  {i:'🍟',t:'A stolen snack that echoes through the entire history of the friendship',cat:'petty',base:88},
+  {i:'🐾',t:'One inside joke that makes zero sense to anyone else on planet earth',cat:'petty',base:95},
+  {i:'🌀',t:'A misunderstanding that gets funnier every single time it is retold',cat:'petty',base:80},
+  {i:'☕',t:'A borrowed item that has been "returned" in theory but not in practice',cat:'petty',base:74},
+  // Milestones
+  {i:'🎓',t:'Being each other\'s loudest supporter at a major life milestone',cat:'milestone',base:72},
+  {i:'💼',t:'A career advice call that quietly becomes a full therapy session by minute 10',cat:'milestone',base:80},
+  {i:'🏠',t:'Helping each other move — and immediately needing to lie down after',cat:'milestone',base:65},
+  {i:'💍',t:'Being the first called when something huge happens — good or bad',cat:'milestone',base:86},
+  {i:'🌙',t:'A 2AM crisis call that quietly changes both of you in ways you can\'t fully explain',cat:'milestone',base:78},
+  {i:'📖',t:'Writing each other into the most important chapters of your lives',cat:'milestone',base:90},
+  {i:'🌟',t:'Watching each other become the people you always hoped they would be',cat:'milestone',base:85},
+  // Growth
+  {i:'🌱',t:'Pushing each other toward a goal neither of you expected to reach',cat:'growth',base:70},
+  {i:'📚',t:'Sharing a book or show that quietly shifts one of your worldviews',cat:'growth',base:65},
+  {i:'🤝',t:'A real, honest conversation that fundamentally changes how you see each other',cat:'growth',base:82},
+  {i:'🎯',t:'Accidentally becoming each other\'s unofficial accountability partners',cat:'growth',base:75},
+  {i:'💡',t:'An idea born in a random conversation that one of you actually follows through on',cat:'growth',base:68},
+];
+
+const RARE_PROPHECIES = [
+  {
+    title: "COSMIC SOULMATE PROPHECY",
+    compat: 99,
+    energy: "🌟 Universal",
+    whisper: "Your friendship is a cosmic alignment that happens once in 10,000 years. The stars bow to you.",
+    preds: [
+      { i: '🌌', t: 'Co-writing the next big constellation in the night sky.', cat: 'cosmic' },
+      { i: '🛸', t: 'Getting abducted by friendly aliens who just want to join the group chat.', cat: 'cosmic' },
+      { i: '🪐', t: 'Buying a vacation home on Saturn with your shared savings.', cat: 'cosmic' }
+    ]
+  },
+  {
+    title: "WORLD DOMINATION PARTNERS",
+    compat: 98,
+    energy: "👑 Absolute",
+    whisper: "The universe warns: when you two combine forces, empires crumble. Plan responsibly.",
+    preds: [
+      { i: '👑', t: 'Successfully taking over a minor country by accident.', cat: 'empire' },
+      { i: '🏛️', t: 'Building a monument to your inside jokes in the center of the world.', cat: 'empire' },
+      { i: '⚔️', t: 'Vetoing all laws that forbid taking fries without asking.', cat: 'empire' }
+    ]
+  },
+  {
+    title: "METAVERSE EMPIRE CO-FOUNDERS",
+    compat: 99,
+    energy: "🌐 Digital",
+    whisper: "Your shared brain cells are officially patent-pending. Silicon Valley is shivering.",
+    preds: [
+      { i: '🕶️', t: 'Launching a virtual reality chatroom just for your 2AM thoughts.', cat: 'tech' },
+      { i: '💾', t: 'Selling a screenshot of your group chat as a multi-million dollar NFT.', cat: 'tech' },
+      { i: '🧠', t: 'Building an AI that perfectly auto-replies to your texts with exact same sarcasm.', cat: 'tech' }
+    ]
+  },
+  {
+    title: "BILLIONAIRE DUO APOCALYPSE",
+    compat: 98,
+    energy: "💎 Infinite",
+    whisper: "The financial forecast is simple: infinite wealth, infinite drama, infinite pizza.",
+    preds: [
+      { i: '💰', t: 'Winning the lottery and spending all of it on a private island for dogs.', cat: 'wealth' },
+      { i: '💎', t: 'Buying out your favorite restaurant so you never have to wait for a table.', cat: 'wealth' },
+      { i: '🛥️', t: 'Hiring a personal bodyguard just to protect your fries.', cat: 'wealth' }
+    ]
+  }
+];
+
+// Emotion → category bias (invisible to user)
+const BIAS = {
+  hopeful:    {milestone:+18,growth:+14,adventure:+10},
+  productive: {milestone:+10,growth:+20,digital:-5},
+  playful:    {digital:+20,petty:+15,adventure:+10,argument:+6},
+  reflective: {growth:+25,milestone:+20,digital:-8},
+  nostalgic:  {adventure:+20,milestone:+24,petty:+10},
+  deep:       {growth:+28,milestone:+18,argument:-10},
+  mysterious: {growth:+15,adventure:+18,petty:+10},
+  excited:    {adventure:+22,digital:+20,petty:+10},
+  calm:       {growth:+15,milestone:+10,digital:+6},
+  thoughtful: {growth:+24,milestone:+18,adventure:+5},
+  relaxed:    {adventure:+20,digital:+14,argument:-5},
+  busy:       {milestone:+10,growth:+10,adventure:-5},
+};
+
+const COMPAT_LABELS = ['Mysteriously Aligned','Chaotic Harmony','Tested & True','Cosmically Linked','Wildly Compatible','Destined Connection','Legendary Bond'];
+const ORACLE_MOODS  = ['🌙 Mystical','🔥 Fiery','💫 Inspired','🌊 Fluid','⚡ Electric','🌟 Radiant','🧊 Icy Clear'];
+const BOND_ENERGIES = ['⚡ Cosmic','🌊 Flowing','🔥 Burning','💎 Crystal','🌙 Lunar','🌀 Swirling','🌈 Prismatic'];
+const TF_LABELS     = {'6m':'Next 6 Months','1y':'Next 1 Year','5y':'Next 5 Years','lifetime':'Your Lifetime'};
+const TF_COUNT      = {'6m':6,'1y':8,'5y':10,'lifetime':12};
+const NAME_EMOJIS   = ['🌙','⭐','💫','🌟','✨','🔮','🌈','💎','🦋','🌺','🌊','🔥','💜','🎯','🎨','🎭','🌸','⚡'];
+const BOND_EMOJIS   = ['💜','🔮','💙','💚','💛','🌙','⭐','✨','🌟'];
+
+const WHISPERS = {
+  hopeful:   ['{A} and {B} are on the edge of something beautiful — the Oracle sees sunlight ahead.',
+              'The cosmos align favourably. What is coming is better than what has been.'],
+  productive:['{A} will surprise {B} this year in the best possible way.',
+              'Something meaningful is being quietly built between these two names.'],
+  playful:   ['The Oracle senses chaos energy — in the absolute best way. Strap in.',
+              '{B} has no idea what {A} is planning. And that is very much a good thing.'],
+  reflective:['A conversation is coming that neither of you will be fully prepared for — but both of you need.',
+              'The Oracle sees a turning point on the horizon. You will know it when it arrives.'],
+  nostalgic: ['What you two have built together is rarer than either of you realise. Protect it.',
+              '{A} and {B} will look back on this period as one of the genuinely good ones.'],
+  deep:      ['The Oracle senses depth beneath this friendship that has not yet fully surfaced.',
+              'Late nights and real honesty await. The Oracle says lean into both.'],
+  mysterious:['Something unexpected is coming. The Oracle is being intentionally vague about the details.',
+              'The stars are quietly rearranging themselves around you two right now.'],
+  excited:   ['The Oracle reads electric energy between these two names. Something wild is incoming.',
+              '{A} and {B} are about to enter their most chaotic — and undeniably best — chapter.'],
+  calm:      ['The Oracle sees steady warmth between these two. A friendship built to last decades.',
+              'No drama required here. What exists between {A} and {B} is quietly unshakeable.'],
+  thoughtful:['The Oracle appreciates those who pause before they proceed. Your friendship reflects that.',
+              'Something intentional and real is being built between these two names.'],
+  relaxed:   ['Good things arrive without rushing. The Oracle agrees completely.',
+              'A laid-back adventure is incoming. Neither of you will plan it. Both will love it.'],
+  busy:      ['The Oracle notes the pace you both keep. Do not forget to schedule each other in.',
+              'Amid all the noise, {A} and {B} remain each other\'s signal. That matters more than you know.'],
+};
+
+const SCAN_STEPS = [
+  'Reading Cosmic Energies…','Analysing Name Vibrations…','Cross-referencing Friendship Matrix…',
+  'Scanning Temporal Threads…','Consulting Meme Prophecy Scrolls…',
+  'Decoding Shared Energy Signatures…','Finalising the Oracle\'s Vision…','Preparing Destiny Scroll…'
+];
+
+let predCount = 0, currentN1='', currentN2='';
+
+// ─── HELPERS ────────────────────────────────────────────────────────
+function nameToEmoji(n) {
+  if(!n) return '👤';
+  return NAME_EMOJIS[n.split('').reduce((a,c)=>a+c.charCodeAt(0),0) % NAME_EMOJIS.length];
+}
+function bondEmoji(n1,n2) {
+  return BOND_EMOJIS[(n1+n2).split('').reduce((a,c)=>a+c.charCodeAt(0),0) % BOND_EMOJIS.length];
+}
+function calcCompat(n1,n2,p) {
+  return Math.min(99,Math.max(42,
+    55 + p.sharedL*3 + (p.sameStart?8:0) + Math.floor(p.vowelR*14) + (p.deliberate?5:0) + (p.lenDiff<3?4:0) + Math.floor(Math.random()*18)-6
+  ));
+}
+function pickPreds(p, count) {
+  const bias={};
+  [p.timeEmo,p.typEmo,p.wkEmo].forEach(e=>{
+    const b=BIAS[e]||{};
+    Object.entries(b).forEach(([cat,d])=>{bias[cat]=(bias[cat]||0)+d});
+  });
+  const weighted = POOL.map(pr=>({...pr,w:pr.base+(bias[pr.cat]||0)+p.sharedL*2+(p.sameStart?5:0)+(Math.random()*22-11)}));
+  weighted.sort((a,b)=>b.w-a.w);
+  // shuffle top 18 slightly for variety
+  const top = weighted.slice(0,Math.min(18,weighted.length));
+  for(let i=top.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[top[i],top[j]]=[top[j],top[i]];}
+  return top.slice(0,count);
+}
+function pickWhisper(p,n1,n2) {
+  const pool = WHISPERS[p.timeEmo] || WHISPERS.playful;
+  return pool[Math.floor(Math.random()*pool.length)].replace(/\{A\}/g,n1).replace(/\{B\}/g,n2);
+}
+function animNum(id, to, suffix, dur) {
+  const el = document.getElementById(id);
+  const start=Date.now();
+  const tick=()=>{
+    const t=Math.min(1,(Date.now()-start)/dur);
+    const ease=1-Math.pow(1-t,3);
+    el.textContent=Math.floor(to*ease)+suffix;
+    if(t<1) requestAnimationFrame(tick);
+  };
+  requestAnimationFrame(tick);
+}
+
+// ─── INPUT HANDLER ────────────────────────────────────────────────
+function onInput(id) {
+  _klog[id].push(Date.now());
+  if(_klog[id].length>40) _klog[id].shift();
+  const val = document.getElementById(id).value;
+  if(id==='yourName') {
+    document.getElementById('yourEmoji').textContent = val?nameToEmoji(val):'👤';
+  } else {
+    document.getElementById('friendEmoji').textContent = val?nameToEmoji(val):'👤';
+  }
+  const n1=document.getElementById('yourName').value;
+  const n2=document.getElementById('friendNameInput').value;
+  if(n1&&n2) document.getElementById('connectorEmoji').textContent = bondEmoji(n1,n2);
+}
+
+function pulseOrb() {
+  const b=document.getElementById('crystalBall');
+  b.style.boxShadow='0 0 100px rgba(161,120,255,.9),0 0 200px rgba(161,120,255,.45)';
+  setTimeout(()=>b.style.boxShadow='',700);
+}
+
+// ─── SCAN ANIMATION ───────────────────────────────────────────────
+function runScan(cb) {
+  const ov=document.getElementById('scanOverlay');
+  const bar=document.getElementById('scanBar');
+  const pct=document.getElementById('scanPct');
+  const title=document.getElementById('scanTitle');
+  ov.classList.add('show');
+  let p=0,si=0;
+  const iv=setInterval(()=>{
+    p+=Math.random()*14+5;
+    if(p>100) p=100;
+    bar.style.width=p+'%';
+    pct.textContent=Math.floor(p)+'%';
+    si=Math.min(SCAN_STEPS.length-1,Math.floor((p/100)*SCAN_STEPS.length));
+    title.textContent=SCAN_STEPS[si];
+    if(p>=100){
+      clearInterval(iv);
+      setTimeout(()=>{ov.classList.remove('show');bar.style.width='0%';pct.textContent='0%';cb();},420);
+    }
+  },170);
+}
+
+// ─── SUMMON ────────────────────────────────────────────────────────
+function summonOracle() {
+  const n1=document.getElementById('yourName').value.trim();
+  const n2=document.getElementById('friendNameInput').value.trim();
+  if(!n1||!n2){
+    if(!n1){const el=document.getElementById('yourName');el.classList.add('do-shake');setTimeout(()=>el.classList.remove('do-shake'),600);}
+    if(!n2){const el=document.getElementById('friendNameInput');el.classList.add('do-shake');setTimeout(()=>el.classList.remove('do-shake'),600);}
+    return;
+  }
+  currentN1=n1; currentN2=n2;
+  runScan(()=>renderCard(n1,n2));
+}
+
+function regenerate(){if(currentN1&&currentN2) runScan(()=>renderCard(currentN1,currentN2));}
+
+// ─── RENDER CARD ────────────────────────────────────────────────────
+function renderCard(n1,n2){
+  const profile = detectEmotion(n1,n2);
+  const tf = document.getElementById('timeframe').value;
+  const count = TF_COUNT[tf]||8;
+  const seed=(n1+n2).split('').reduce((a,c)=>a+c.charCodeAt(0),0);
+  const isRare = (seed % 10) === 3;
+
+  // Names + emojis
+  document.getElementById('cardYourName').textContent=n1;
+  document.getElementById('cardFriendName').textContent=n2;
+  document.getElementById('cardYourEmoji').textContent=nameToEmoji(n1);
+  document.getElementById('cardFriendEmoji').textContent=nameToEmoji(n2);
+  document.getElementById('bondEmoji').textContent=bondEmoji(n1,n2);
+
+  // Compatibility ring
+  let compat;
+  let preds;
+  let whisper;
+  let energy;
+  
+  if (isRare) {
+    const rareProphecy = RARE_PROPHECIES[seed % RARE_PROPHECIES.length];
+    compat = rareProphecy.compat;
+    preds = rareProphecy.preds;
+    whisper = rareProphecy.whisper;
+    energy = rareProphecy.energy;
+    
+    document.getElementById('predCard').classList.add('rare-golden-glow');
+  } else {
+    compat = calcCompat(n1,n2,profile);
+    preds = pickPreds(profile,count);
+    whisper = pickWhisper(profile,n1,n2);
+    energy = BOND_ENERGIES[(seed*3)%BOND_ENERGIES.length];
+    
+    document.getElementById('predCard').classList.remove('rare-golden-glow');
+  }
+
+  const circ=326.7, offset=circ-(compat/100)*circ;
+  document.getElementById('compatArc').style.strokeDashoffset=circ; // reset first
+  setTimeout(()=>{ document.getElementById('compatArc').style.strokeDashoffset=offset; },50);
+  animNum('compatNum',compat,'%',1300);
+
+  if (isRare) {
+    const rareProphecy = RARE_PROPHECIES[seed % RARE_PROPHECIES.length];
+    document.getElementById('compatLabel').textContent = rareProphecy.title;
+    document.getElementById('compatLabel').style.color = '#ffd700';
+  } else {
+    document.getElementById('compatLabel').textContent=COMPAT_LABELS[Math.min(6,Math.floor(compat/15))];
+    document.getElementById('compatLabel').style.color = '';
+  }
+
+  // Stats — seeded from names for consistency
+  document.getElementById('oracleMood').textContent=ORACLE_MOODS[seed%ORACLE_MOODS.length];
+  document.getElementById('bondEnergy').textContent=energy;
+  document.getElementById('timeframeLabel').textContent=TF_LABELS[tf];
+
+  // Predictions
+  const list=document.getElementById('predList');
+  list.innerHTML='';
+  preds.forEach((pr,idx)=>{
+    const div=document.createElement('div');
+    div.className='pred-row flex items-start gap-3 rounded-xl px-4 py-3';
+    div.style.cssText='background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);animation-delay:'+(idx*0.06)+'s';
+    div.innerHTML=`
+      <div style="width:42px;height:42px;border-radius:50%;background:rgba(161,120,255,.12);border:1.5px solid rgba(255,255,255,.14);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0">${pr.i}</div>
+      <div class="flex-1">
+        <p class="font-sora text-[14px] font-semibold text-on-surface leading-snug">${pr.t}</p>
+        <span class="font-jakarta text-[10px] font-bold uppercase tracking-wider mt-1 inline-block px-2 py-0.5 rounded-full" style="background:rgba(161,120,255,.12);color:#a178ff">${pr.cat}</span>
+      </div>
+      <span class="material-symbols-outlined msf text-[18px] flex-shrink-0 mt-0.5" style="color:#a178ff">auto_awesome</span>`;
+    list.appendChild(div);
+  });
+
+  // Whisper
+  document.getElementById('whisperText').textContent=whisper;
+
+  // Meta
+  document.getElementById('cardDate').textContent=new Date().toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'});
+  predCount++;
+  document.getElementById('predId').textContent='PRED-'+String(predCount).padStart(4,'0')+'-'+Math.random().toString(36).substring(2,5).toUpperCase();
+
+  // Show section + animate card
+  const sec=document.getElementById('resultSection');
+  sec.style.display='block';
+  const card=document.getElementById('predCard');
+  card.classList.remove('card-anim');
+  void card.offsetWidth; // force reflow
+  card.classList.add('card-anim');
+
+  setTimeout(()=>sec.scrollIntoView({behavior:'smooth',block:'start'}),120);
+  spawnStars();
+}
+
+// ─── SHARE ─────────────────────────────────────────────────────────
+function shareCard(btn) {
+  const n1=document.getElementById('cardYourName').textContent;
+  const n2=document.getElementById('cardFriendName').textContent;
+  const compat=document.getElementById('compatNum').textContent;
+  const items=[...document.querySelectorAll('#predList .font-sora')].slice(0,3).map(el=>'✦ '+el.textContent);
+  const msg=`🔮 FriendCheck Oracle just predicted ${n1} & ${n2}'s future!\n\n${items.join('\n')}\n\nCompatibility: ${compat}\n\nGet your own prophecy →`;
+  const orig=btn.innerHTML;
+  if(navigator.share){navigator.share({title:'Friendship Prophecy 🔮',text:msg,url:'https://friendship-check.in/friendship_prediction.html'}).catch(()=>{});}
+  else{
+    navigator.clipboard.writeText(msg+'\n'+'https://friendship-check.in/friendship_prediction.html').then(()=>{
+      btn.innerHTML='<span class="material-symbols-outlined msf text-[18px]" style="color:#32dc64">check_circle</span> Copied!';
+      setTimeout(()=>btn.innerHTML=orig,2500);
+    });
+  }
+}
+
+// ─── DOWNLOAD ──────────────────────────────────────────────────────
+async function downloadCard(btn) {
+  const orig=btn.innerHTML;
+  btn.innerHTML='<span class="material-symbols-outlined text-[18px]" style="color:#00eefc">sync</span> Saving…';
+  btn.disabled=true;
+  try{
+    const canvas=await html2canvas(document.getElementById('predCard'),{
+      scale:2.5,backgroundColor:'#0c0818',logging:false,useCORS:true,allowTaint:true,
+    });
+    const n1=currentN1.replace(/\s+/g,'_'), n2=currentN2.replace(/\s+/g,'_');
+    const a=document.createElement('a');
+    a.download=`prophecy-${n1}-${n2}.png`;
+    a.href=canvas.toDataURL('image/png');
+    a.click();
+    spawnStars();
+  }catch(e){alert('Download failed — try screenshotting instead!');}
+  finally{btn.innerHTML=orig;btn.disabled=false;}
+}
+
+// ─── STAR CONFETTI ─────────────────────────────────────────────────
+function spawnStars(){
+  const seed = (currentN1+currentN2).split('').reduce((a,c)=>a+c.charCodeAt(0),0);
+  const isRare = (seed % 10) === 3;
+  const cols = isRare 
+    ? ['#ffd700', '#ffaa00', '#fffbeb', '#e6c300']
+    : ['#d1bcff','#fface8','#00eefc','#a178ff','#fff','#FFD700'];
+  const shapes=['✦','✧','★','✨','💫','⭐'];
+  for(let i=0;i<22;i++){
+    const p=document.createElement('div');
+    p.className='confetti-p';
+    const sz=Math.random()*14+7;
+    p.style.cssText=`left:${Math.random()*100}vw;top:${Math.random()*25+8}vh;color:${cols[Math.floor(Math.random()*cols.length)]};font-size:${sz}px;animation-duration:${1+Math.random()*1.4}s;animation-delay:${Math.random()*.5}s;`;
+    p.textContent=shapes[Math.floor(Math.random()*shapes.length)];
+    document.body.appendChild(p);
+    setTimeout(()=>p.remove(),2600);
+  }
+}
+
+// ─── MOUSE GLOW ────────────────────────────────────────────────────
+const mg=document.getElementById('mouseGlow');
+document.addEventListener('mousemove',e=>{mg.style.left=e.clientX+'px';mg.style.top=e.clientY+'px';mg.style.opacity='1';});
+</script>
+
+  <!-- ── UNIFIED NAV + UTILS ── -->
+  <script src="shared/fc-utils.js"></script>
+  <script src="shared/fc-nav.js"></script>
+  <script>FCNav.init({ active: 'prediction' });</script>
+  <!-- ═══════════════════════════════════════════════════════════
+       MONETIZATION LAYER — ads + affiliate recommendations
+       Injected by friendcheck-monetized build
+  ════════════════════════════════════════════════════════════ -->
+
+  <!-- AD: Mid-content (placed before result area) -->
+  <div id="ad-mid-banner" style="width:100%;max-width:728px;margin:2rem auto;padding:0 1rem;box-sizing:border-box;"></div>
+
+  <!-- AFFILIATE: After result card -->
+  <div id="fc-affiliate-strip"></div>
+
+  <!-- AD: Native after result -->
+  <div id="ad-post-result" style="width:100%;max-width:900px;margin:0 auto 2rem;padding:0 1rem;box-sizing:border-box;"></div>
+
+  <!-- STICKY FOOTER AD -->
+  <div id="ad-footer-sticky"></div>
+
+  <!-- ── MONETIZATION SCRIPTS ── -->
+  <script src="shared/fc-ads.js"></script>
+  <script src="shared/fc-affiliate.js"></script>
+  <script>
+    // Init ads
+    FCAds.initAll([
+      { type: 'banner', id: 'ad-mid-banner',    key: 'REPLACE_WITH_BANNER_KEY' },
+      { type: 'native', id: 'ad-post-result',   key: 'REPLACE_WITH_NATIVE_KEY' },
+      { type: 'footer', id: 'ad-footer-sticky', key: 'REPLACE_WITH_FOOTER_KEY', options: { sticky: true, closeable: true } },
+    ]);
+
+    // Affiliate strip — renders after page-specific result trigger
+    // Call this from your result-reveal function:
+    //   FCAffiliate.render('fc-affiliate-strip', 'prediction');
+    // OR wire to a result event:
+    window.addEventListener('fc-result-shown', function() {
+      FCAffiliate.render('fc-affiliate-strip', 'prediction');
+    });
+
+    // Auto-show affiliate on page if result is already visible
+    document.addEventListener('DOMContentLoaded', function() {
+      var resultEl = document.querySelector('[id*="result"], [class*="result"], [id*="verdict"], [id*="certificate"]');
+      if (resultEl && getComputedStyle(resultEl).display !== 'none') {
+        FCAffiliate.render('fc-affiliate-strip', 'prediction');
+      }
+    });
+  </script>
+
+</body>
+</html>

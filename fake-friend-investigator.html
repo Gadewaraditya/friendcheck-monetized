@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FriendCheck | Fake Friend Investigator 🔎</title>
+  <meta name="description" content="Run an AI investigation on your friend group. Find out who the fake friend really is — based on suspicious habits and loyalty scores."/>
+  <link rel="canonical" href="https://friendship-check.in/fake-friend-investigator"/>
+  <meta property="og:title"       content="Fake Friend Investigator — Find The Snake 🐍"/>
+  <meta property="og:description" content="Enter your suspects and let AI identify the fake friend in your circle."/>
+  <meta property="og:type"        content="website"/>
+    <meta property="og:url" content="https://friendship-check.in/fake-friend-investigator.html"/>
+  <meta property="og:image" content="https://friendship-check.in/og-fake-friend.png"/>
+  <meta property="og:site_name" content="FriendCheck"/>
+  <meta name="twitter:url" content="https://friendship-check.in/fake-friend-investigator.html"/>
+  <meta name="twitter:image" content="https://friendship-check.in/og-fake-friend.png"/>
+  <meta name="twitter:card"       content="summary_large_image"/>
+
+  <!-- ── SHARED DESIGN SYSTEM ── -->
+  <link rel="stylesheet" href="shared/fc-design-system.css">
+
+  <!-- ── FONTS: Plus Jakarta Sans first, Space Grotesk kept as fallback ── -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@300;400;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+  <!-- html2canvas -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+  <style>
+    /* ══════════════════════════════════════════════════════
+       COLOR BRIDGE — normalises the original navy/rose
+       palette to the shared FriendCheck brand tokens.
+       Only overrides the divergent variables; existing
+       selectors that reference them automatically inherit
+       the correct brand colours.
+    ══════════════════════════════════════════════════════ */
+    :root {
+      /* Original: #0f172a (navy) → FC brand dark */
+      --bg-color:       var(--fc-bg);
+      /* Original: rgba(30,41,59,0.7) → brand surface */
+      --surface-color:  rgba(255,255,255,0.05);
+      /* Original: #f43f5e (rose) → FC pink */
+      --primary:        var(--fc-primary);
+      /* Original: #8b5cf6 (slate purple) → FC accent */
+      --secondary:      var(--fc-accent);
+      /* Original: #0ea5e9 (sky) → FC cyan */
+      --accent:         var(--fc-secondary);
+      /* Keep semantic colours */
+      --success:        var(--fc-success);
+      --warning:        var(--fc-warn);
+      /* Text */
+      --text-main:      var(--fc-text);
+      --text-muted:     var(--fc-muted);
+      --card-border:    var(--fc-border);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      /* Unified font stack — PJS replaces Space Grotesk as primary */
+      font-family: var(--fc-font-body);
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      overflow-x: hidden;
+      /* Updated to use brand purple/cyan instead of navy rose */
+      background-image:
+        radial-gradient(circle at 10% 20%, rgba(162,89,255,0.08), transparent 40%),
+        radial-gradient(circle at 90% 80%, rgba(0,238,252,0.07), transparent 40%);
+    }
+
+    /* ── PAGE HEADER — top padding clears fixed nav ── */
+    .header {
+      width: 100%;
+      text-align: center;
+      padding: calc(2rem + 60px) 1rem 1rem;
+    }
+
+    h1 {
+      font-size: clamp(2rem, 6vw, 2.8rem);
+      margin-bottom: 0.5rem;
+      /* Updated gradient to match brand (was rose→purple, now pink→cyan) */
+      background: linear-gradient(135deg, var(--fc-primary), var(--fc-accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-weight: 700;
+    }
+
+    .subtitle { color: var(--text-muted); font-size: 1rem; }
+
+    .container {
+      max-width: 600px;
+      width: 95%;
+      margin: 1rem auto 3rem;
+      padding: 2rem;
+      background: var(--surface-color);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+      transition: all 0.4s ease;
+    }
+
+    /* ── FORMS ── */
+    .form-group { margin-bottom: 1.5rem; }
+
+    label { display:block; margin-bottom:0.5rem; font-weight:600; color:var(--text-main); font-size:0.95rem; }
+
+    input {
+      width: 100%; padding: 0.8rem 1rem;
+      background: rgba(0,0,0,0.2); border: 1px solid var(--card-border);
+      border-radius: 10px; color: white; font-size: 1rem; transition: all 0.3s ease;
+    }
+    input:focus {
+      outline: none;
+      /* Focus glow in brand accent (was slate purple, now FC accent/purple) */
+      border-color: var(--secondary);
+      box-shadow: 0 0 15px rgba(162,89,255,0.2);
+    }
+
+    .friend-list { display:flex; flex-direction:column; gap:1rem; margin-bottom:1rem; }
+
+    .friend-row {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem;
+      background: rgba(255,255,255,0.02); padding: 1rem;
+      border-radius: 12px; border: 1px dashed var(--card-border);
+      position: relative; animation: slideIn 0.3s ease forwards;
+    }
+    @keyframes slideIn { from{opacity:0;transform:translateY(-10px)} to{opacity:1;transform:translateY(0)} }
+
+    .friend-header { grid-column:1/-1; font-size:0.85rem; color:var(--accent); font-weight:600; text-transform:uppercase; letter-spacing:1px; display:flex; justify-content:space-between; }
+    .remove-btn { color:var(--primary); cursor:pointer; font-size:0.85rem; }
+
+    .add-btn {
+      background:transparent; color:var(--accent); border:1px dashed var(--accent);
+      width:100%; padding:0.8rem; border-radius:10px; cursor:pointer;
+      font-weight:600; transition:all 0.3s ease; margin-bottom:2rem;
+    }
+    .add-btn:hover { background:rgba(0,238,252,0.08); }
+    .add-btn:disabled { opacity:0.5; cursor:not-allowed; border-color:var(--text-muted); color:var(--text-muted); }
+
+    .primary-btn {
+      width:100%; background:linear-gradient(135deg, var(--fc-primary-hot), var(--fc-accent));
+      color:white; border:none; padding:1.2rem; font-size:1.2rem; font-weight:700;
+      border-radius:12px; cursor:pointer; transition:all 0.3s ease;
+      box-shadow:0 10px 20px rgba(162,89,255,0.3); text-transform:uppercase; letter-spacing:1px;
+    }
+    .primary-btn:hover { transform:translateY(-2px); box-shadow:0 15px 30px rgba(162,89,255,0.4); }
+
+    /* ── SCANNER ── */
+    #scanner-section { display:none; text-align:center; }
+
+    .scan-animation {
+      width:120px; height:120px; margin:0 auto 2rem; border-radius:50%;
+      border:3px solid rgba(162,89,255,0.3); position:relative;
+      box-shadow:0 0 30px rgba(162,89,255,0.2);
+    }
+    .scan-animation::before {
+      content:''; position:absolute; top:50%; left:50%; width:50%; height:50%;
+      background:linear-gradient(45deg,transparent,var(--secondary));
+      transform-origin:0 0; animation:spin 1.2s linear infinite;
+    }
+    .scan-animation::after { content:''; position:absolute; inset:4px; background:var(--surface-color); border-radius:50%; z-index:1; }
+    .scan-icon { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); z-index:2; font-size:2rem; animation:pulse 1s ease infinite alternate; }
+    @keyframes spin  { 100%{transform:rotate(360deg)} }
+    @keyframes pulse { to{transform:translate(-50%,-50%) scale(1.2);opacity:0.7} }
+
+    .terminal {
+      background:rgba(0,0,0,0.6); padding:1.5rem; border-radius:12px;
+      border:1px solid var(--card-border);
+      /* JetBrains Mono kept for terminal — it's the right choice here */
+      font-family:'JetBrains Mono', monospace;
+      text-align:left; height:250px; overflow-y:auto; position:relative;
+    }
+    .log { margin:0.5rem 0; font-size:0.9rem; opacity:0; animation:fadeIn 0.3s forwards; }
+    .log::before { content:'>'; margin-right:8px; color:var(--accent); }
+    .log.warning { color:var(--warning); }
+    .log.error   { color:var(--primary); }
+    .log.success { color:var(--success); }
+    @keyframes fadeIn { to{opacity:1} }
+
+    /* ── RESULT CARD ── */
+    #result-section { display:none; }
+
+    .result-card {
+      background:linear-gradient(to bottom right,rgba(20,15,40,0.9),rgba(9,6,15,0.9));
+      border:2px solid var(--secondary); border-radius:20px; padding:2rem;
+      box-shadow:0 20px 50px rgba(162,89,255,0.2); position:relative; overflow:hidden; margin-bottom:2rem;
+    }
+    .result-card.rare-nobody    { border-color:var(--success);  box-shadow:0 20px 50px rgba(0,255,157,0.2); }
+    .result-card.rare-you       { border-color:var(--primary);  box-shadow:0 20px 50px rgba(255,172,232,0.3); }
+    .result-card.rare-everyone  { border-color:var(--warning);  box-shadow:0 20px 50px rgba(245,158,11,0.2); }
+    .result-card.rare-fbi_alert { border-color:var(--fc-gold);  box-shadow:0 20px 50px rgba(255,215,0,0.3); }
+
+    .result-header { text-align:center; margin-bottom:2rem; padding-bottom:1rem; border-bottom:1px dashed var(--card-border); }
+    .suspect-name { font-size:2.2rem; font-weight:700; color:var(--primary); margin:0.5rem 0; text-transform:uppercase; }
+    .rare-nobody .suspect-name  { color:var(--success); }
+    .rare-you .suspect-name     { color:var(--primary); }
+    .rare-everyone .suspect-name{ color:var(--warning); }
+    .rare-fbi_alert .suspect-name{ color:var(--fc-gold); }
+
+    .verdict { font-size:1.2rem; color:white; font-weight:600; background:rgba(255,255,255,0.1); display:inline-block; padding:0.3rem 1rem; border-radius:20px; }
+
+    .stats-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:1rem; margin-bottom:2rem; }
+    .stat-box { background:rgba(0,0,0,0.3); padding:1rem; border-radius:12px; text-align:center; border:1px solid rgba(255,255,255,0.05); }
+    .stat-label { font-size:0.8rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:1px; margin-bottom:0.5rem; }
+    .stat-value { font-size:1.5rem; font-weight:700; font-family:'JetBrains Mono',monospace; }
+    .val-low  { color:var(--primary); }
+    .val-med  { color:var(--warning); }
+    .val-high { color:var(--success); }
+
+    .evidence-section { background:rgba(0,0,0,0.2); padding:1.5rem; border-radius:12px; border-left:4px solid var(--primary); }
+    .evidence-title { font-size:1rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:1px; margin-bottom:1rem; font-weight:600; }
+    .evidence-list { list-style:none; }
+    .evidence-list li { margin-bottom:0.8rem; padding-left:1.5rem; position:relative; font-size:0.95rem; line-height:1.4; }
+    .evidence-list li::before { content:'🚨'; position:absolute; left:0; top:2px; font-size:0.9rem; }
+
+    /* ── ACTIONS ── */
+    .actions { display:flex; flex-wrap:wrap; gap:1rem; justify-content:center; }
+    .action-btn { flex:1; min-width:140px; padding:0.8rem; border:none; border-radius:10px; font-weight:600; font-size:0.95rem; cursor:pointer; transition:all 0.2s ease; display:flex; align-items:center; justify-content:center; gap:0.5rem; }
+    .btn-download { background:var(--accent); color:white; }
+    .btn-whatsapp { background:#25D366; color:white; }
+    .btn-twitter  { background:#1DA1F2; color:white; }
+    .btn-copy     { background:rgba(255,255,255,0.1); color:white; border:1px solid var(--card-border); }
+    .action-btn:hover  { transform:translateY(-2px); filter:brightness(1.1); }
+    .action-btn:active { transform:translateY(0); }
+
+    /* ── WATERMARK ── */
+    .watermark { display:none; text-align:center; font-size:0.8rem; color:var(--text-muted); margin-top:1rem; font-family:monospace; }
+    .export-mode .watermark { display:block; }
+
+    /* ── RARE GLOW ── */
+    @keyframes rare-gold-pulse {
+      0%,100%{box-shadow:0 0 25px rgba(255,215,0,.4),inset 0 0 15px rgba(255,215,0,.15);border-color:rgba(255,215,0,.6)}
+      50%{box-shadow:0 0 45px rgba(255,215,0,.85),0 0 70px rgba(255,140,0,.4),inset 0 0 25px rgba(255,215,0,.35);border-color:rgba(255,215,0,.95)}
+    }
+    .rare-golden-glow { animation:rare-gold-pulse 2s ease-in-out infinite !important; border:2.5px solid #ffd700 !important; }
+
+    /* ── CONFETTI ── */
+    .confetti-piece { position:fixed; top:-10px; width:10px; height:10px; border-radius:2px; animation:confettiFall linear forwards; z-index:9998; pointer-events:none; }
+    @keyframes confettiFall { to{transform:translateY(110vh) rotate(720deg);opacity:0} }
+
+    /* ── RESPONSIVE ── */
+    @media(max-width:480px) {
+      .friend-row   { grid-template-columns:1fr; }
+      .stats-grid   { gap:0.5rem; }
+      .stat-box     { padding:0.8rem; }
+      .stat-value   { font-size:1.2rem; }
+      .actions      { flex-direction:column; }
+      .action-btn   { width:100%; }
+    }
+  </style>
+
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org","@type":"WebApplication",
+    "name":"FriendCheck Fake Friend Investigator","url":"https://friendship-check.in/fake-friend-investigator.html",
+    "description":"AI-powered investigation to find the fake friend in your group based on suspicious habits.",
+    "applicationCategory":"Game","browserRequirements":"Requires JavaScript","isAccessibleForFree":true
+  }
+  </script>
+</head>
+<body>
+
+  <!-- fc-nav.js injects the unified navbar automatically -->
+
+  <div class="header">
+    <h1>🔎 Fake Friend Investigator</h1>
+    <p class="subtitle">Advanced AI Social Circle Analysis</p>
+  </div>
+
+  <!-- Form Section -->
+  <div class="container" id="form-section">
+    <div class="form-group">
+      <label for="your-name">Your Name</label>
+      <input type="text" id="your-name" placeholder="Enter your name" required>
+    </div>
+
+    <div style="margin-top:2rem;margin-bottom:1rem;">
+      <label style="font-size:1.1rem;color:var(--secondary);">Suspect List (3–5 Friends)</label>
+      <p style="font-size:0.85rem;color:var(--text-muted);margin-bottom:1rem;">Provide their name and a suspicious habit.</p>
+    </div>
+
+    <div class="friend-list" id="friend-list"></div>
+
+    <button class="add-btn" id="add-friend-btn" type="button" onclick="addFriendRow()">+ Add Another Suspect</button>
+    <button class="primary-btn" onclick="startInvestigation()">🔍 Start Investigation</button>
+  </div>
+
+  <!-- Scanner Section -->
+  <div class="container" id="scanner-section">
+    <div class="scan-animation"><div class="scan-icon">👁️</div></div>
+    <h2 style="margin-bottom:1rem;font-size:1.5rem;">Running Investigation...</h2>
+    <div class="terminal" id="terminal"></div>
+  </div>
+
+  <!-- Result Section -->
+  <div class="container" id="result-section">
+    <div class="result-card" id="export-card">
+      <div class="result-header">
+        <p style="color:var(--text-muted);font-size:0.9rem;text-transform:uppercase;letter-spacing:2px;">Official Investigation Report</p>
+        <div class="suspect-name" id="res-name">Name</div>
+        <div class="verdict" id="res-verdict">MAIN SUSPECT</div>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-box"><div class="stat-label">Loyalty Score</div><div class="stat-value" id="stat-loyalty">0%</div></div>
+        <div class="stat-box"><div class="stat-label">Trust Index</div><div class="stat-value" id="stat-trust">0%</div></div>
+        <div class="stat-box"><div class="stat-label">Meme Energy</div><div class="stat-value" id="stat-meme">0%</div></div>
+        <div class="stat-box"><div class="stat-label">Risk Level</div><div class="stat-value" id="stat-risk">EXTREME</div></div>
+      </div>
+      <div class="evidence-section" id="evidence-container">
+        <div class="evidence-title">Key Evidence Discovered:</div>
+        <ul class="evidence-list" id="evidence-list"></ul>
+      </div>
+      <div class="watermark">Generated by FriendCheck Fake Friend Investigator</div>
+    </div>
+
+    <div class="actions">
+      <button class="action-btn btn-download" onclick="downloadImage()">📸 Save Image</button>
+      <button class="action-btn btn-whatsapp" onclick="shareWhatsApp()">💬 WhatsApp</button>
+      <button class="action-btn btn-twitter"  onclick="shareTwitter()">🐦 Twitter</button>
+      <button class="action-btn btn-copy"     onclick="copyResult()">📋 Copy</button>
+      <button class="action-btn" style="background:transparent;border:1px solid var(--text-muted);" onclick="location.reload()">🔄 Retest</button>
+    </div>
+  </div>
+
+  <script>
+    const friendListEl = document.getElementById('friend-list');
+    const addBtn       = document.getElementById('add-friend-btn');
+    let friendCount = 0;
+    const MAX_FRIENDS = 5;
+
+    for(let i=0;i<3;i++) addFriendRow();
+
+    function addFriendRow(){
+      if(friendCount>=MAX_FRIENDS) return;
+      friendCount++;
+      const row=document.createElement('div');
+      row.className='friend-row'; row.id=`friend-row-${friendCount}`;
+      row.innerHTML=`<div class="friend-header">Suspect #${friendCount}${friendCount>3?`<span class="remove-btn" onclick="removeFriendRow(${friendCount})">Remove</span>`:''}</div><div><input type="text" class="f-name" placeholder="Friend's Name" required></div><div><input type="text" class="f-habit" placeholder="Suspicious habit (e.g. ignores texts)" required></div>`;
+      friendListEl.appendChild(row);
+      if(friendCount>=MAX_FRIENDS){ addBtn.disabled=true; addBtn.textContent='Maximum Suspects Reached'; }
+    }
+
+    function removeFriendRow(id){
+      const row=document.getElementById(`friend-row-${id}`);
+      if(row){ row.remove(); friendCount--; addBtn.disabled=false; addBtn.textContent='+ Add Another Suspect';
+        let idx=1; document.querySelectorAll('.friend-row .friend-header').forEach(h=>{ const rb=idx>3?`<span class="remove-btn" onclick="removeFriendRow(${idx})">Remove</span>`:''; h.innerHTML=`Suspect #${idx} ${rb}`; h.parentElement.id=`friend-row-${idx}`; idx++; });
+      }
+    }
+
+    const scanSteps=[
+      "Initializing deep scan protocols...","Accessing friendship history archives...","Analyzing loyalty metrics and patterns...",
+      "Checking betrayal records across social platforms...","Investigating meme sharing activity...","Calculating fake laugh probability...",
+      "Reviewing suspicious behavior inputs...","Cross-referencing alibis...","Finalizing verdict..."
+    ];
+
+    let finalResultData=null;
+
+    async function startInvestigation(){
+      const yourName=document.getElementById('your-name').value.trim();
+      if(!yourName) return alert("Please enter your name.");
+      const names=document.querySelectorAll('.f-name'),habits=document.querySelectorAll('.f-habit');
+      let friends=[];
+      for(let i=0;i<names.length;i++){
+        if(!names[i].value.trim()||!habits[i].value.trim()) return alert("Please fill out all friend names and habits.");
+        friends.push({name:names[i].value.trim(),habit:habits[i].value.trim()});
+      }
+      if(friends.length<3) return alert("Minimum 3 friends required.");
+      document.getElementById('form-section').style.display='none';
+      document.getElementById('scanner-section').style.display='block';
+      const terminal=document.getElementById('terminal'); terminal.innerHTML='';
+      for(let step of scanSteps){
+        const log=document.createElement('div'); log.className='log';
+        const rand=Math.random(); if(rand>0.8)log.classList.add('warning'); else if(rand>0.6)log.classList.add('error');
+        log.textContent=step; terminal.appendChild(log); terminal.scrollTop=terminal.scrollHeight;
+        await new Promise(r=>setTimeout(r,600+Math.random()*800));
+      }
+      await new Promise(r=>setTimeout(r,1000));
+      calculateResult(yourName,friends); showResult();
+      if(finalResultData.isRare) launchConfetti();
+    }
+
+    function calculateResult(yourName,friends){
+      const rand=Math.random()*100;
+      let outcomeType="normal";
+      if(rand<=10){ const opts=["nobody","you","everyone","fbi_alert"]; outcomeType=opts[Math.floor(Math.random()*opts.length)]; }
+      const card=document.getElementById('export-card');
+      if(outcomeType==="nobody"){
+        card.className="result-card rare-nobody rare-golden-glow";
+        finalResultData={name:"NOBODY",verdict:"SQUAD IS 100% PURE",stats:{loyalty:"100%",trust:"99%",meme:"Elite",risk:"ZERO"},evidence:["Zero fake laughs detected in audio logs.","All group bills split perfectly evenly.","Flawless track record of having each other's backs."],isRare:true};
+      }else if(outcomeType==="you"){
+        card.className="result-card rare-you rare-golden-glow";
+        finalResultData={name:yourName,verdict:"PLOT TWIST: YOU ARE THE FAKE FRIEND",stats:{loyalty:"12%",trust:"8%",meme:"Weak",risk:"CRITICAL"},evidence:["Ran the investigation to deflect suspicion.","Constantly says 'I'm on my way' while still in bed.","Takes 3–5 business days to reply to the group chat."],isRare:true};
+      }else if(outcomeType==="everyone"){
+        card.className="result-card rare-everyone rare-golden-glow";
+        finalResultData={name:"EVERYONE",verdict:"ENTIRE GROUP IS SUSPICIOUS",stats:{loyalty:"??%",trust:"ERROR",meme:"Chaotic",risk:"MAXIMUM"},evidence:["Massive web of lies detected in group chat.","Everyone is secretly plotting against each other.","The friendship is held together by memes and shared trauma."],isRare:true};
+      }else if(outcomeType==="fbi_alert"){
+        card.className="result-card rare-fbi_alert rare-golden-glow";
+        finalResultData={name:"🚨 FBI ALERT 🚨",verdict:"FRIENDSHIP FBI WARNED",stats:{loyalty:"99%",trust:"100%",meme:"Illegal",risk:"ZERO"},evidence:["Extreme levels of mutual protection detected.","Classified meme sharing archives uncovered.","Unconditional loyalty exceeds state limits."],isRare:true};
+      }else{
+        const target=friends[Math.floor(Math.random()*friends.length)];
+        const loyalty=Math.floor(Math.random()*40)+10,trust=Math.floor(Math.random()*30)+5;
+        const meme=["Cringe","Mid","Stolen","God Tier"][Math.floor(Math.random()*4)];
+        const risk=["HIGH","SEVERE","EXTREME","IMMINENT"][Math.floor(Math.random()*4)];
+        const evTemplates=[`Caught red-handed: ${target.habit}.`,`Heart rate spikes when asked about ${target.habit}.`,"Secretly screenshots the group chat.","Unlikes your Instagram posts after 24 hours.","Hides their online status but views your stories instantly.","Laughs loudly in person but texts 'lol' with a straight face."];
+        finalResultData={name:target.name,verdict:"MAIN SUSPECT IDENTIFIED",stats:{loyalty:loyalty+"%",trust:trust+"%",meme,risk},evidence:evTemplates.sort(()=>0.5-Math.random()).slice(0,3),isRare:false};
+        card.className="result-card";
+      }
+      document.getElementById('res-name').textContent=finalResultData.name;
+      document.getElementById('res-verdict').textContent=finalResultData.verdict;
+      const stL=document.getElementById('stat-loyalty'); stL.textContent=finalResultData.stats.loyalty; stL.className="stat-value "+(parseInt(finalResultData.stats.loyalty)<30?"val-low":"val-high");
+      const stT=document.getElementById('stat-trust');   stT.textContent=finalResultData.stats.trust;   stT.className="stat-value "+(parseInt(finalResultData.stats.trust)<30?"val-low":"val-high");
+      document.getElementById('stat-meme').textContent=finalResultData.stats.meme;
+      document.getElementById('stat-risk').textContent=finalResultData.stats.risk;
+      const evList=document.getElementById('evidence-list'); evList.innerHTML='';
+      finalResultData.evidence.forEach(ev=>{ const li=document.createElement('li'); li.textContent=ev; evList.appendChild(li); });
+    }
+
+    function showResult(){
+      document.getElementById('scanner-section').style.display='none';
+      document.getElementById('result-section').style.display='block';
+    }
+
+    /* ── SHARE FUNCTIONS — delegate to shared FC utilities ── */
+    function getShareText(){
+      return `🚨 FAKE FRIEND INVESTIGATOR 🚨\n\nSuspect: ${finalResultData.name}\nVerdict: ${finalResultData.verdict}\n\nLoyalty: ${finalResultData.stats.loyalty} | Risk: ${finalResultData.stats.risk}\n\nInvestigate your squad: https://friendship-check.in/fake-friend-investigator`;
+    }
+    function shareWhatsApp(){ FCShare.whatsapp(getShareText()); }
+    function shareTwitter(){  FCShare.twitter("🚨 The AI just identified the fake friend in my squad! Find yours 👇", "https://friendship-check.in/fake-friend-investigator"); }
+    function copyResult(){    FCShare.copy(getShareText()); }
+
+    /* ── DOWNLOAD — delegates to shared FCCapture ── */
+    function downloadImage(){
+      const card=document.getElementById('export-card');
+      card.classList.add('export-mode');
+      FCCapture.download(card,'Fake-Friend-Report.png').then(()=>card.classList.remove('export-mode'));
+    }
+
+    function launchConfetti(){
+      const colors=["#ffd700","#ffaa00","#fffbeb","#e6c300"];
+      for(let i=0;i<100;i++){
+        const el=document.createElement("div"); el.className="confetti-piece";
+        el.style.cssText=`left:${Math.random()*100}vw;background:${colors[Math.floor(Math.random()*colors.length)]};width:${6+Math.random()*8}px;height:${6+Math.random()*8}px;border-radius:${Math.random()>0.5?"50%":"2px"};animation-duration:${1.5+Math.random()*2.5}s;animation-delay:${Math.random()*0.8}s;`;
+        document.body.appendChild(el); setTimeout(()=>el.remove(),4000);
+      }
+    }
+  </script>
+
+  <!-- ── UNIFIED NAV + UTILS ── -->
+  <script src="shared/fc-utils.js"></script>
+  <script src="shared/fc-nav.js"></script>
+  <script>FCNav.init({ active: 'fake-friend' });</script>
+  <!-- ═══════════════════════════════════════════════════════════
+       MONETIZATION LAYER — ads + affiliate recommendations
+       Injected by friendcheck-monetized build
+  ════════════════════════════════════════════════════════════ -->
+
+  <!-- AD: Mid-content (placed before result area) -->
+  <div id="ad-mid-banner" style="width:100%;max-width:728px;margin:2rem auto;padding:0 1rem;box-sizing:border-box;"></div>
+
+  <!-- AFFILIATE: After result card -->
+  <div id="fc-affiliate-strip"></div>
+
+  <!-- AD: Native after result -->
+  <div id="ad-post-result" style="width:100%;max-width:900px;margin:0 auto 2rem;padding:0 1rem;box-sizing:border-box;"></div>
+
+  <!-- STICKY FOOTER AD -->
+  <div id="ad-footer-sticky"></div>
+
+  <!-- ── MONETIZATION SCRIPTS ── -->
+  <script src="shared/fc-ads.js"></script>
+  <script src="shared/fc-affiliate.js"></script>
+  <script>
+    // Init ads
+    FCAds.initAll([
+      { type: 'banner', id: 'ad-mid-banner',    key: 'REPLACE_WITH_BANNER_KEY' },
+      { type: 'native', id: 'ad-post-result',   key: 'REPLACE_WITH_NATIVE_KEY' },
+      { type: 'footer', id: 'ad-footer-sticky', key: 'REPLACE_WITH_FOOTER_KEY', options: { sticky: true, closeable: true } },
+    ]);
+
+    // Affiliate strip — renders after page-specific result trigger
+    // Call this from your result-reveal function:
+    //   FCAffiliate.render('fc-affiliate-strip', 'fake-investigator');
+    // OR wire to a result event:
+    window.addEventListener('fc-result-shown', function() {
+      FCAffiliate.render('fc-affiliate-strip', 'fake-investigator');
+    });
+
+    // Auto-show affiliate on page if result is already visible
+    document.addEventListener('DOMContentLoaded', function() {
+      var resultEl = document.querySelector('[id*="result"], [class*="result"], [id*="verdict"], [id*="certificate"]');
+      if (resultEl && getComputedStyle(resultEl).display !== 'none') {
+        FCAffiliate.render('fc-affiliate-strip', 'fake-investigator');
+      }
+    });
+  </script>
+
+
+</body>
+</html>

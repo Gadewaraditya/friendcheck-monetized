@@ -1,0 +1,1076 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>FriendCheck | Roast Generator 🔥</title>
+    <meta name="description" content="Generate savage AI-powered roasts for your friends. 100 roast templates, shareable cards, and custom roasts — all for free."/>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Cinzel:wght@700;900&family=Dancing+Script:wght@700&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+    <style>
+        *{ box-sizing:border-box; margin:0; padding:0; }
+        :root{
+            --primary:#fface8; --primary-container:#ff24e4; --on-primary:#5e0053;
+            --secondary-container:#00eefc; --tertiary:#d1bcff; --tertiary-container:#a178ff;
+            --error:#ffb4ab; --surface:#131314; --surface-container:#201f20;
+            --surface-container-high:#2a2a2b; --surface-container-highest:#353436;
+            --on-surface:#e5e2e3; --on-surface-variant:#ddbed1; --background:#131314;
+        }
+        body{ background:var(--background); color:var(--on-surface); font-family:'Plus Jakarta Sans',sans-serif; min-height:100vh; overflow-x:hidden; }
+
+        /* ── GLASS ── */
+        .glass{ background:rgba(255,255,255,0.03); backdrop-filter:blur(24px); -webkit-backdrop-filter:blur(24px); border:1px solid rgba(255,255,255,0.1); }
+        .glass-elevated{ background:rgba(255,255,255,0.055); backdrop-filter:blur(32px); -webkit-backdrop-filter:blur(32px); border:1px solid rgba(255,255,255,0.14); }
+
+        /* ── ANIMATIONS ── */
+        @keyframes pulse-orb{ 0%,100%{opacity:.2;transform:scale(1)} 50%{opacity:.42;transform:scale(1.1)} }
+        @keyframes float{ 0%,100%{transform:translateY(0) rotate(0deg)} 50%{transform:translateY(-10px) rotate(1.5deg)} }
+        @keyframes slide-up{ from{transform:translateY(50px);opacity:0} to{transform:translateY(0);opacity:1} }
+        @keyframes scale-pop{ 0%{transform:scale(.8);opacity:0} 60%{transform:scale(1.06);opacity:1} 100%{transform:scale(1);opacity:1} }
+        @keyframes spin-slow{ to{transform:rotate(360deg)} }
+        @keyframes spin-rev{ to{transform:rotate(-360deg)} }
+        @keyframes shimmer{ 0%{background-position:-200% center} 100%{background-position:200% center} }
+        @keyframes fire-flicker{
+            0%,100%{text-shadow:0 0 10px #ff4400,0 0 20px #ff4400,0 0 40px #ff8800}
+            25%{text-shadow:0 0 14px #ff6600,0 0 30px #ff2200,0 0 60px #ff4400}
+            50%{text-shadow:0 0 8px #ff3300,0 0 16px #ff6600,0 0 35px #ffaa00}
+            75%{text-shadow:0 0 12px #ff5500,0 0 25px #ff3300,0 0 50px #ff6600}
+        }
+        @keyframes typing-cursor{ 50%{border-color:transparent} }
+        @keyframes confetti-fall{ 0%{transform:translateY(-10px) rotate(0);opacity:1} 100%{transform:translateY(200px) rotate(720deg);opacity:0} }
+        @keyframes shake{ 0%,100%{transform:translateX(0)} 20%{transform:translateX(-8px) rotate(-1deg)} 40%{transform:translateX(8px) rotate(1deg)} 60%{transform:translateX(-5px)} 80%{transform:translateX(5px)} }
+        @keyframes bounce-glow{
+            0%,100%{transform:translateY(0) scale(1); box-shadow:0 0 0 rgba(255,172,232,0.4)}
+            50%{transform:translateY(-6px) scale(1.02); box-shadow:0 12px 30px rgba(255,172,232,0.25)}
+        }
+        @keyframes roast-reveal{
+            0%{transform:scale(1.15) translateY(-20px);opacity:0;filter:blur(8px)}
+            70%{transform:scale(.97) translateY(2px);opacity:1;filter:blur(0)}
+            100%{transform:scale(1) translateY(0);opacity:1}
+        }
+        @keyframes flame-in{
+            0%{transform:scale(0) rotate(-20deg);opacity:0}
+            60%{transform:scale(1.3) rotate(5deg);opacity:1}
+            100%{transform:scale(1) rotate(0deg);opacity:1}
+        }
+        @keyframes heat-wave{
+            0%,100%{background-position:0% 50%}
+            50%{background-position:100% 50%}
+        }
+        @keyframes countdown{
+            0%{transform:scale(1.5);opacity:0} 30%{opacity:1} 70%{opacity:1} 100%{transform:scale(.8);opacity:0}
+        }
+
+        .animate-pulse-orb{ animation:pulse-orb 7s ease-in-out infinite; }
+        .animate-float{ animation:float 5s ease-in-out infinite; }
+        .animate-spin-slow{ animation:spin-slow 18s linear infinite; }
+        .animate-spin-rev{ animation:spin-rev 12s linear infinite; }
+
+        /* ── FIRE TEXT ── */
+        .fire-text{ animation:fire-flicker 2s ease-in-out infinite; color:#ff6600; font-family:'Sora',sans-serif; }
+
+        /* ── HEAT GRADIENT BUTTON ── */
+        .heat-btn{
+            background:linear-gradient(135deg,#ff4400,#ff8800,#ffaa00,#ff6600,#ff2200);
+            background-size:300% 300%;
+            animation:heat-wave 3s ease infinite;
+        }
+
+        /* ── ROAST CARD ── */
+        .roast-card-bg{
+            background:
+                radial-gradient(ellipse at 15% 20%, rgba(255,68,0,0.2) 0%,transparent 55%),
+                radial-gradient(ellipse at 85% 80%, rgba(255,136,0,0.15) 0%,transparent 55%),
+                radial-gradient(ellipse at 50% 50%, rgba(255,172,232,0.08) 0%,transparent 60%),
+                #0f0500;
+            border:2px solid rgba(255,102,0,0.4);
+        }
+        .roast-text-display{
+            font-family:'Sora',sans-serif;
+            font-size:clamp(18px,3vw,26px);
+            font-weight:700;
+            line-height:1.45;
+            color:#fff;
+            text-shadow:0 2px 12px rgba(0,0,0,0.8);
+        }
+
+        /* ── FIRE EMOJI BURST ── */
+        .fire-burst{ animation:flame-in .4s cubic-bezier(.34,1.56,.64,1) both; }
+
+        /* ── REVEAL ── */
+        .roast-reveal{ animation:roast-reveal .6s cubic-bezier(.22,1,.36,1) both; }
+
+        /* ── STARS ── */
+        .stars-overlay{
+            position:absolute; inset:0; pointer-events:none; border-radius:inherit;
+            background-image:
+                radial-gradient(1px 1px at 12% 18%,rgba(255,255,255,.15) 0%,transparent 100%),
+                radial-gradient(2px 2px at 80% 22%,rgba(255,255,255,.1) 0%,transparent 100%),
+                radial-gradient(1px 1px at 55% 75%,rgba(255,255,255,.12) 0%,transparent 100%),
+                radial-gradient(1px 1px at 30% 85%,rgba(255,255,255,.09) 0%,transparent 100%),
+                radial-gradient(1px 1px at 90% 55%,rgba(255,255,255,.11) 0%,transparent 100%);
+        }
+
+        /* ── CORNER ORNAMENTS ── */
+        .c-corner{ position:absolute; width:44px; height:44px; }
+        .c-tl{ top:14px;left:14px; border-top:2px solid rgba(255,102,0,.5); border-left:2px solid rgba(255,102,0,.5); border-radius:2px 0 0 0; }
+        .c-tr{ top:14px;right:14px; border-top:2px solid rgba(255,102,0,.5); border-right:2px solid rgba(255,102,0,.5); border-radius:0 2px 0 0; }
+        .c-bl{ bottom:14px;left:14px; border-bottom:2px solid rgba(255,102,0,.5); border-left:2px solid rgba(255,102,0,.5); border-radius:0 0 0 2px; }
+        .c-br{ bottom:14px;right:14px; border-bottom:2px solid rgba(255,102,0,.5); border-right:2px solid rgba(255,102,0,.5); border-radius:0 0 2px 0; }
+
+        /* ── ROAST HEAT METER ── */
+        .heat-bar{ height:8px; border-radius:9999px; background:linear-gradient(90deg,#22c55e,#eab308,#f97316,#ef4444,#dc2626); }
+        .heat-indicator{ width:16px; height:16px; border-radius:50%; background:#fff; border:3px solid #ff4400; box-shadow:0 0 10px #ff4400; transition:left .5s cubic-bezier(.34,1.56,.64,1); position:absolute; top:-4px; }
+
+        /* ── CUSTOM TAB ── */
+        .tab-btn{ transition:all .2s ease; }
+        .tab-btn.active{ background:rgba(255,172,232,.12); border-color:rgba(255,172,232,.5); color:var(--primary); }
+        .tab-btn:not(.active){ background:rgba(255,255,255,.03); border-color:rgba(255,255,255,.1); color:var(--on-surface-variant); }
+
+        /* ── INPUT FOCUS ── */
+        input:focus, textarea:focus, select:focus{
+            outline:none; border-color:rgba(255,172,232,.6)!important;
+            box-shadow:0 0 0 3px rgba(255,172,232,.12),0 0 20px rgba(255,172,232,.1)!important;
+        }
+
+        /* ── ROAST CATEGORY CHIP ── */
+        .cat-chip{ cursor:pointer; transition:all .2s; padding:5px 12px; border-radius:9999px; font-size:12px; font-family:'Plus Jakarta Sans',sans-serif; font-weight:600; border:1px solid rgba(255,255,255,.1); background:rgba(255,255,255,.03); color:var(--on-surface-variant); }
+        .cat-chip.active,.cat-chip:hover{ background:rgba(255,102,0,.15); border-color:rgba(255,102,0,.5); color:#ff8800; }
+
+        /* ── SCROLL ── */
+        ::-webkit-scrollbar{ width:5px; }
+        ::-webkit-scrollbar-track{ background:#131314; }
+        ::-webkit-scrollbar-thumb{ background:rgba(255,172,232,.3); border-radius:9999px; }
+
+        /* ── MATERIAL SYMBOLS ── */
+        .material-symbols-outlined{ font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24; user-select:none; }
+        .icon-fill{ font-variation-settings:'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 24; }
+
+        /* ── GENERATING OVERLAY ── */
+        #genOverlay{ position:fixed;inset:0;z-index:300;background:rgba(10,10,14,.88);backdrop-filter:blur(8px);display:none;align-items:center;justify-content:center;flex-direction:column;gap:16px; }
+        #genOverlay.active{ display:flex; }
+        .gen-ring{ width:100px;height:100px;border-radius:50%;border:3px solid transparent;border-top-color:#ff6600;border-right-color:#ff4400;animation:spin-slow .7s linear infinite; }
+        .gen-ring-inner{ width:66px;height:66px;border-radius:50%;border:2px solid transparent;border-bottom-color:#fface8;border-left-color:#ff24e4;animation:spin-rev .5s linear infinite; }
+
+        /* ── ROAST HISTORY ROW ── */
+        .history-row{ animation:slide-up .4s ease both; }
+
+        /* ── WATERMARK ── */
+        .card-watermark{ position:absolute;bottom:12px;right:16px;font-family:'Sora',sans-serif;font-size:11px;font-weight:700;letter-spacing:.08em;opacity:.3;text-transform:uppercase; }
+
+        select option{ background:#201f20; color:#e5e2e3; }
+        .confetti-piece{ position:fixed; pointer-events:none; z-index:999; border-radius:2px; animation:confetti-fall linear both; }
+
+        /* Rare Outcome System Styles */
+        @keyframes rare-gold-pulse {
+            0%, 100% {
+                box-shadow: 0 0 25px rgba(255, 215, 0, 0.4), inset 0 0 15px rgba(255, 215, 0, 0.15);
+                border-color: rgba(255, 215, 0, 0.6);
+            }
+            50% {
+                box-shadow: 0 0 45px rgba(255, 215, 0, 0.85), 0 0 70px rgba(255, 140, 0, 0.4), inset 0 0 25px rgba(255, 215, 0, 0.35);
+                border-color: rgba(255, 215, 0, 0.95);
+            }
+        }
+        .rare-golden-glow {
+            animation: rare-gold-pulse 2s ease-in-out infinite !important;
+            border: 2.5px solid #ffd700 !important;
+        }
+        @keyframes gold-confetti-fall {
+            0% { transform: translateY(-10px) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+        }
+        .gold-confetti-piece {
+            position: fixed;
+            top: -10px;
+            pointer-events: none;
+            z-index: 9999;
+            animation: gold-confetti-fall linear forwards;
+        }
+    </style>
+
+    <script>
+    tailwind.config={
+        darkMode:'class',
+        theme:{extend:{
+            colors:{
+                "primary":"#fface8","primary-container":"#ff24e4","on-primary":"#5e0053",
+                "secondary":"#d3fbff","secondary-container":"#00eefc","on-secondary-container":"#00686f",
+                "tertiary":"#d1bcff","tertiary-container":"#a178ff","on-tertiary":"#3c0090",
+                "error":"#ffb4ab","surface":"#131314","surface-dim":"#131314",
+                "surface-container-lowest":"#0e0e0f","surface-container-low":"#1c1b1c",
+                "surface-container":"#201f20","surface-container-high":"#2a2a2b","surface-container-highest":"#353436",
+                "on-surface":"#e5e2e3","on-surface-variant":"#ddbed1",
+                "outline":"#a5889b","outline-variant":"#574050",
+                "background":"#131314","on-background":"#e5e2e3",
+            },
+            fontFamily:{ sora:["Sora","sans-serif"], jakarta:["Plus Jakarta Sans","sans-serif"], cinzel:["Cinzel","serif"], dancing:["Dancing Script","cursive"] },
+        }},
+    }
+    </script>
+  <link rel="canonical" href="https://friendship-check.in/roast"/>
+  <meta property="og:type"        content="website"/>
+  <meta property="og:title"       content="FriendCheck | Roast Generator 🔥"/>
+  <meta property="og:description" content="Generate savage AI-powered roasts for your friends. 100 roast templates, shareable cards, all free."/>
+  <meta property="og:image"       content="https://friendship-check.in/og-roast.png"/>
+    <meta property="og:url" content="https://friendship-check.in/roast_generator.html"/>
+  <meta property="og:site_name" content="FriendCheck"/>
+  <meta name="twitter:url" content="https://friendship-check.in/roast_generator.html"/>
+  <meta name="twitter:card"       content="summary_large_image"/>
+  <meta name="twitter:title"      content="FriendCheck | Roast Generator 🔥"/>
+  <meta name="twitter:description" content="Generate savage AI-powered roasts for your friends. 100 roast templates, shareable cards, all free."/>
+  <!-- UNIFIED DESIGN SYSTEM -->
+  <link rel="stylesheet" href="shared/fc-design-system.css">
+
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org","@type":"WebApplication",
+    "name":"FriendCheck Roast Generator","url":"https://friendship-check.in/roast_generator.html",
+    "description":"Generate 100 savage AI roasts for your friends. Shareable cards, custom roasts, all free.",
+    "applicationCategory":"Game","browserRequirements":"Requires JavaScript","isAccessibleForFree":true
+  }
+  </script>
+</head>
+
+<body class="min-h-screen" style="background:radial-gradient(ellipse 80% 50% at 50% -10%,rgba(255,68,0,.12) 0%,transparent 60%),#131314">
+
+    <!-- Generating overlay -->
+    <div id="genOverlay">
+        <div class="relative flex items-center justify-center">
+            <div class="gen-ring absolute"></div>
+            <div class="gen-ring-inner"></div>
+            <span class="text-[36px]" style="position:relative;z-index:1;">🔥</span>
+        </div>
+        <p id="genText" class="font-sora font-bold text-[17px] text-on-surface">Heating up the roast…</p>
+        <p class="font-jakarta text-[13px] text-on-surface-variant">Consulting the savage database…</p>
+    </div>
+
+    <!-- Mouse glow -->
+    <div id="mouseGlow" class="fixed pointer-events-none w-96 h-96 rounded-full opacity-0 transition-opacity duration-700 z-0" style="background:radial-gradient(circle,rgba(255,100,0,.07) 0%,transparent 70%);transform:translate(-50%,-50%);"></div>
+  <!-- Unified nav injected by fc-nav.js (see bottom of body) -->
+
+    <!-- ═══ HERO ═══ -->
+    <header class="relative pt-32 pb-10 px-6 text-center overflow-hidden">
+        <div class="absolute top-10 -left-40 w-[500px] h-[500px] rounded-full animate-pulse-orb pointer-events-none" style="background:radial-gradient(circle,rgba(255,100,0,.15),transparent 70%);"></div>
+        <div class="absolute -top-10 -right-40 w-[500px] h-[500px] rounded-full animate-pulse-orb pointer-events-none" style="background:radial-gradient(circle,rgba(255,172,232,.1),transparent 70%);animation-delay:-4s;"></div>
+
+        <div class="max-w-3xl mx-auto relative z-10">
+            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass mb-6 animate-float" style="border:1px solid rgba(255,100,0,.3);">
+                <span class="text-[16px]">🔥</span>
+                <span class="font-jakarta font-bold text-[12px] uppercase tracking-[.2em]" style="color:#ff8800;">Savage AI Roast Engine</span>
+                <span class="text-[16px]">🔥</span>
+            </div>
+            <h1 class="font-sora text-[44px] md:text-[64px] font-extrabold leading-[1.08] mb-5">
+                <span style="background:linear-gradient(135deg,#ff6600,#ff4400,#ff8800,#ff2200);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">Roast</span><br/>
+                <span class="text-on-surface">Generator</span>
+                <span class="fire-text ml-3">🔥</span>
+            </h1>
+            <p class="font-jakarta text-[17px] md:text-[19px] text-on-surface-variant max-w-xl mx-auto leading-relaxed">
+                Enter your friend's name and let the algorithm cook up <strong class="text-primary">100 savage roasts</strong> — completely random, totally unfair, absolutely hilarious.
+            </p>
+
+            <!-- Stats row -->
+            <div class="flex justify-center gap-6 mt-8 flex-wrap">
+                <div class="flex flex-col items-center">
+                    <span class="font-sora text-[28px] font-extrabold" style="color:#ff6600;">100</span>
+                    <span class="font-jakarta text-[12px] text-on-surface-variant">Roast Templates</span>
+                </div>
+                <div class="w-px h-10 self-center" style="background:rgba(255,255,255,.1);"></div>
+                <div class="flex flex-col items-center">
+                    <span class="font-sora text-[28px] font-extrabold text-primary">∞</span>
+                    <span class="font-jakarta text-[12px] text-on-surface-variant">Combinations</span>
+                </div>
+                <div class="w-px h-10 self-center" style="background:rgba(255,255,255,.1);"></div>
+                <div class="flex flex-col items-center">
+                    <span class="font-sora text-[28px] font-extrabold" style="color:#00eefc;">0%</span>
+                    <span class="font-jakarta text-[12px] text-on-surface-variant">Mercy Shown</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- ═══ MAIN ═══ -->
+    <main class="px-4 md:px-6 pb-24 max-w-4xl mx-auto relative z-10">
+
+        <!-- ── INPUT FORM ── -->
+        <section class="glass-elevated rounded-2xl p-6 md:p-8 mb-8" style="border:1px solid rgba(255,100,0,.2);">
+
+            <!-- Name input -->
+            <div class="mb-6">
+                <label class="font-jakarta text-[13px] font-bold uppercase tracking-wider text-on-surface-variant mb-2 flex items-center gap-1.5">
+                    <span class="material-symbols-outlined text-[16px]" style="color:#fface8;">person</span>
+                    Friend's Name to Roast
+                </label>
+                <div class="relative">
+                    <input type="text" id="friendName" placeholder="Enter their name… (they deserve this)" maxlength="30"
+                        class="w-full rounded-full px-6 py-4 text-on-surface font-sora font-bold text-[17px] transition-all"
+                        style="background:rgba(255,255,255,.04);border:1.5px solid rgba(255,255,255,.1);"
+                        oninput="onNameInput()" onkeydown="if(event.key==='Enter')generateRoast()"/>
+                    <span class="absolute right-5 top-1/2 -translate-y-1/2 text-[22px]">😈</span>
+                </div>
+            </div>
+
+            <!-- Category filter -->
+            <div class="mb-6">
+                <label class="font-jakarta text-[13px] font-bold uppercase tracking-wider text-on-surface-variant mb-2.5 block">Roast Category</label>
+                <div class="flex flex-wrap gap-2" id="catChips">
+                    <button class="cat-chip active" onclick="selectCat('all',this)">🌶️ All</button>
+                    <button class="cat-chip" onclick="selectCat('lazy',this)">😴 Lazy</button>
+                    <button class="cat-chip" onclick="selectCat('brain',this)">🧠 Intelligence</button>
+                    <button class="cat-chip" onclick="selectCat('social',this)">📱 Social Life</button>
+                    <button class="cat-chip" onclick="selectCat('food',this)">🍕 Food Crimes</button>
+                    <button class="cat-chip" onclick="selectCat('fashion',this)">👗 Fashion</button>
+                    <button class="cat-chip" onclick="selectCat('money',this)">💸 Money</button>
+                    <button class="cat-chip" onclick="selectCat('gaming',this)">🎮 Gaming</button>
+                    <button class="cat-chip" onclick="selectCat('skills',this)">🏆 Skills</button>
+                    <button class="cat-chip" onclick="selectCat('life',this)">🌀 Life Choices</button>
+                </div>
+            </div>
+
+            <!-- Tab toggle -->
+            <div class="flex gap-2 mb-5">
+                <button id="tabAI" class="tab-btn active flex-1 py-2.5 rounded-full font-sora font-bold text-[14px] border flex items-center justify-center gap-2" onclick="switchTab('ai')">
+                    <span class="text-[16px]">🤖</span> AI Roast
+                </button>
+                <button id="tabCustom" class="tab-btn flex-1 py-2.5 rounded-full font-sora font-bold text-[14px] border flex items-center justify-center gap-2" onclick="switchTab('custom')">
+                    <span class="text-[16px]">✍️</span> Write Your Own
+                </button>
+            </div>
+
+            <!-- AI roast panel -->
+            <div id="panelAI">
+                <button id="generateBtn" onclick="generateRoast()"
+                    class="heat-btn w-full py-4 rounded-full font-sora font-extrabold text-[18px] text-white flex items-center justify-center gap-3 hover:scale-[1.02] active:scale-[.98] transition-transform duration-200"
+                    style="box-shadow:0 0 40px rgba(255,102,0,.4),0 8px 30px rgba(0,0,0,.4);">
+                    <span class="material-symbols-outlined icon-fill text-[24px]">local_fire_department</span>
+                    🔥 Generate Roast 🔥
+                </button>
+                <p class="font-jakarta text-[12px] text-on-surface-variant text-center mt-2">Picks randomly from 100 roast templates</p>
+            </div>
+
+            <!-- Custom roast panel -->
+            <div id="panelCustom" class="hidden">
+                <div class="mb-4">
+                    <label class="font-jakarta text-[12px] font-bold uppercase tracking-wider text-on-surface-variant mb-2 block">Your Custom Roast</label>
+                    <textarea id="customRoastInput" rows="3" maxlength="300"
+                        placeholder="Write your masterpiece roast here… Use {Name} to insert the friend's name automatically. e.g. {Name} is so slow they buffer in real life."
+                        class="w-full rounded-2xl px-5 py-4 text-on-surface font-jakarta text-[15px] leading-relaxed resize-none transition-all"
+                        style="background:rgba(255,255,255,.04);border:1.5px solid rgba(255,255,255,.1);"
+                        oninput="onCustomInput()"></textarea>
+                    <div class="flex justify-between mt-1">
+                        <p class="font-jakarta text-[11px] text-on-surface-variant">Tip: Use <code class="px-1 rounded" style="background:rgba(255,172,232,.15);color:#fface8;">{Name}</code> as a placeholder</p>
+                        <span id="customCount" class="font-jakarta text-[11px] text-on-surface-variant/50">0 / 300</span>
+                    </div>
+                </div>
+                <!-- Starter examples for custom -->
+                <div class="mb-4 flex flex-wrap gap-2">
+                    <button class="cat-chip text-[11px]" onclick="setCustomStarter('{Name} has the personality of a waiting room.')">{Name} has the personality of a waiting room.</button>
+                    <button class="cat-chip text-[11px]" onclick="setCustomStarter('{Name} is not stupid, they just have bad luck thinking.')">{Name} is not stupid, they just have bad luck thinking.</button>
+                    <button class="cat-chip text-[11px]" onclick="setCustomStarter('{Name} could trip over a wireless network.')">{Name} could trip over a wireless network.</button>
+                </div>
+                <button onclick="useCustomRoast()"
+                    class="heat-btn w-full py-4 rounded-full font-sora font-extrabold text-[17px] text-white flex items-center justify-center gap-3 hover:scale-[1.02] active:scale-[.98] transition-transform duration-200"
+                    style="box-shadow:0 0 40px rgba(255,102,0,.35);">
+                    <span class="material-symbols-outlined icon-fill text-[22px]">send</span>
+                    🔥 Roast Them With This
+                </button>
+            </div>
+        </section>
+
+        <!-- ── ROAST RESULT CARD ── -->
+        <section id="roastCard" class="hidden mb-8">
+            <div id="roastCardInner" class="roast-card-bg relative rounded-2xl p-8 md:p-10 overflow-hidden roast-reveal">
+                <div class="stars-overlay"></div>
+                <div class="c-corner c-tl"></div>
+                <div class="c-corner c-tr"></div>
+                <div class="c-corner c-bl"></div>
+                <div class="c-corner c-br"></div>
+
+                <!-- Card watermark -->
+                <div id="cardWatermark" class="card-watermark" style="color:#ff6600;">FRIENDCHECK · OFFICIAL ROAST</div>
+
+                <!-- Header -->
+                <div class="relative z-10 flex items-center justify-between mb-6 flex-wrap gap-3">
+                    <div class="flex items-center gap-3">
+                        <div id="cardHeaderEmoji" class="w-10 h-10 rounded-full flex items-center justify-center text-[22px]" style="background:rgba(255,102,0,.15);border:1.5px solid rgba(255,102,0,.35);">🔥</div>
+                        <div>
+                            <p id="cardCertificateTitle" class="font-cinzel font-black text-[13px] uppercase tracking-widest" style="color:#ff8800;">Official Roast Certificate</p>
+                            <p class="font-jakarta text-[11px] text-on-surface-variant">FriendCheck · Roast Bureau™</p>
+                        </div>
+                    </div>
+                    <div id="cardCatLabelContainer" class="flex items-center gap-2 px-3 py-1.5 rounded-full" style="background:rgba(255,102,0,.12);border:1px solid rgba(255,102,0,.3);">
+                        <span class="font-jakarta text-[11px] font-bold uppercase tracking-wider" style="color:#ff8800;" id="cardCatLabel">🌶️ All Categories</span>
+                    </div>
+                </div>
+
+                <!-- Heat meter -->
+                <div class="relative z-10 mb-6">
+                    <div class="flex justify-between mb-1.5">
+                        <span class="font-jakarta text-[11px] font-bold uppercase tracking-wider text-on-surface-variant">Heat Level</span>
+                        <span id="heatLabel" class="font-jakarta text-[12px] font-bold" style="color:#ff8800;">🌡️ Medium Rare</span>
+                    </div>
+                    <div class="relative h-2 rounded-full overflow-hidden" style="background:rgba(255,255,255,.08);">
+                        <div id="heatFill" class="heat-bar h-full rounded-full transition-all duration-700" style="width:50%;"></div>
+                    </div>
+                </div>
+
+                <!-- Divider -->
+                <div class="flex items-center gap-3 justify-center mb-6 relative z-10">
+                    <div class="h-px flex-1" style="background:linear-gradient(to right,transparent,rgba(255,102,0,.6));"></div>
+                    <span id="cardDividerEmoji" class="text-[20px]">😈</span>
+                    <div class="h-px flex-1" style="background:linear-gradient(to left,transparent,rgba(255,102,0,.6));"></div>
+                </div>
+
+                <!-- Roast target -->
+                <div class="relative z-10 text-center mb-4">
+                    <p class="font-jakarta text-[14px] text-on-surface-variant italic">This roast is officially served to</p>
+                    <h2 id="cardFriendName" class="font-cinzel text-[40px] md:text-[56px] font-black mt-1" style="color:#ff6600;text-shadow:0 0 30px rgba(255,102,0,.4);">Friend</h2>
+                </div>
+
+                <!-- THE ROAST TEXT -->
+                <div id="roastTextContainer" class="relative z-10 rounded-2xl p-6 mb-6 text-center" style="background:rgba(255,255,255,.04);border:1.5px dashed rgba(255,102,0,.3);">
+                    <span class="text-[32px] fire-burst inline-block mb-3" id="roastEmoji">🔥</span>
+                    <p id="roastText" class="roast-text-display"></p>
+                </div>
+
+                <!-- Extra details -->
+                <div class="relative z-10 grid grid-cols-3 gap-3 mb-6">
+                    <div class="rounded-xl p-3 text-center" style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);">
+                        <p class="font-jakarta text-[10px] uppercase tracking-wider text-on-surface-variant mb-1">Savagery</p>
+                        <p id="cardSavagery" class="font-sora text-[15px] font-bold text-on-surface"></p>
+                    </div>
+                    <div class="rounded-xl p-3 text-center" style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);">
+                        <p class="font-jakarta text-[10px] uppercase tracking-wider text-on-surface-variant mb-1">Recovery Chance</p>
+                        <p id="cardRecovery" class="font-sora text-[15px] font-bold text-on-surface"></p>
+                    </div>
+                    <div class="rounded-xl p-3 text-center" style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);">
+                        <p class="font-jakarta text-[10px] uppercase tracking-wider text-on-surface-variant mb-1">Friendship Status</p>
+                        <p id="cardFriendship" class="font-sora text-[14px] font-bold text-on-surface"></p>
+                    </div>
+                </div>
+
+                <!-- Footer -->
+                <div class="relative z-10 flex justify-between items-center flex-wrap gap-3">
+                    <div>
+                        <p id="cardSignature" class="font-dancing text-[22px]" style="color:#fface8;opacity:.8;">RoastMaster AI</p>
+                        <p class="font-jakarta text-[10px] uppercase tracking-wider text-on-surface-variant">Chief Roaster, FriendCheck</p>
+                    </div>
+                    <div class="text-right">
+                        <p id="cardDate" class="font-jakarta text-[13px] text-on-surface" style="opacity:.8;"></p>
+                        <p class="font-jakarta text-[10px] uppercase tracking-wider text-on-surface-variant">Date of Roasting</p>
+                        <p id="roastId" class="font-mono text-[10px] text-on-surface-variant/40 mt-0.5">ROAST-XXXX</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action buttons -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-4">
+                <button onclick="generateRoastAgain()"
+                    class="heat-btn py-3.5 rounded-full font-sora font-bold text-[14px] text-white flex items-center justify-center gap-2 hover:scale-[1.02] active:scale-[.98] transition-transform">
+                    <span class="material-symbols-outlined icon-fill text-[18px]">local_fire_department</span>
+                    Generate Again
+                </button>
+                <button onclick="shareRoast(this)"
+                    class="py-3.5 rounded-full font-sora font-bold text-[14px] text-on-surface flex items-center justify-center gap-2 hover:bg-white/5 hover:scale-[1.02] active:scale-[.98] transition-all glass">
+                    <span class="material-symbols-outlined text-[18px]" style="color:#fface8;">share</span>
+                    Share Roast
+                </button>
+<button class="py-3.5 rounded-full font-sora font-bold text-[14px] text-on-surface flex items-center justify-center gap-2 hover:bg-white/5 hover:scale-[1.02] active:scale-[.98] transition-all glass" onclick="location.reload()">Try with another friend</button>
+                <button onclick="downloadCard(this)"
+                    class="py-3.5 rounded-full font-sora font-bold text-[14px] text-on-surface flex items-center justify-center gap-2 hover:bg-white/5 hover:scale-[1.02] active:scale-[.98] transition-all glass">
+                    <span class="material-symbols-outlined text-[18px]" style="color:#00eefc;">download</span>
+                    Download Image
+                </button>
+            </div>
+        </section>
+
+        <!-- ── ROAST HISTORY ── -->
+        <section class="mt-10">
+            <h3 class="font-sora text-[16px] font-bold text-on-surface-variant flex items-center gap-2 mb-4">
+                <span class="material-symbols-outlined text-[18px]" style="color:#ff8800;">history</span>
+                Roast History This Session
+            </h3>
+            <div id="roastHistory" class="space-y-2">
+                <p id="historyEmpty" class="font-jakarta text-[13px] text-on-surface-variant/50 italic px-4">No roasts yet. Someone needs to be taken down.</p>
+            </div>
+        </section>
+    </main>
+
+    <!-- ── FOOTER ── -->
+    <footer class="border-t z-10 relative" style="background:#0e0e0f;border-color:rgba(255,255,255,.06);">
+        <div class="flex flex-col md:flex-row justify-between items-center px-8 py-10 max-w-6xl mx-auto gap-6">
+            <div class="flex flex-col items-center md:items-start">
+                <span class="font-sora text-[20px] font-extrabold mb-1" style="color:#fface8;">FriendCheck</span>
+                <p class="font-jakarta text-[13px] text-on-surface-variant">The world's #1 destination for friendship drama.</p>
+            </div>
+            <div class="flex flex-wrap justify-center gap-6">
+                <a href="#" class="font-jakarta text-[13px] text-on-surface-variant hover:text-primary transition-colors">Privacy</a>
+                <a href="#" class="font-jakarta text-[13px] text-on-surface-variant hover:text-primary transition-colors">Terms</a>
+                <a href="#" class="font-jakarta text-[13px] text-on-surface-variant hover:text-primary transition-colors">Support</a>
+            </div>
+            <p class="font-jakarta text-[12px]" style="color:#d1bcff;">© 2025 FriendCheck. Stay Viral.</p>
+        </div>
+    </footer>
+
+    <!-- ════════════ JAVASCRIPT ════════════ -->
+    <script>
+    // ── 100 ROAST TEMPLATES ────────────────────────────────────────
+    const ROASTS = [
+        // LAZY (12)
+        {t:"{Name} is the type of person who says 'I'm on the way' while still in bed debating whether to shower.", cat:'lazy', heat:62},
+        {t:"{Name}'s spirit animal is a sloth on a Monday morning after a long weekend.", cat:'lazy', heat:55},
+        {t:"{Name} considers scrolling through Instagram cardio.", cat:'lazy', heat:48},
+        {t:"{Name} has never met an alarm clock they couldn't snooze into oblivion.", cat:'lazy', heat:52},
+        {t:"{Name} once called a meeting a 'workout' because they had to walk to the conference room.", cat:'lazy', heat:60},
+        {t:"{Name} put 'breathing' on their productivity list so they'd have at least one thing checked off.", cat:'lazy', heat:70},
+        {t:"{Name} could nap through a concert they paid full price for — and complain the next day it was boring.", cat:'lazy', heat:65},
+        {t:"{Name} replies to 'are you coming?' with 'on the way' from their bathroom 45 minutes away.", cat:'lazy', heat:72},
+        {t:"{Name}'s Google search history is 90% 'is lying down considered resting?'", cat:'lazy', heat:58},
+        {t:"{Name} needs a 30-minute warm-up just to sit upright.", cat:'lazy', heat:50},
+        {t:"{Name} considers a two-hour nap a 'quick rest'.", cat:'lazy', heat:53},
+        {t:"{Name} once ordered delivery from a restaurant that was two doors down.", cat:'lazy', heat:78},
+
+        // BRAIN / INTELLIGENCE (12)
+        {t:"{Name} could lose a hide-and-seek game while hiding alone in an empty room.", cat:'brain', heat:90},
+        {t:"{Name} probably reads terms and conditions for fun and still doesn't understand them.", cat:'brain', heat:55},
+        {t:"{Name} Googled 'how to Google something' without any irony.", cat:'brain', heat:88},
+        {t:"{Name} once tried to pause live TV by pressing mute.", cat:'brain', heat:82},
+        {t:"{Name} thought the ocean was salty because of all the fish crying.", cat:'brain', heat:95},
+        {t:"{Name} asked what channel the internet was on.", cat:'brain', heat:91},
+        {t:"If brains were petrol, {Name} couldn't fuel a scooter for a meter.", cat:'brain', heat:87},
+        {t:"{Name} spent 20 minutes looking for their phone using the phone's flashlight.", cat:'brain', heat:93},
+        {t:"{Name} is the only person who can make a microwave feel intelligent.", cat:'brain', heat:85},
+        {t:"{Name} puts 'thinking' in their schedule to make sure they don't forget.", cat:'brain', heat:75},
+        {t:"{Name}'s idea of a brain teaser is opening a childproof cap.", cat:'brain', heat:80},
+        {t:"{Name} once used the wrong end of a pen and wondered why it wasn't working.", cat:'brain', heat:86},
+
+        // SOCIAL LIFE (10)
+        {t:"{Name}'s idea of a wild Saturday night is reorganising their bookmarks folder.", cat:'social', heat:60},
+        {t:"{Name} has more notifications turned off than friends turned on.", cat:'social', heat:65},
+        {t:"{Name} is so antisocial their introvert friends cancel plans on them.", cat:'social', heat:72},
+        {t:"{Name}'s most active social platform is their photo gallery with no one in it.", cat:'social', heat:68},
+        {t:"{Name} considers liking a post 'maintaining the friendship'.", cat:'social', heat:74},
+        {t:"{Name} has been 'on the way' to a social life since 2018.", cat:'social', heat:78},
+        {t:"{Name}'s texting speed drops to 3 words per hour when plans are being made.", cat:'social', heat:70},
+        {t:"{Name} only replies to group chats when someone sends food pics.", cat:'social', heat:66},
+        {t:"{Name} leaves parties at 9PM saying 'it was getting good' as they bolt for the exit.", cat:'social', heat:71},
+        {t:"{Name}'s idea of networking is following celebrities they'll never meet.", cat:'social', heat:63},
+
+        // FOOD (10)
+        {t:"{Name} asks for a 'small bite' and takes half the plate with surgical precision.", cat:'food', heat:82},
+        {t:"{Name} eats the last of your food and then asks if you wanted some.", cat:'food', heat:88},
+        {t:"{Name} orders a salad at a pizza place and judges everyone else the entire time.", cat:'food', heat:76},
+        {t:"{Name} claims they're 'not hungry' until the food arrives — then forgets that sentence entirely.", cat:'food', heat:84},
+        {t:"{Name} invented the phrase 'I'll pay you back in snacks' as a financial strategy.", cat:'food', heat:80},
+        {t:"{Name} has eaten someone else's clearly-labelled leftovers and called it 'shared resources'.", cat:'food', heat:92},
+        {t:"{Name} takes 45 minutes to choose a restaurant and then orders the first thing on the menu.", cat:'food', heat:75},
+        {t:"{Name} calls eating a small portion 'dieting' right before ordering dessert.", cat:'food', heat:78},
+        {t:"{Name} once ate the entire bag of crisps meant for a party of twelve. No regrets.", cat:'food', heat:90},
+        {t:"{Name} rates restaurants by how many of other people's fries they can eat undetected.", cat:'food', heat:86},
+
+        // FASHION (8)
+        {t:"{Name}'s fashion sense is somewhere between 'just got out of bed' and 'lost a bet'.", cat:'fashion', heat:72},
+        {t:"{Name} dresses like they're the main character but forgot to read the script.", cat:'fashion', heat:78},
+        {t:"{Name}'s wardrobe has exactly one vibe: confusing.", cat:'fashion', heat:68},
+        {t:"{Name} could make a designer brand look like it was found in a skip.", cat:'fashion', heat:85},
+        {t:"{Name} has worn the same hoodie to every occasion since 2019 — including a wedding.", cat:'fashion', heat:88},
+        {t:"{Name}'s outfit gives 'I left the house before fully waking up' energy every single day.", cat:'fashion', heat:74},
+        {t:"{Name} thinks matching clothes is 'too mainstream'.", cat:'fashion', heat:65},
+        {t:"{Name} bought new shoes once, kept them in the box for three years to 'preserve them'.", cat:'fashion', heat:70},
+
+        // MONEY (8)
+        {t:"{Name} sees 'split the bill' as a polite suggestion, not a binding agreement.", cat:'money', heat:82},
+        {t:"{Name} has 'I'll get you back' listed as a long-term financial commitment since 2020.", cat:'money', heat:86},
+        {t:"{Name} goes to the bathroom every single time the bill arrives. Every. Single. Time.", cat:'money', heat:92},
+        {t:"{Name} invented the phrase 'I only have big notes' when the bill is small.", cat:'money', heat:88},
+        {t:"{Name} always 'forgot their wallet' at restaurants but somehow always has money for their own stuff.", cat:'money', heat:90},
+        {t:"{Name} treats a ₹100 debt like it's an abstract concept that will resolve itself.", cat:'money', heat:80},
+        {t:"{Name} borrowed money 'just until Friday' in 2021. Still pending.", cat:'money', heat:94},
+        {t:"{Name} suggests splitting the bill then quietly adds nothing to the pot.", cat:'money', heat:87},
+
+        // GAMING (8)
+        {t:"{Name} blames the controller, the lag, the weather, the Wi-Fi, and mercury retrograde when they lose.", cat:'gaming', heat:75},
+        {t:"{Name} starts every gaming session with 'I'm just warming up' and ends it the same way.", cat:'gaming', heat:70},
+        {t:"{Name} has a gaming chair but only uses it to watch YouTube videos about gaming.", cat:'gaming', heat:68},
+        {t:"{Name} watches gaming tutorials for 3 hours and still loses to the tutorial level.", cat:'gaming', heat:80},
+        {t:"{Name} trash-talks in a game they're losing. The confidence is admirable, the skill less so.", cat:'gaming', heat:78},
+        {t:"{Name} builds the most complicated setup possible then blames the mouse for bad aim.", cat:'gaming', heat:74},
+        {t:"{Name} rage-quit a single-player game because the AI was 'being unfair'.", cat:'gaming', heat:82},
+        {t:"{Name} has 500 hours in a game and is still on the starter level.", cat:'gaming', heat:85},
+
+        // SKILLS (10)
+        {t:"{Name} could make a motivational poster feel demotivated.", cat:'skills', heat:72},
+        {t:"{Name} once tried to parallel park for 20 minutes and then took a cab home instead.", cat:'skills', heat:80},
+        {t:"{Name} is a master at starting projects and a complete amateur at finishing them.", cat:'skills', heat:76},
+        {t:"{Name} has the cooking skills of someone whose kitchen has never seen a vegetable.", cat:'skills', heat:78},
+        {t:"{Name} once assembled flat-pack furniture and ended up with a shelf that was also a ladder.", cat:'skills', heat:85},
+        {t:"{Name} gave a presentation once. The PowerPoint had 47 slides for a 5-minute talk.", cat:'skills', heat:74},
+        {t:"{Name} can explain anything in exactly the most complicated way possible.", cat:'skills', heat:70},
+        {t:"{Name} Googles basic maths and then claims to 'not trust calculators'.", cat:'skills', heat:82},
+        {t:"{Name} writes emails that require three follow-up calls to understand.", cat:'skills', heat:68},
+        {t:"{Name} has three hobbies and has mastered 0% of all of them in four years.", cat:'skills', heat:77},
+
+        // LIFE CHOICES (12)
+        {t:"{Name} makes every decision like they're doing a speedrun of their own life on hard mode.", cat:'life', heat:83},
+        {t:"{Name} has the map of life open but somehow keeps taking the scenic route to disaster.", cat:'life', heat:76},
+        {t:"{Name} buys things on impulse then returns them after using them once.", cat:'life', heat:72},
+        {t:"{Name} signs up for a gym membership every January and sets a new one in February.", cat:'life', heat:80},
+        {t:"{Name}'s relationship with mornings is that they don't have one.", cat:'life', heat:66},
+        {t:"{Name} lives their life on 'I'll start Monday' time — and Monday keeps moving.", cat:'life', heat:78},
+        {t:"{Name} sets ten alarms and sleeps through all of them with the dedication of an athlete.", cat:'life', heat:74},
+        {t:"{Name} has been 'figuring things out' since 2018 and is still on page one.", cat:'life', heat:81},
+        {t:"{Name} treats deadlines as 'gentle suggestions' from the universe.", cat:'life', heat:84},
+        {t:"{Name} starts a diet every weekend and ends it every weekend too, also on Saturday.", cat:'life', heat:79},
+        {t:"{Name} downloaded a productivity app and it's been sitting unopened on their phone for two years.", cat:'life', heat:73},
+        {t:"{Name} once said 'new year, new me' and the new me was identical to the previous model, just slightly more tired.", cat:'life', heat:88},
+    ];
+
+    const SAVAGERY = ['🌶️ Mild','🌶️🌶️ Spicy','🔥 Fire','💀 Lethal','☢️ Toxic','🌋 Volcanic','👑 Legendary Roast'];
+    const RECOVERY = ['95% 😌','70% 😅','50% 😬','30% 😰','10% 😭','0% 💀','Send Help'];
+    const FRIENDSHIP_STATUS = ['Surviving 🤝','On Notice ⚠️','Needs Therapy 🛋️','Hanging by a Thread 🪢','Friendship Audit Required 📋','Petition to End 📝'];
+    const HEAT_LABELS = ['🌡️ Lukewarm','🌡️ Warm','🌡️ Medium Rare','🔥 Hot','🔥🔥 Extra Hot','💀 Nuclear','☢️ Off the Charts'];
+    const CAT_LABELS = {
+        all:'🌶️ All Categories',
+        lazy:'😴 Lazy Mode',
+        brain:'🧠 Intelligence',
+        social:'📱 Social Life',
+        food:'🍕 Food Crimes',
+        fashion:'👗 Fashion Disaster',
+        money:'💸 Money Issues',
+        gaming:'🎮 Gaming Rage',
+        skills:'🏆 Skill Shortage',
+        life:'🌀 Life Choices',
+        legend:'🌟 Roast of the Century',
+        threat:'🌟 Planetary Menace',
+        clown:'🌟 Galactic Clown',
+        aiburn:'🌟 AI Burn Protocol'
+    };
+    const RARE_ROASTS = [
+        {
+            title: "Roast of the Century",
+            t: "{Name} is the human equivalent of a software update that breaks everything, but with zero chance of a hotfix.",
+            cat: "legend",
+            heatLabel: "🌟 Solar Flare",
+            savagery: "👑 Legendary Roast",
+            recovery: "0% 💀",
+            friendship: "Petition to End 📝",
+            emoji: "🏆"
+        },
+        {
+            title: "Planetary Menace Roast",
+            t: "Scientists studied {Name}'s decision-making skills and officially reclassified them as a natural disaster risk.",
+            cat: "threat",
+            heatLabel: "🌟 Planetary Threat",
+            savagery: "🌋 Volcanic",
+            recovery: "Send Help",
+            friendship: "Friendship Audit Required 📋",
+            emoji: "👽"
+        },
+        {
+            title: "Galactic Clown Award",
+            t: "Even the aliens looked down at Earth, saw {Name}'s life choices, and decided to keep driving past.",
+            cat: "clown",
+            heatLabel: "🌟 Galactic Fail",
+            savagery: "☢️ Off the Charts",
+            recovery: "1% 😭",
+            friendship: "Needs Therapy 🛋️",
+            emoji: "🤡"
+        },
+        {
+            title: "AI Burn Protocol",
+            t: "Warning: AI Burn Protocol initiated. {Name} is so hopelessly roasted that even our servers are overheating trying to compute their level of fail.",
+            cat: "aiburn",
+            heatLabel: "🌟 Solar Flare",
+            savagery: "💀 Nuclear",
+            recovery: "0% 💀",
+            friendship: "Hanging by a Thread 🪢",
+            emoji: "🤖"
+        }
+    ];
+    const GEN_TEXTS = ['Heating up the roast…','Consulting the savage database…','Selecting maximum burn level…','Preparing the clap-back…','Roast almost ready — duck!','Channelling pure brutality…'];
+
+    let selectedCat = 'all';
+    let currentTab = 'ai';
+    let roastCount = 0;
+    let lastRoastIdx = -1;
+    let isCurrentRoastRare = false;
+
+    // ── CATEGORY ──────────────────────────────────────────────────
+    function selectCat(cat, btn) {
+        selectedCat = cat;
+        document.querySelectorAll('.cat-chip').forEach(c => c.classList.remove('active'));
+        btn.classList.add('active');
+    }
+
+    // ── TAB ───────────────────────────────────────────────────────
+    function switchTab(tab) {
+        currentTab = tab;
+        document.getElementById('tabAI').classList.toggle('active', tab==='ai');
+        document.getElementById('tabCustom').classList.toggle('active', tab==='custom');
+        document.getElementById('panelAI').classList.toggle('hidden', tab!=='ai');
+        document.getElementById('panelCustom').classList.toggle('hidden', tab==='ai');
+    }
+
+    // ── INPUT ─────────────────────────────────────────────────────
+    function onNameInput() {
+        const name = document.getElementById('friendName').value;
+        // no action needed here, live preview if we want later
+    }
+    function onCustomInput() {
+        const v = document.getElementById('customRoastInput').value;
+        document.getElementById('customCount').textContent = v.length + ' / 300';
+    }
+    function setCustomStarter(text) {
+        document.getElementById('customRoastInput').value = text;
+        onCustomInput();
+        document.getElementById('customRoastInput').focus();
+    }
+
+    // ── GET NAME ──────────────────────────────────────────────────
+    function getName() {
+        const raw = document.getElementById('friendName').value.trim();
+        return raw || 'Your Friend';
+    }
+
+    // ── PICK ROAST ────────────────────────────────────────────────
+    function pickRoast() {
+        const pool = selectedCat === 'all' ? ROASTS : ROASTS.filter(r => r.cat === selectedCat);
+        if (!pool.length) return ROASTS[0];
+        let idx;
+        do { idx = Math.floor(Math.random() * pool.length); } while (idx === lastRoastIdx && pool.length > 1);
+        lastRoastIdx = idx;
+        return pool[idx];
+    }
+
+    // ── GENERATE ─────────────────────────────────────────────────
+    function generateRoast() {
+        const name = getName();
+        startGenAnim(() => {
+            const isRare = Math.random() < 0.10;
+            if (isRare) {
+                const rare = RARE_ROASTS[Math.floor(Math.random() * RARE_ROASTS.length)];
+                displayRoast(rare.t.replace(/\{Name\}/g, name), 100, name, rare.cat, true, rare);
+            } else {
+                const roast = pickRoast();
+                displayRoast(roast.t.replace(/\{Name\}/g, name), roast.heat, name, roast.cat, false);
+            }
+        });
+    }
+
+    function generateRoastAgain() {
+        const name = getName();
+        startGenAnim(() => {
+            const isRare = Math.random() < 0.10;
+            if (isRare) {
+                const rare = RARE_ROASTS[Math.floor(Math.random() * RARE_ROASTS.length)];
+                displayRoast(rare.t.replace(/\{Name\}/g, name), 100, name, rare.cat, true, rare);
+            } else {
+                const roast = pickRoast();
+                displayRoast(roast.t.replace(/\{Name\}/g, name), roast.heat, name, roast.cat, false);
+            }
+        });
+    }
+
+    function useCustomRoast() {
+        const name = getName();
+        const raw = document.getElementById('customRoastInput').value.trim();
+        if (!raw) {
+            const ta = document.getElementById('customRoastInput');
+            ta.style.animation = 'shake .5s ease both';
+            ta.style.borderColor = 'rgba(255,80,80,.6)';
+            setTimeout(() => { ta.style.animation = ''; ta.style.borderColor = ''; }, 600);
+            return;
+        }
+        const text = raw.replace(/\{Name\}/g, name);
+        const isRare = Math.random() < 0.10;
+        const heat = isRare ? 100 : Math.floor(Math.random() * 40) + 55;
+        startGenAnim(() => displayRoast(text, heat, name, 'custom', isRare));
+    }
+
+    // ── LOADING ANIM ─────────────────────────────────────────────
+    function startGenAnim(cb) {
+        const overlay = document.getElementById('genOverlay');
+        const textEl = document.getElementById('genText');
+        overlay.classList.add('active');
+        let i = 0;
+        const iv = setInterval(() => {
+            textEl.textContent = GEN_TEXTS[i % GEN_TEXTS.length];
+            i++;
+        }, 280);
+        setTimeout(() => {
+            clearInterval(iv);
+            overlay.classList.remove('active');
+            cb();
+        }, 1800);
+    }
+
+    // ── DISPLAY ROAST ─────────────────────────────────────────────
+    function displayRoast(text, heatPct, name, cat, isRare = false, rareObj = null) {
+        isCurrentRoastRare = !!isRare;
+
+        // Name
+        document.getElementById('cardFriendName').textContent = name;
+
+        // Roast text
+        const rtEl = document.getElementById('roastText');
+        rtEl.textContent = text;
+
+        const inner = document.getElementById('roastCardInner');
+        const cardWatermark = document.getElementById('cardWatermark');
+        const cardHeaderEmoji = document.getElementById('cardHeaderEmoji');
+        const cardCertificateTitle = document.getElementById('cardCertificateTitle');
+        const cardCatLabelContainer = document.getElementById('cardCatLabelContainer');
+        const cardDividerEmoji = document.getElementById('cardDividerEmoji');
+        const cardFriendName = document.getElementById('cardFriendName');
+        const roastTextContainer = document.getElementById('roastTextContainer');
+        const cardSignature = document.getElementById('cardSignature');
+        const heatFill = document.getElementById('heatFill');
+        const heatLabel = document.getElementById('heatLabel');
+
+        if (isCurrentRoastRare) {
+            inner.classList.add('rare-golden-glow');
+            cardWatermark.textContent = "FRIENDCHECK · RARE GOLDEN ROAST";
+            cardWatermark.style.color = "#ffd700";
+            cardHeaderEmoji.style.background = "rgba(255, 215, 0, 0.15)";
+            cardHeaderEmoji.style.borderColor = "rgba(255, 215, 0, 0.5)";
+            cardCertificateTitle.textContent = rareObj ? rareObj.title + " Certificate" : "Rare Golden Roast Certificate";
+            cardCertificateTitle.style.color = "#ffd700";
+            cardCatLabelContainer.style.background = "rgba(255, 215, 0, 0.12)";
+            cardCatLabelContainer.style.borderColor = "rgba(255, 215, 0, 0.4)";
+            document.getElementById('cardCatLabel').style.color = "#ffd700";
+            cardDividerEmoji.textContent = rareObj ? rareObj.emoji : "👑";
+            cardFriendName.style.color = "#ffd700";
+            cardFriendName.style.textShadow = "0 0 30px rgba(255, 215, 0, 0.6)";
+            roastTextContainer.style.borderColor = "rgba(255, 215, 0, 0.6)";
+            cardSignature.style.color = "#ffd700";
+
+            heatFill.style.background = "linear-gradient(90deg, #ffd700, #ffa500, #ff8c00)";
+            heatFill.style.width = "100%";
+            heatLabel.textContent = rareObj ? rareObj.heatLabel : "🌟 Solar Flare";
+
+            document.getElementById('cardSavagery').textContent = rareObj ? rareObj.savagery : "👑 Legendary Roast";
+            document.getElementById('cardRecovery').textContent = rareObj ? rareObj.recovery : "0% 💀";
+            document.getElementById('cardFriendship').textContent = rareObj ? rareObj.friendship : "Petition to End 📝";
+
+            const emojiVal = rareObj ? rareObj.emoji : "👑";
+            document.getElementById('roastEmoji').textContent = emojiVal;
+        } else {
+            inner.classList.remove('rare-golden-glow');
+            cardWatermark.textContent = "FRIENDCHECK · OFFICIAL ROAST";
+            cardWatermark.style.color = "#ff6600";
+            cardHeaderEmoji.style.background = "rgba(255,102,0,.15)";
+            cardHeaderEmoji.style.borderColor = "rgba(255,102,0,.35)";
+            cardCertificateTitle.textContent = "Official Roast Certificate";
+            cardCertificateTitle.style.color = "#ff8800";
+            cardCatLabelContainer.style.background = "rgba(255,102,0,.12)";
+            cardCatLabelContainer.style.borderColor = "rgba(255,102,0,.3)";
+            document.getElementById('cardCatLabel').style.color = "#ff8800";
+            cardDividerEmoji.textContent = "😈";
+            cardFriendName.style.color = "#ff6600";
+            cardFriendName.style.textShadow = "0 0 30px rgba(255,102,0,.4)";
+            roastTextContainer.style.borderColor = "rgba(255,102,0,.3)";
+            cardSignature.style.color = "#fface8";
+
+            heatFill.style.background = "";
+            heatFill.style.width = heatPct + '%';
+            const hi = Math.min(6, Math.floor(heatPct / 15));
+            heatLabel.textContent = HEAT_LABELS[hi];
+
+            document.getElementById('cardSavagery').textContent = SAVAGERY[Math.min(6,Math.floor(heatPct/15))];
+            document.getElementById('cardRecovery').textContent = RECOVERY[Math.min(6,Math.floor(heatPct/15))];
+            document.getElementById('cardFriendship').textContent = FRIENDSHIP_STATUS[Math.floor(Math.random()*FRIENDSHIP_STATUS.length)];
+
+            const emojis = ['🔥','😈','💀','🌶️','☢️','🤯','⚡'];
+            document.getElementById('roastEmoji').textContent = emojis[Math.floor(Math.random()*emojis.length)];
+        }
+
+        document.getElementById('roastEmoji').classList.remove('fire-burst');
+        void document.getElementById('roastEmoji').offsetWidth;
+        document.getElementById('roastEmoji').classList.add('fire-burst');
+
+        // Category label
+        document.getElementById('cardCatLabel').textContent = CAT_LABELS[cat] || '✍️ Custom Roast';
+
+        // Date & ID
+        document.getElementById('cardDate').textContent = new Date().toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'});
+        roastCount++;
+        document.getElementById('roastId').textContent = 'ROAST-' + String(roastCount).padStart(4,'0') + '-' + Math.random().toString(36).substring(2,5).toUpperCase();
+
+        // Show card
+        const card = document.getElementById('roastCard');
+        card.classList.remove('hidden');
+        inner.classList.remove('roast-reveal');
+        void inner.offsetWidth;
+        inner.classList.add('roast-reveal');
+
+        // Scroll
+        setTimeout(() => card.scrollIntoView({behavior:'smooth',block:'start'}), 100);
+
+        // Confetti
+        if (isCurrentRoastRare) {
+            launchGoldConfetti();
+        } else if (heatPct > 80) {
+            spawnFire();
+        }
+
+        // History
+        addHistory(name, text.substring(0,60), heatPct, cat);
+    }
+
+    // ── HISTORY ──────────────────────────────────────────────────
+    function addHistory(name, snippet, heat, cat) {
+        const container = document.getElementById('roastHistory');
+        document.getElementById('historyEmpty')?.remove();
+
+        const div = document.createElement('div');
+        div.className = 'history-row glass rounded-xl px-4 py-3 flex items-start gap-3';
+        const heatColor = heat > 80 ? '#ff4400' : heat > 60 ? '#ff8800' : '#fface8';
+        div.innerHTML = `
+            <span class="text-[18px] mt-0.5 flex-shrink-0">🔥</span>
+            <div class="flex-1 min-w-0">
+                <p class="font-jakarta text-[13px] text-on-surface truncate">"${snippet}…"</p>
+                <p class="font-jakarta text-[11px] text-on-surface-variant mt-0.5">${name} · ${CAT_LABELS[cat]||'Custom'}</p>
+            </div>
+            <span class="font-sora text-[12px] font-bold px-2 py-0.5 rounded-full flex-shrink-0" style="background:rgba(255,100,0,.12);color:${heatColor};border:1px solid rgba(255,100,0,.25);">${heat}°🌡️</span>
+        `;
+        container.prepend(div);
+        while (container.children.length > 6) container.lastChild.remove();
+    }
+
+    // ── SHARE ────────────────────────────────────────────────────
+    function shareRoast(btn) {
+        const name = document.getElementById('cardFriendName').textContent;
+        const text = document.getElementById('roastText').textContent;
+        const msg = `🔥 FriendCheck just roasted ${name}!\n\n"${text}"\n\nRoast your friends too →`;
+        const orig = btn.innerHTML;
+        if (navigator.share) {
+            navigator.share({title:'FriendCheck Roast 🔥', text: msg, url: 'https://friendship-check.in/roast_generator.html'}).catch(()=>{});
+        } else {
+            navigator.clipboard.writeText(msg + '\n' + 'https://friendship-check.in/roast_generator.html').then(() => {
+                btn.innerHTML = '<span class="material-symbols-outlined text-[18px]" style="color:#32dc64;">check_circle</span> Copied!';
+                setTimeout(() => btn.innerHTML = orig, 2500);
+            });
+        }
+    }
+
+    // ── DOWNLOAD ─────────────────────────────────────────────────
+    async function downloadCard(btn) {
+        const orig = btn.innerHTML;
+        btn.innerHTML = '<span class="material-symbols-outlined text-[18px] animate-spin">sync</span> Saving…';
+        btn.disabled = true;
+        try {
+            const canvas = await html2canvas(document.getElementById('roastCardInner'), {
+                scale: 2.5, backgroundColor: null, logging: false, useCORS: true, allowTaint: true,
+            });
+            const name = document.getElementById('cardFriendName').textContent.replace(/\s+/g,'_');
+            const link = document.createElement('a');
+            link.download = `roast-${name}-friendcheck.png`;
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+            if (isCurrentRoastRare) {
+                launchGoldConfetti();
+            } else {
+                spawnFire();
+            }
+        } catch(e) {
+            alert('Could not download. Try screenshotting instead!');
+        } finally {
+            btn.innerHTML = orig;
+            btn.disabled = false;
+        }
+    }
+
+    // ── FIRE PARTICLES ───────────────────────────────────────────
+    function spawnFire() {
+        const colors = ['#ff4400','#ff6600','#ff8800','#ffaa00','#ff2200','#fface8'];
+        for (let i = 0; i < 30; i++) {
+            const p = document.createElement('div');
+            p.className = 'confetti-piece';
+            const sz = Math.random()*10+4;
+            p.style.cssText = `width:${sz}px;height:${sz}px;left:${Math.random()*100}vw;top:${Math.random()*25+10}vh;background:${colors[Math.floor(Math.random()*colors.length)]};border-radius:${Math.random()>.5?'50%':'2px'};animation-duration:${1+Math.random()*1.2}s;animation-delay:${Math.random()*.4}s;`;
+            document.body.appendChild(p);
+            setTimeout(() => p.remove(), 2200);
+        }
+    }
+
+    // ── GOLD CONFETTI ────────────────────────────────────────────
+    function launchGoldConfetti() {
+        const colors = ["#ffd700", "#ffaa00", "#fffbeb", "#e6c300"];
+        for (let i = 0; i < 80; i++) {
+            const el = document.createElement("div");
+            el.className = "gold-confetti-piece";
+            el.style.cssText = `
+                left: ${Math.random() * 100}vw;
+                background: ${colors[Math.floor(Math.random() * colors.length)]};
+                width: ${6 + Math.random() * 8}px;
+                height: ${6 + Math.random() * 8}px;
+                border-radius: ${Math.random() > 0.5 ? "50%" : "2px"};
+                animation-duration: ${1.5 + Math.random() * 2.5}s;
+                animation-delay: ${Math.random() * 0.8}s;
+            `;
+            document.body.appendChild(el);
+            setTimeout(() => el.remove(), 4000);
+        }
+    }
+
+    // ── MOUSE GLOW ────────────────────────────────────────────────
+    const mg = document.getElementById('mouseGlow');
+    document.addEventListener('mousemove', e => {
+        mg.style.left = e.clientX+'px'; mg.style.top = e.clientY+'px'; mg.style.opacity='1';
+    });
+    </script>
+
+  <!-- ── UNIFIED NAV + UTILS ── -->
+  <script src="shared/fc-utils.js"></script>
+  <script src="shared/fc-nav.js"></script>
+  <script>FCNav.init({ active: 'roast' });</script>
+  <!-- ═══════════════════════════════════════════════════════════
+       MONETIZATION LAYER — ads + affiliate recommendations
+       Injected by friendcheck-monetized build
+  ════════════════════════════════════════════════════════════ -->
+
+  <!-- AD: Mid-content (placed before result area) -->
+  <div id="ad-mid-banner" style="width:100%;max-width:728px;margin:2rem auto;padding:0 1rem;box-sizing:border-box;"></div>
+
+  <!-- AFFILIATE: After result card -->
+  <div id="fc-affiliate-strip"></div>
+
+  <!-- AD: Native after result -->
+  <div id="ad-post-result" style="width:100%;max-width:900px;margin:0 auto 2rem;padding:0 1rem;box-sizing:border-box;"></div>
+
+  <!-- STICKY FOOTER AD -->
+  <div id="ad-footer-sticky"></div>
+
+  <!-- ── MONETIZATION SCRIPTS ── -->
+  <script src="shared/fc-ads.js"></script>
+  <script src="shared/fc-affiliate.js"></script>
+  <script>
+    // Init ads
+    FCAds.initAll([
+      { type: 'banner', id: 'ad-mid-banner',    key: 'REPLACE_WITH_BANNER_KEY' },
+      { type: 'native', id: 'ad-post-result',   key: 'REPLACE_WITH_NATIVE_KEY' },
+      { type: 'footer', id: 'ad-footer-sticky', key: 'REPLACE_WITH_FOOTER_KEY', options: { sticky: true, closeable: true } },
+    ]);
+
+    // Affiliate strip — renders after page-specific result trigger
+    // Call this from your result-reveal function:
+    //   FCAffiliate.render('fc-affiliate-strip', 'roast');
+    // OR wire to a result event:
+    window.addEventListener('fc-result-shown', function() {
+      FCAffiliate.render('fc-affiliate-strip', 'roast');
+    });
+
+    // Auto-show affiliate on page if result is already visible
+    document.addEventListener('DOMContentLoaded', function() {
+      var resultEl = document.querySelector('[id*="result"], [class*="result"], [id*="verdict"], [id*="certificate"]');
+      if (resultEl && getComputedStyle(resultEl).display !== 'none') {
+        FCAffiliate.render('fc-affiliate-strip', 'roast');
+      }
+    });
+  </script>
+
+</body>
+</html>
