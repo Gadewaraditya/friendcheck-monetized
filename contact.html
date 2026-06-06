@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Contact Us | FriendCheck</title>
+<meta name="description" content="Get in touch with the FriendCheck team. We'd love to hear from you."/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&display=swap" rel="stylesheet"/>
+<style>
+:root{--bg:#07040f;--surface:rgba(255,255,255,0.06);--border:rgba(255,255,255,0.10);--primary:#a259ff;--secondary:#00d2ff;--accent:#ff2d7a;--text:#ffffff;--muted:#8888aa;--r:20px;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;background-image:radial-gradient(circle at 15% 15%,rgba(162,89,255,.13),transparent 42%),radial-gradient(circle at 85% 75%,rgba(0,210,255,.10),transparent 42%);}
+nav{background:rgba(7,4,15,.85);border-bottom:1px solid var(--border);backdrop-filter:blur(20px);padding:14px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
+.logo{display:flex;align-items:center;gap:9px;text-decoration:none;color:var(--text);}
+.logo-icon{width:32px;height:32px;background:linear-gradient(135deg,#a259ff,#00d2ff);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:16px;}
+.logo-name{font-size:16px;font-weight:800;}
+.nav-back{display:flex;align-items:center;gap:6px;text-decoration:none;color:var(--muted);font-size:13px;font-weight:600;padding:6px 13px;background:var(--surface);border:1px solid var(--border);border-radius:10px;transition:.2s;}
+.nav-back:hover{color:var(--text);border-color:rgba(162,89,255,.4);}
+.hero{text-align:center;padding:60px 20px 32px;}
+.hero-tag{display:inline-flex;align-items:center;gap:7px;background:rgba(162,89,255,.12);border:1px solid rgba(162,89,255,.3);border-radius:50px;padding:6px 16px;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:var(--primary);margin-bottom:20px;}
+.hero h1{font-size:clamp(2rem,5vw,3.2rem);font-weight:900;line-height:1.1;background:linear-gradient(120deg,#ff2d7a,#a259ff,#00d2ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:14px;}
+.hero p{color:var(--muted);font-size:1.05rem;max-width:560px;margin:0 auto;line-height:1.6;}
+.container{max-width:800px;margin:0 auto;padding:0 20px 80px;}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:36px;backdrop-filter:blur(16px);margin-bottom:16px;position:relative;overflow:hidden;}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--accent),var(--primary),var(--secondary));}
+.section-title{font-size:1.2rem;font-weight:800;margin-bottom:18px;display:flex;align-items:center;gap:10px;}
+.section-title span{font-size:1.4rem;}
+p{color:var(--muted);font-size:.97rem;line-height:1.75;margin-bottom:14px;}
+p:last-child{margin-bottom:0;}
+strong{color:var(--text);}
+/* CONTACT METHODS */
+.contact-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;margin-top:4px;}
+.contact-card{display:flex;flex-direction:column;gap:8px;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:16px;padding:20px 18px;transition:.2s;}
+.contact-card:hover{border-color:rgba(162,89,255,.4);background:rgba(162,89,255,.06);}
+.contact-card .cc-icon{font-size:2rem;}
+.contact-card .cc-label{font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);}
+.contact-card .cc-value{font-size:.93rem;font-weight:700;color:var(--primary);text-decoration:none;word-break:break-all;}
+.contact-card .cc-value:hover{text-decoration:underline;}
+/* FORM */
+.form-group{margin-bottom:16px;}
+label{display:block;font-size:.84rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;margin-bottom:7px;}
+input,textarea,select{width:100%;background:rgba(255,255,255,.05);border:1px solid var(--border);border-radius:12px;padding:12px 15px;color:var(--text);font-family:'Outfit',sans-serif;font-size:.95rem;outline:none;transition:.2s;resize:none;}
+input:focus,textarea:focus,select:focus{border-color:var(--primary);background:rgba(162,89,255,.08);box-shadow:0 0 0 3px rgba(162,89,255,.15);}
+input::placeholder,textarea::placeholder{color:var(--muted);}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+@media(max-width:520px){.form-row{grid-template-columns:1fr;}}
+.btn-submit{width:100%;padding:14px;background:linear-gradient(135deg,#a259ff,#00d2ff);border:none;border-radius:14px;color:#fff;font-family:'Outfit',sans-serif;font-size:1rem;font-weight:800;cursor:pointer;transition:.2s;margin-top:6px;letter-spacing:.5px;}
+.btn-submit:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(162,89,255,.4);}
+.form-note{font-size:.82rem;color:var(--muted);text-align:center;margin-top:12px;}
+.success-msg{display:none;background:rgba(0,255,170,.08);border:1px solid rgba(0,255,170,.25);border-radius:14px;padding:18px 22px;text-align:center;color:#00ffaa;font-weight:700;margin-top:14px;}
+footer{background:rgba(7,4,15,.9);border-top:1px solid var(--border);padding:24px 20px;text-align:center;}
+.footer-links{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:6px 20px;margin-bottom:12px;}
+.footer-links a{color:var(--muted);text-decoration:none;font-size:.82rem;font-weight:600;transition:.15s;}
+.footer-links a:hover{color:var(--text);}
+.footer-copy{color:var(--muted);font-size:.78rem;}
+</style>
+<script src="https://pl29662480.effectivecpmnetwork.com/e8/b4/4a/e8b44a4fa8c22d3ffbca58de510433c0.js"></script>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="logo"><div class="logo-icon">👥</div><span class="logo-name">FriendCheck</span></a>
+  <a href="index.html" class="nav-back">← Back to Hub</a>
+</nav>
+
+<div class="hero">
+  <div class="hero-tag">📬 Contact</div>
+  <h1>Say Hello!</h1>
+  <p>We're a small team and we genuinely love hearing from users. Suggestions, bugs, collabs — slide into our inbox.</p>
+</div>
+
+<div class="container">
+
+  <div class="card">
+    <div class="section-title"><span>⚡</span> Quick Contact</div>
+    <div class="contact-grid">
+      <div class="contact-card">
+        <div class="cc-icon">📧</div>
+        <div class="cc-label">Email</div>
+        <a href="mailto:gadewaraditya2005@gmail.com" class="cc-value">gadewaraditya2005@gmail.com</a>
+      </div>
+      <div class="contact-card">
+        <div class="cc-icon">🌐</div>
+        <div class="cc-label">Website</div>
+        <a href="https://friendship-hub.fun" class="cc-value">friendship-hub.fun</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="section-title"><span>✍️</span> Send a Message</div>
+    <form id="contactForm" onsubmit="handleSubmit(event)">
+      <div class="form-row">
+        <div class="form-group">
+          <label for="name">Your Name</label>
+          <input type="text" id="name" placeholder="e.g. Rohan Sharma" required/>
+        </div>
+        <div class="form-group">
+          <label for="email">Your Email</label>
+          <input type="email" id="email" placeholder="you@email.com" required/>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="subject">Subject</label>
+        <select id="subject">
+          <option value="suggestion">💡 Feature Suggestion</option>
+          <option value="bug">🐛 Bug Report</option>
+          <option value="collab">🤝 Collaboration</option>
+          <option value="other">💬 Something Else</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="message">Message</label>
+        <textarea id="message" rows="5" placeholder="Tell us what's on your mind..." required></textarea>
+      </div>
+      <button type="submit" class="btn-submit">Send Message 🚀</button>
+      <p class="form-note">We typically reply within 24–48 hours. No spam, ever.</p>
+    </form>
+    <div id="successMsg" class="success-msg">✅ Message sent! We'll get back to you soon.</div>
+  </div>
+
+  <div class="card">
+    <div class="section-title"><span>💡</span> Common Topics</div>
+    <p><strong>New tool ideas?</strong> We love adding new prank tools. If you have a wild idea, tell us — we might just build it.</p>
+    <p><strong>Found a bug?</strong> Screenshots are super helpful. Include your device and browser if possible.</p>
+    <p><strong>Partnership/collab?</strong> Reach out to us directly at <a href="mailto:gadewaraditya2005@gmail.com" style="color:var(--primary);text-decoration:none;font-weight:700;">our email</a> with details.</p>
+    <p><strong>Press inquiries?</strong> Same email — label it "Press" in the subject line.</p>
+  </div>
+
+</div>
+
+<footer>
+  <div class="footer-links">
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="contact.html">Contact</a>
+    <a href="privacy-policy.html">Privacy Policy</a>
+    <a href="terms.html">Terms &amp; Conditions</a>
+    <a href="disclaimer.html">Disclaimer</a>
+  </div>
+  <div class="footer-copy">© 2025 FriendCheck · friendship-hub.fun · For Entertainment Only</div>
+</footer>
+
+<script>
+function handleSubmit(e){
+  e.preventDefault();
+  const form=document.getElementById('contactForm');
+  const success=document.getElementById('successMsg');
+  // Build mailto link as fallback since this is a static site
+  const name=document.getElementById('name').value;
+  const email=document.getElementById('email').value;
+  const subject=document.getElementById('subject').value;
+  const message=document.getElementById('message').value;
+  const body=`Name: ${name}\nEmail: ${email}\n\n${message}`;
+  window.location.href=`mailto:gadewaraditya2005@gmail.com?subject=FriendCheck - ${subject}&body=${encodeURIComponent(body)}`;
+  form.style.opacity='.4';
+  form.style.pointerEvents='none';
+  success.style.display='block';
+}
+</script>
+
+<script src="https://pl29662481.effectivecpmnetwork.com/47/1c/b2/471cb23c2c2fe4fcae0b936a06abe2d4.js"></script>
+</body>
+</html>
