@@ -1,0 +1,1065 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Free ₹100 Challenge – Can You Complete It? | FriendCheck</title>
+<meta name="description" content="Complete one simple mission and unlock your ₹100 reward. Can you do it? 😈"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800;900&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg:#07040f;
+  --surface:rgba(255,255,255,0.055);
+  --surface2:rgba(255,255,255,0.10);
+  --surface3:rgba(255,255,255,0.14);
+  --border:rgba(255,255,255,0.10);
+  --border-hi:rgba(162,89,255,0.55);
+  --primary:#a259ff;
+  --secondary:#00d2ff;
+  --accent:#ff2d7a;
+  --gold:#ffd700;
+  --green:#00ff87;
+  --orange:#ff7b00;
+  --text:#ffffff;
+  --muted:#9988bb;
+  --r:22px;
+  --r-sm:14px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:'Outfit',sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  min-height:100vh;
+  display:flex;flex-direction:column;align-items:center;
+  overflow-x:hidden;
+  background-image:
+    radial-gradient(circle at 15% 15%,rgba(162,89,255,.18),transparent 42%),
+    radial-gradient(circle at 85% 75%,rgba(0,210,255,.14),transparent 42%),
+    radial-gradient(circle at 50% 50%,rgba(255,45,122,.08),transparent 65%);
+}
+
+/* ── CONFETTI CANVAS ── */
+#confetti-canvas{position:fixed;inset:0;pointer-events:none;z-index:9998;}
+
+/* ── FLOATING EMOJI BG ── */
+.emoji-float-layer{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;}
+.float-emoji{
+  position:absolute;bottom:-60px;font-size:1.6rem;
+  animation:floatUp linear infinite;
+  opacity:0;user-select:none;
+}
+@keyframes floatUp{
+  0%{transform:translateY(0) rotate(0deg);opacity:0;}
+  10%{opacity:.35;}
+  90%{opacity:.25;}
+  100%{transform:translateY(-110vh) rotate(360deg);opacity:0;}
+}
+
+/* ── WRAPPER ── */
+.app{width:100%;max-width:540px;margin:0 auto;padding:22px 16px 80px;position:relative;z-index:1;}
+
+/* ── TOP HEADER ── */
+.top-bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;}
+.fc-logo{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:800;color:var(--muted);}
+.fc-logo-dot{width:26px;height:26px;background:linear-gradient(135deg,#a259ff,#4f9fff);border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:13px;}
+.sound-btn{width:34px;height:34px;border-radius:9px;background:var(--surface2);border:1px solid var(--border);color:var(--muted);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:.2s;}
+.sound-btn:hover{background:var(--surface3);color:var(--text);}
+
+/* ── LEVEL HUD ── */
+.level-hud{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--r);
+  padding:14px 18px;
+  margin-bottom:20px;
+  backdrop-filter:blur(20px);
+  display:flex;align-items:center;gap:14px;
+}
+.level-badge{
+  width:46px;height:46px;border-radius:50%;
+  background:linear-gradient(135deg,var(--primary),var(--accent));
+  display:flex;align-items:center;justify-content:center;
+  font-size:20px;flex-shrink:0;
+  box-shadow:0 0 20px rgba(162,89,255,.4);
+}
+.level-info{flex:1;}
+.level-name{font-size:13px;font-weight:800;letter-spacing:.5px;}
+.level-sub{font-size:11px;color:var(--muted);margin-bottom:6px;}
+.level-xp-bar{width:100%;height:5px;background:var(--surface2);border-radius:3px;overflow:hidden;}
+.level-xp-fill{height:100%;background:linear-gradient(90deg,var(--primary),var(--accent));border-radius:3px;transition:width .6s ease;}
+.level-stats{display:flex;flex-direction:column;align-items:flex-end;gap:3px;text-align:right;}
+.stat-chip{font-size:11px;font-weight:700;color:var(--muted);}
+.stat-chip span{color:var(--text);}
+
+/* ── PILL ── */
+.top-pill{
+  display:inline-flex;align-items:center;gap:8px;
+  background:linear-gradient(135deg,rgba(255,215,0,.18),rgba(255,123,0,.14));
+  border:1px solid rgba(255,215,0,.4);
+  border-radius:50px;padding:7px 18px;
+  font-size:.8rem;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;
+  color:var(--gold);margin-bottom:24px;backdrop-filter:blur(8px);
+  animation:pulse-gold 2.5s infinite;
+}
+@keyframes pulse-gold{0%,100%{box-shadow:0 0 0 0 rgba(255,215,0,.3);}50%{box-shadow:0 0 0 10px rgba(255,215,0,0);}}
+
+/* ── PROGRESS ── */
+.progress-wrap{width:100%;height:7px;background:var(--surface2);border-radius:4px;margin-bottom:24px;overflow:hidden;}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--primary),var(--accent),var(--gold));border-radius:4px;transition:width .6s cubic-bezier(.4,0,.2,1);}
+
+/* ── STEP DOTS ── */
+.step-dots{display:flex;align-items:center;justify-content:center;gap:5px;margin-bottom:20px;}
+.sdot{width:9px;height:9px;border-radius:50%;background:var(--surface3);border:1px solid var(--border);transition:all .35s ease;}
+.sdot.done{background:var(--green);box-shadow:0 0 8px var(--green);border-color:transparent;}
+.sdot.active{background:var(--primary);box-shadow:0 0 10px var(--primary);width:26px;border-radius:5px;border-color:transparent;}
+
+/* ── GLASS CARD ── */
+.card{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--r);
+  padding:34px 26px;
+  backdrop-filter:blur(24px);
+  -webkit-backdrop-filter:blur(24px);
+  text-align:center;
+  position:relative;
+  overflow:hidden;
+  box-shadow:0 8px 40px rgba(0,0,0,.45),inset 0 1px 0 rgba(255,255,255,.06);
+}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--accent),var(--primary),var(--secondary));}
+.card-glow{box-shadow:0 0 50px rgba(162,89,255,.22),0 20px 60px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.06);}
+
+/* ── SCREEN ── */
+.screen{display:none;animation:screenIn .42s cubic-bezier(.25,.8,.25,1) both;}
+.screen.active{display:block;}
+@keyframes screenIn{from{opacity:0;transform:translateY(22px) scale(.98);}to{opacity:1;transform:translateY(0) scale(1);}}
+
+/* ── HEADINGS ── */
+.hero-emoji{font-size:5.5rem;display:block;margin-bottom:14px;animation:floatBob 3.5s ease-in-out infinite;}
+@keyframes floatBob{0%,100%{transform:translateY(0) scale(1);}50%{transform:translateY(-14px) scale(1.05);}}
+.hero-title{font-size:clamp(1.8rem,5.5vw,2.5rem);font-weight:900;line-height:1.12;margin-bottom:12px;background:linear-gradient(120deg,var(--gold),var(--orange),var(--accent));-webkit-background-clip:text;-webkit-text-fill-color:transparent;filter:drop-shadow(0 0 18px rgba(255,215,0,.4));}
+.hero-sub{font-size:1.05rem;color:var(--muted);line-height:1.58;margin-bottom:26px;}
+.hero-sub strong{color:var(--text);}
+
+/* ── MONEY BADGE ── */
+.money-badge{
+  display:inline-flex;align-items:center;gap:10px;
+  background:linear-gradient(135deg,rgba(0,255,135,.13),rgba(0,210,255,.09));
+  border:2px solid rgba(0,255,135,.4);
+  border-radius:16px;padding:14px 26px;margin-bottom:26px;
+  font-size:2.1rem;font-weight:900;color:var(--green);
+  text-shadow:0 0 22px rgba(0,255,135,.5);
+  animation:money-pulse 2s ease-in-out infinite;
+}
+@keyframes money-pulse{0%,100%{box-shadow:0 0 0 0 rgba(0,255,135,.25);}50%{box-shadow:0 0 0 12px rgba(0,255,135,0);}}
+
+/* ── CHECKLIST ── */
+.check-list{display:flex;flex-direction:column;gap:9px;margin-bottom:26px;text-align:left;}
+.check-item{display:flex;align-items:center;gap:11px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--r-sm);padding:12px 16px;font-size:.9rem;font-weight:600;}
+.check-item:hover{border-color:rgba(0,255,135,.25);transition:.2s;}
+
+/* ── BUTTONS ── */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;width:100%;padding:17px 24px;border:none;border-radius:16px;font-family:'Outfit',sans-serif;font-size:1.08rem;font-weight:800;letter-spacing:.4px;cursor:pointer;transition:all .25s cubic-bezier(.34,1.56,.64,1);text-decoration:none;position:relative;overflow:hidden;}
+.btn::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.15) 0%,transparent);opacity:0;transition:opacity .2s;}
+.btn:hover::after{opacity:1;}
+.btn:hover{transform:translateY(-3px) scale(1.02);box-shadow:0 14px 35px rgba(0,0,0,.4);}
+.btn:active{transform:translateY(0) scale(.97);}
+.btn-gold{background:linear-gradient(135deg,#ffd700,#ff9500);color:#1a0900;box-shadow:0 6px 22px rgba(255,150,0,.4);}
+.btn-primary{background:linear-gradient(135deg,var(--primary),var(--accent));color:#fff;box-shadow:0 6px 22px rgba(162,89,255,.4);}
+.btn-green{background:linear-gradient(135deg,var(--green),#00b8d4);color:#001a10;box-shadow:0 6px 22px rgba(0,255,135,.35);}
+.btn-ghost{background:var(--surface2);border:1px solid var(--border);color:var(--text);}
+.btn-ghost:hover{border-color:var(--border-hi);}
+.btn-pulse{animation:btn-pulse-anim 1.8s ease-in-out infinite;}
+@keyframes btn-pulse-anim{0%,100%{box-shadow:0 6px 22px rgba(255,150,0,.4);}50%{box-shadow:0 6px 32px rgba(255,150,0,.7),0 0 0 8px rgba(255,150,0,.1);}}
+
+/* ── SHARE BUTTONS ── */
+.share-grid{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-bottom:22px;}
+.share-btn{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;padding:18px 12px;border:none;border-radius:16px;font-family:'Outfit',sans-serif;font-size:.88rem;font-weight:800;cursor:pointer;transition:all .25s cubic-bezier(.34,1.56,.64,1);letter-spacing:.3px;}
+.share-btn:hover{transform:translateY(-5px) scale(1.05);}
+.share-btn:active{transform:scale(.95);}
+.share-btn .sico{font-size:2.1rem;line-height:1;}
+.sbtn-wa{background:linear-gradient(135deg,#25d366,#128c4a);color:#fff;box-shadow:0 5px 18px rgba(37,211,102,.4);}
+.sbtn-ig{background:linear-gradient(135deg,#f58529,#dd2a7b,#8134af,#515bd4);color:#fff;box-shadow:0 5px 18px rgba(221,42,123,.4);}
+.sbtn-igdm{background:linear-gradient(135deg,#833ab4,#fd1d1d,#fcb045);color:#fff;box-shadow:0 5px 18px rgba(131,58,180,.4);}
+.sbtn-tg{background:linear-gradient(135deg,#0088cc,#005fa3);color:#fff;box-shadow:0 5px 18px rgba(0,136,204,.4);}
+.sbtn-fb{background:linear-gradient(135deg,#0084ff,#0040c0);color:#fff;box-shadow:0 5px 18px rgba(0,132,255,.4);}
+.share-wide{grid-column:1/-1;}
+
+.shared-confirm{display:none;margin-bottom:14px;padding:13px 16px;background:rgba(0,255,135,.1);border:1px solid rgba(0,255,135,.3);border-radius:var(--r-sm);color:var(--green);font-weight:700;font-size:.93rem;animation:popIn .3s ease;}
+
+/* ── VERIFY STEPS ── */
+.verify-list{display:flex;flex-direction:column;gap:13px;margin:22px 0;text-align:left;}
+.vi{display:flex;align-items:center;gap:13px;padding:13px 16px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--r-sm);font-size:.92rem;font-weight:600;opacity:0;transform:translateX(-18px);transition:all .45s ease;}
+.vi.show{opacity:1;transform:translateX(0);}
+.vi.done{border-color:rgba(0,255,135,.3);}
+.vi-spin{width:22px;height:22px;border:3px solid var(--border);border-top-color:var(--primary);border-radius:50%;animation:spin .7s linear infinite;flex-shrink:0;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.vi-bar{flex:1;height:5px;background:var(--surface2);border-radius:3px;overflow:hidden;}
+.vi-bar-f{height:100%;width:0%;background:linear-gradient(90deg,var(--primary),var(--secondary));border-radius:3px;transition:width 1.4s ease;}
+.vi-dot{width:10px;height:10px;border-radius:50%;background:var(--muted);flex-shrink:0;}
+
+/* ── PRANK TITLE ── */
+.prank-title{
+  font-size:clamp(2rem,7vw,3rem);
+  font-weight:900;line-height:1.08;
+  margin:14px 0 10px;
+  background:linear-gradient(120deg,var(--accent),var(--primary),var(--gold));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  filter:drop-shadow(0 0 22px rgba(255,45,122,.5));
+  animation:shake .5s ease;
+}
+@keyframes shake{0%,100%{transform:translateX(0);}20%{transform:translateX(-9px) rotate(-2deg);}40%{transform:translateX(9px) rotate(2deg);}60%{transform:translateX(-5px);}80%{transform:translateX(5px);}}
+
+/* ── BADGE ── */
+.badge-wrap{margin:22px 0;display:inline-block;width:100%;}
+.badge-card{
+  background:linear-gradient(135deg,rgba(162,89,255,.18),rgba(255,45,122,.13));
+  border:2px solid var(--primary);
+  border-radius:20px;padding:22px 28px;
+  position:relative;overflow:hidden;
+  animation:badgePop .6s cubic-bezier(.34,1.56,.64,1);
+  text-align:center;
+}
+.badge-card.rare{border-color:var(--gold);background:linear-gradient(135deg,rgba(255,215,0,.18),rgba(255,123,0,.12));box-shadow:0 0 35px rgba(255,215,0,.3);}
+@keyframes badgePop{from{transform:scale(0) rotate(-12deg);opacity:0;}to{transform:scale(1) rotate(0);opacity:1;}}
+.badge-lbl{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:var(--muted);margin-bottom:4px;}
+.badge-name{font-size:1.55rem;font-weight:900;background:linear-gradient(120deg,var(--primary),var(--accent));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.badge-card.rare .badge-name{background:linear-gradient(120deg,var(--gold),var(--orange));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.rare-tag{display:inline-block;background:linear-gradient(135deg,var(--gold),var(--orange));color:#1a0900;font-size:.62rem;font-weight:900;letter-spacing:2px;text-transform:uppercase;padding:3px 11px;border-radius:50px;margin-bottom:7px;}
+.badge-stars{font-size:1.5rem;letter-spacing:3px;margin-top:6px;animation:starPop .6s .3s both;}
+@keyframes starPop{from{transform:scale(0) rotate(-15deg);}to{transform:scale(1) rotate(0);}}
+
+/* ── EMOJI RAIN ── */
+.emoji-rain{display:flex;justify-content:center;flex-wrap:wrap;gap:5px;margin:10px 0;font-size:1.55rem;animation:popIn .45s ease;}
+@keyframes popIn{from{transform:scale(0);opacity:0;}to{transform:scale(1);opacity:1;}}
+
+/* ── POPUP OVERLAY ── */
+.popup-bg{position:fixed;inset:0;background:rgba(0,0,0,.8);backdrop-filter:blur(10px);z-index:5000;display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity .35s ease;}
+.popup-bg.show{opacity:1;pointer-events:all;}
+.popup-card{
+  background:var(--bg);
+  border:2px solid var(--border-hi);
+  border-radius:var(--r);padding:34px 26px;
+  max-width:430px;width:100%;text-align:center;
+  position:relative;
+  box-shadow:0 0 70px rgba(162,89,255,.35),0 30px 80px rgba(0,0,0,.7);
+  transform:scale(.8) translateY(32px);
+  transition:transform .4s cubic-bezier(.34,1.56,.64,1);
+}
+.popup-bg.show .popup-card{transform:scale(1) translateY(0);}
+.popup-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--primary),var(--gold),var(--accent));border-radius:var(--r) var(--r) 0 0;}
+.popup-title{font-size:2rem;font-weight:900;color:var(--gold);margin:10px 0 6px;}
+.popup-sub{font-size:.98rem;color:var(--muted);margin-bottom:18px;line-height:1.5;}
+.popup-hl{font-size:1.18rem;font-weight:800;color:var(--text);margin-bottom:7px;}
+.popup-est{display:inline-flex;align-items:center;gap:8px;background:rgba(255,45,122,.14);border:1px solid rgba(255,45,122,.3);border-radius:12px;padding:10px 18px;margin:12px 0 18px;font-size:.93rem;font-weight:700;color:var(--accent);}
+.popup-reveal{display:none;animation:shake .5s ease;}
+.popup-reveal .prank-title{font-size:1.65rem;}
+
+/* ── EXPLORE CARDS ── */
+.explore-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:18px;}
+.explore-card{
+  display:flex;flex-direction:column;align-items:center;gap:8px;
+  padding:18px 12px;
+  background:var(--surface2);
+  border:1px solid var(--border);
+  border-radius:18px;
+  color:var(--text);text-decoration:none;
+  font-size:.85rem;font-weight:700;
+  transition:all .25s cubic-bezier(.34,1.56,.64,1);
+  backdrop-filter:blur(10px);
+  text-align:center;
+}
+.explore-card:hover{transform:translateY(-5px) scale(1.03);border-color:var(--border-hi);box-shadow:0 10px 30px rgba(162,89,255,.2);}
+.explore-card .ec-ico{font-size:2rem;}
+.explore-card .ec-lbl{color:var(--muted);font-size:.76rem;font-weight:600;}
+
+/* ── STATS SECTION ── */
+.stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:20px;}
+.stat-box{background:var(--surface2);border:1px solid var(--border);border-radius:var(--r-sm);padding:14px 10px;text-align:center;}
+.stat-val{font-size:1.6rem;font-weight:900;background:linear-gradient(135deg,var(--primary),var(--accent));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.stat-lbl{font-size:.7rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;margin-top:2px;}
+
+/* ── SHARE FINAL ROW ── */
+.share-final{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px;}
+
+/* ── MISC ── */
+.spacer{height:18px;}
+.text-sm{font-size:.83rem;}
+.text-muted{color:var(--muted);}
+.fw-800{font-weight:800;}
+.mt-12{margin-top:12px;}
+.sec-label{font-size:.75rem;font-weight:800;text-transform:uppercase;letter-spacing:2px;color:var(--muted);text-align:left;margin-bottom:10px;}
+
+/* ── GLITCH ── */
+.glitch{position:relative;}
+.glitch::before,.glitch::after{content:attr(data-text);position:absolute;top:0;left:0;width:100%;height:100%;background:linear-gradient(120deg,var(--accent),var(--primary),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.glitch::before{left:2px;animation:glitch1 3.5s infinite;}
+.glitch::after{left:-2px;animation:glitch2 3.5s infinite;}
+@keyframes glitch1{0%,90%,100%{clip-path:none;opacity:0;}92%{clip-path:inset(20% 0 60% 0);opacity:.6;}94%{clip-path:inset(60% 0 10% 0);opacity:.6;}}
+@keyframes glitch2{0%,88%,100%{clip-path:none;opacity:0;}90%{clip-path:inset(40% 0 30% 0);opacity:.5;}92%{clip-path:inset(70% 0 5% 0);opacity:.5;}}
+
+/* ── TOAST ── */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:rgba(26,10,46,.95);border:1px solid var(--border-hi);border-radius:var(--r-sm);padding:11px 20px;font-size:.88rem;font-weight:700;color:var(--text);box-shadow:0 8px 30px rgba(0,0,0,.5);z-index:9999;transition:transform .32s cubic-bezier(.34,1.56,.64,1);white-space:nowrap;}
+.toast.show{transform:translateX(-50%) translateY(0);}
+
+/* ── SCRIPT POPUP ── */
+.script-textarea{
+  width:100%;background:rgba(255,255,255,.07);
+  border:1px solid rgba(162,89,255,.4);border-radius:14px;
+  padding:14px 16px;color:#fff;
+  font-family:'Outfit',sans-serif;font-size:.92rem;line-height:1.65;
+  resize:none;height:140px;outline:none;
+  transition:border-color .2s;
+}
+.script-textarea:focus{border-color:rgba(162,89,255,.75);}
+.script-copied-badge{
+  display:none;position:absolute;top:9px;right:10px;
+  background:rgba(0,255,135,.18);border:1px solid rgba(0,255,135,.4);
+  color:var(--green);font-size:.7rem;font-weight:800;
+  padding:3px 10px;border-radius:8px;
+}
+.script-platform-icon{font-size:3rem;display:block;margin-bottom:6px;animation:floatBob 3s ease-in-out infinite;}
+.script-2col{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;}
+@media(max-width:400px){.script-2col{grid-template-columns:1fr;}}
+
+@media(max-width:400px){.share-grid,.explore-grid,.share-final,.stats-row{grid-template-columns:1fr;}.share-wide{grid-column:auto;}}
+</style>
+
+  <!-- ── SEO ── -->
+  <link rel="canonical" href="https://friendship-check.in/free-100-challenge.html"/>
+  <meta name="robots" content="index, follow"/>
+  <meta property="og:type" content="website"/>
+  <meta property="og:url" content="https://friendship-check.in/free-100-challenge.html"/>
+  <meta property="og:title" content="Free ₹100 Challenge — Can You Complete It? | FriendCheck"/>
+  <meta property="og:description" content="Complete one simple mission and unlock your ₹100 reward. Can you do it? 😈 A viral friendship challenge."/>
+  <meta property="og:image" content="https://friendship-check.in/og-challenge.png"/>
+  <meta property="og:site_name" content="FriendCheck"/>
+  <meta name="twitter:card" content="summary_large_image"/>
+  <meta name="twitter:title" content="Free ₹100 Challenge 😈 | FriendCheck"/>
+  <meta name="twitter:description" content="Complete the mission. Unlock your reward. Tag a friend who'd fall for this 👀"/>
+  <meta name="twitter:image" content="https://friendship-check.in/og-challenge.png"/>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"WebApplication","name":"Free ₹100 Challenge",
+  "url":"https://friendship-check.in/free-100-challenge.html",
+  "description":"A viral friendship challenge — complete the mission and share with friends.",
+  "applicationCategory":"Game","isAccessibleForFree":true,
+  "provider":{"@type":"Organization","name":"FriendCheck","url":"https://friendship-check.in"}}
+  </script>
+  <!-- ── SHARED DESIGN SYSTEM ── -->
+  <link rel="stylesheet" href="shared/fc-design-system.css"/>
+
+  <style>
+    /* Nav offset — fc-nav is 60px fixed */
+    body { padding-top: 60px !important; }
+    @media(max-width:639px){ body { padding-top: 60px !important; } }
+  </style>
+</head>
+<body>
+
+<canvas id="confetti-canvas"></canvas>
+<div class="emoji-float-layer" id="floatLayer"></div>
+
+<!-- DM SCRIPT POPUP -->
+<div class="popup-bg" id="scriptPopup">
+  <div class="popup-card" style="max-width:460px;text-align:left;">
+    <button onclick="closeScriptPopup()" style="position:absolute;top:14px;right:16px;background:none;border:none;color:var(--muted);font-size:1.5rem;cursor:pointer;line-height:1;z-index:1;">✕</button>
+    <div style="text-align:center;margin-bottom:14px;">
+      <span class="script-platform-icon" id="scriptIcon">💬</span>
+      <div style="font-size:1.2rem;font-weight:900;color:var(--text);" id="scriptPlatformName">WhatsApp</div>
+      <div style="font-size:.85rem;color:var(--muted);margin-top:4px;">Copy this viral message & send it to your friends 😈</div>
+    </div>
+
+    <div style="position:relative;margin-bottom:14px;">
+      <textarea class="script-textarea" id="scriptText" readonly></textarea>
+      <div class="script-copied-badge" id="scriptCopiedBadge">✅ Copied!</div>
+    </div>
+
+    <div class="script-2col">
+      <button class="btn btn-ghost" style="font-size:.9rem;padding:13px 10px;" onclick="copyScriptText()">📋 Copy Script</button>
+      <button class="btn btn-primary" style="font-size:.9rem;padding:13px 10px;" id="openAppBtn" onclick="openPlatformLink()">📤 Open App</button>
+    </div>
+    <button class="btn btn-green" style="font-size:.95rem;" onclick="doneSharing()">✅ Done — I Sent It! 💰</button>
+    <p style="text-align:center;margin-top:10px;font-size:.74rem;color:var(--muted);">Paste the copied message in your DM and send to a friend 👆</p>
+  </div>
+</div>
+
+<!-- SECOND PRANK POPUP -->
+<div class="popup-bg" id="bonusPopup">
+  <div class="popup-card">
+    <span style="font-size:3.2rem">⏰</span>
+    <div class="popup-title">WAIT!</div>
+    <div class="popup-sub">You can STILL earn ₹100.</div>
+    <div class="popup-hl">Refer just <strong style="color:var(--accent)">1,000 friends</strong> and get paid!</div>
+    <div class="popup-est">⏱️ Estimated time: <strong>47 years</strong></div>
+    <div class="text-muted text-sm">Fine print: Requires a time machine. And luck. Mostly luck.</div>
+    <div class="popup-reveal" id="popupReveal">
+      <div class="spacer"></div>
+      <div class="prank-title">😂 GOT YOU AGAIN 😂</div>
+      <p class="text-muted text-sm">You believed it for 2 full seconds.<br>That's 2 seconds of beautiful hope. 🌈</p>
+      <div class="spacer"></div>
+      <button class="btn btn-primary" onclick="closePopup()">😂 I Accept My Fate</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast">✅ Done!</div>
+
+<div class="app">
+
+<!-- ── TOP BAR ── -->
+<div class="top-bar">
+  <div class="fc-logo"><div class="fc-logo-dot">👥</div>FriendCheck</div>
+  <button class="sound-btn" id="soundBtn" onclick="toggleSound()" title="Toggle sound">🔇</button>
+</div>
+
+<!-- ── LEVEL HUD ── -->
+<div class="level-hud" id="levelHud">
+  <div class="level-badge" id="levelEmoji">😈</div>
+  <div class="level-info">
+    <div class="level-name" id="levelName">Prankster</div>
+    <div class="level-sub" id="levelSub">Level 1 · <span id="chaosPoints">0</span> Chaos Points</div>
+    <div class="level-xp-bar"><div class="level-xp-fill" id="xpFill" style="width:0%"></div></div>
+  </div>
+  <div class="level-stats">
+    <div class="stat-chip">Victims: <span id="victimsCount">0</span></div>
+    <div class="stat-chip">Badges: <span id="badgesCount">0</span></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SCREEN 1 — REWARD INTRO
+══════════════════════════════════════ -->
+<div class="screen active" id="screen-1">
+  <div style="text-align:center"><div class="top-pill">🔥 Limited Time Offer 🔥</div></div>
+  <div class="step-dots">
+    <div class="sdot active"></div><div class="sdot"></div><div class="sdot"></div>
+    <div class="sdot"></div><div class="sdot"></div><div class="sdot"></div>
+  </div>
+  <div class="progress-wrap"><div class="progress-fill" style="width:10%"></div></div>
+  <div class="card card-glow">
+    <span class="hero-emoji">🎁</span>
+    <div class="hero-title">FREE ₹100<br>CHALLENGE</div>
+    <p class="hero-sub">Complete <strong>one simple mission</strong> and unlock your reward instantly.<br>No catch. No tricks. 100% legit. 😇</p>
+    <div class="money-badge">💰 ₹100 Reward Waiting</div>
+    <div class="check-list">
+      <div class="check-item">✅ <span style="font-size:.9rem;font-weight:600;">Takes less than 60 seconds</span></div>
+      <div class="check-item">✅ <span style="font-size:.9rem;font-weight:600;">No personal info required</span></div>
+      <div class="check-item">✅ <span style="font-size:.9rem;font-weight:600;">Instant reward on completion</span></div>
+    </div>
+    <button class="btn btn-gold btn-pulse" onclick="goTo(2)">🚀 Start Challenge</button>
+    <p class="text-muted text-sm mt-12">👥 23,847 people completed this today</p>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SCREEN 2 — SHARE MISSION
+══════════════════════════════════════ -->
+<div class="screen" id="screen-2">
+  <div style="text-align:center"><div class="top-pill">📋 Mission 1 of 1</div></div>
+  <div class="step-dots">
+    <div class="sdot done"></div><div class="sdot active"></div><div class="sdot"></div>
+    <div class="sdot"></div><div class="sdot"></div><div class="sdot"></div>
+  </div>
+  <div class="progress-wrap"><div class="progress-fill" style="width:26%"></div></div>
+  <div class="card card-glow">
+    <span style="font-size:4rem;display:block;margin-bottom:10px;animation:floatBob 3s ease-in-out infinite;">📤</span>
+    <div class="hero-title" style="font-size:1.7rem;">Your Mission</div>
+    <p class="hero-sub" style="margin-bottom:22px;">Share this FriendCheck page with friends to unlock your reward!<br>Choose any platform below 👇</p>
+
+    <div class="share-grid">
+      <button class="share-btn sbtn-wa" onclick="openShareScript('WhatsApp')">
+        <span class="sico">💬</span><span>WhatsApp</span>
+      </button>
+      <button class="share-btn sbtn-ig" onclick="openShareScript('Instagram Story')">
+        <span class="sico">📸</span><span>Instagram Story</span>
+      </button>
+      <button class="share-btn sbtn-igdm" onclick="openShareScript('Instagram DM')">
+        <span class="sico">💌</span><span>Instagram DM</span>
+      </button>
+      <button class="share-btn sbtn-tg" onclick="openShareScript('Telegram')">
+        <span class="sico">✈️</span><span>Telegram</span>
+      </button>
+      <button class="share-btn sbtn-fb share-wide" onclick="openShareScript('Messenger')">
+        <span class="sico">🟦</span><span>Messenger</span>
+      </button>
+    </div>
+
+    <div class="shared-confirm" id="sharedConfirm">
+      ✅ <span id="sharedPlatform">WhatsApp</span> — Nice work! Now claim it! 🎉
+    </div>
+    <button class="btn btn-green" id="claimBtn" onclick="goTo(3)" style="display:none;">
+      ✅ I Shared It — Give Me My Money! 💰
+    </button>
+    <p class="text-muted text-sm mt-12" id="shareHint">Tap any platform above, then come back here 👆</p>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SCREEN 3 — FAKE AI VERIFICATION
+══════════════════════════════════════ -->
+<div class="screen" id="screen-3">
+  <div style="text-align:center"><div class="top-pill" style="background:linear-gradient(135deg,rgba(0,210,255,.15),rgba(162,89,255,.15));border-color:rgba(0,210,255,.4);color:var(--secondary);">🔍 AI Verifying…</div></div>
+  <div class="step-dots">
+    <div class="sdot done"></div><div class="sdot done"></div><div class="sdot active"></div>
+    <div class="sdot"></div><div class="sdot"></div><div class="sdot"></div>
+  </div>
+  <div class="progress-wrap"><div class="progress-fill" id="verifyBar" style="width:42%"></div></div>
+  <div class="card card-glow">
+    <span style="font-size:3.8rem;display:block;margin-bottom:12px;animation:spin 2.2s linear infinite;">⚙️</span>
+    <div class="hero-title" style="font-size:1.5rem;">Processing Your Reward</div>
+    <p class="hero-sub" style="margin-bottom:20px;">Please wait while our AI verifies your activity…</p>
+    <div class="verify-list" id="verifyList">
+      <div class="vi"><div class="vi-spin"></div><span>Connecting to servers…</span><div class="vi-bar"><div class="vi-bar-f"></div></div></div>
+      <div class="vi"><div class="vi-spin"></div><span style="color:var(--muted)">Waiting…</span><div class="vi-bar"><div class="vi-bar-f"></div></div></div>
+      <div class="vi"><div class="vi-spin"></div><span style="color:var(--muted)">Waiting…</span><div class="vi-bar"><div class="vi-bar-f"></div></div></div>
+      <div class="vi"><div class="vi-spin"></div><span style="color:var(--muted)">Waiting…</span><div class="vi-bar"><div class="vi-bar-f"></div></div></div>
+    </div>
+    <p class="text-muted text-sm" style="margin-top:8px;">🔐 Secured by 256-bit AI encryption™</p>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SCREEN 4 — PRANK REVEAL + BADGE
+══════════════════════════════════════ -->
+<div class="screen" id="screen-4">
+  <div class="step-dots">
+    <div class="sdot done"></div><div class="sdot done"></div><div class="sdot done"></div>
+    <div class="sdot active"></div><div class="sdot"></div><div class="sdot"></div>
+  </div>
+  <div class="progress-wrap"><div class="progress-fill" style="width:65%"></div></div>
+  <div class="card card-glow">
+    <span style="font-size:4.5rem;display:block;margin-bottom:6px;animation:floatBob 2.5s ease-in-out infinite;">😂</span>
+    <div class="prank-title glitch" data-text="YOU'VE BEEN PRANKED">YOU'VE BEEN PRANKED</div>
+    <div class="emoji-rain">😂 🤣 💀 😭 🎉 🫵 😆 🙈 🤦 🐐</div>
+    <p style="font-size:1rem;color:var(--muted);margin:10px 0 18px;line-height:1.6;">There was never any ₹100.<br><strong style="color:var(--text)">There was never going to be any ₹100.</strong><br>But look how far you came! 🏅</p>
+
+    <div class="sec-label" style="text-align:center;justify-content:center;display:flex;">🏆 Congratulations — You Are Officially Today's:</div>
+    <div class="badge-wrap">
+      <div class="badge-card" id="badgeCard">
+        <div class="badge-lbl">Official Title</div>
+        <div class="badge-name" id="badgeName">Meme Ambassador</div>
+        <div class="badge-stars" id="badgeStars">⭐⭐⭐</div>
+      </div>
+    </div>
+
+    <button class="btn btn-primary" onclick="goTo(5)">😏 Show Me My Prize Anyway</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SCREEN 5 — CONSOLATION (POPUP TRIGGER)
+══════════════════════════════════════ -->
+<div class="screen" id="screen-5">
+  <div class="step-dots">
+    <div class="sdot done"></div><div class="sdot done"></div><div class="sdot done"></div>
+    <div class="sdot done"></div><div class="sdot active"></div><div class="sdot"></div>
+  </div>
+  <div class="progress-wrap"><div class="progress-fill" style="width:82%"></div></div>
+  <div class="card card-glow" style="padding:52px 26px;">
+    <span style="font-size:4rem;animation:floatBob 2s ease-in-out infinite;display:block;margin-bottom:14px;">😔</span>
+    <div class="hero-title" style="font-size:1.4rem;">Fine… We Feel Bad.</div>
+    <p class="hero-sub">Calculating your consolation prize…</p>
+    <div class="vi-spin" style="margin:24px auto;width:42px;height:42px;border-width:4px;"></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SCREEN 6 — CONTINUE THE CHAOS
+══════════════════════════════════════ -->
+<div class="screen" id="screen-6">
+  <div class="step-dots">
+    <div class="sdot done"></div><div class="sdot done"></div><div class="sdot done"></div>
+    <div class="sdot done"></div><div class="sdot done"></div><div class="sdot active"></div>
+  </div>
+  <div class="progress-wrap"><div class="progress-fill" style="width:100%"></div></div>
+
+  <div class="card card-glow" style="margin-bottom:14px;">
+    <span style="font-size:3.5rem;display:block;margin-bottom:10px;animation:floatBob 3s ease-in-out infinite;">🎭</span>
+    <div class="hero-title" style="font-size:1.65rem;">Now Prank Your Friends!</div>
+    <p class="hero-sub" style="margin-bottom:18px;">You fell for it. Time for revenge.<br>Share the chaos & continue your mischief! 😈</p>
+
+    <!-- STATS -->
+    <div class="stats-row">
+      <div class="stat-box"><div class="stat-val" id="finalVictims">0</div><div class="stat-lbl">Victims</div></div>
+      <div class="stat-box"><div class="stat-val" id="finalChaos">0</div><div class="stat-lbl">Chaos Pts</div></div>
+      <div class="stat-box"><div class="stat-val" id="finalBadges">0</div><div class="stat-lbl">Badges</div></div>
+    </div>
+
+    <!-- LEVEL DISPLAY -->
+    <div style="background:var(--surface2);border:1px solid var(--border);border-radius:var(--r-sm);padding:14px 18px;margin-bottom:20px;display:flex;align-items:center;gap:12px;text-align:left;">
+      <div style="font-size:2rem;" id="finalLevelEmoji">😈</div>
+      <div>
+        <div style="font-weight:800;font-size:.98rem;" id="finalLevelName">Prankster</div>
+        <div style="font-size:.8rem;color:var(--muted);" id="finalLevelDesc">Level 1 — Keep spreading chaos to rank up!</div>
+      </div>
+    </div>
+
+    <div class="share-final">
+      <button class="btn btn-gold" style="font-size:.9rem;" onclick="sharePrank('whatsapp')">📤 Share Prank</button>
+      <button class="btn btn-primary" style="font-size:.9rem;" onclick="copyLink()">🔗 Copy Link</button>
+    </div>
+  </div>
+
+  <!-- CONTINUE THE CHAOS GRID -->
+  <div class="card card-glow">
+    <div class="sec-label">🔥 Continue the Chaos</div>
+    <div class="explore-grid">
+      <a href="friend-battle.html" class="explore-card">
+        <span class="ec-ico">⚔️</span>
+        <span>Friend Battle</span>
+        <span class="ec-lbl">Who wins?</span>
+      </a>
+      <a href="fake-friend-investigator.html" class="explore-card">
+        <span class="ec-ico">🔎</span>
+        <span>Fake Friend</span>
+        <span class="ec-lbl">Investigator</span>
+      </a>
+      <a href="friendship-test.html" class="explore-card">
+        <span class="ec-ico">💕</span>
+        <span>Secret Crush</span>
+        <span class="ec-lbl">Detector</span>
+      </a>
+      <a href="fake_chat_generator.html" class="explore-card">
+        <span class="ec-ico">💬</span>
+        <span>Fake Chat</span>
+        <span class="ec-lbl">Generator</span>
+      </a>
+      <a href="roast_generator.html" class="explore-card" style="grid-column:1/-1;flex-direction:row;justify-content:center;gap:12px;padding:16px;">
+        <span class="ec-ico">🔥</span>
+        <div><div>Roast Generator</div><div class="ec-lbl" style="text-align:left;">Destroy your friends 🔥</div></div>
+      </a>
+    </div>
+    <div class="spacer"></div>
+    <a href="index.html" class="btn btn-ghost">🏠 Back to Friendship Hub</a>
+  </div>
+
+  <p style="text-align:center;margin-top:24px;color:var(--muted);font-size:.8rem;font-weight:600;">Made with 😂 to make the internet more chaotic</p>
+</div>
+
+</div><!-- /app -->
+
+<script>
+/* ════════════════════════════════════════
+   LEVEL SYSTEM
+════════════════════════════════════════ */
+const LEVELS=[
+  {id:1,name:'Prankster',     emoji:'😈',desc:'Level 1 — Keep spreading chaos to rank up!',  threshold:0},
+  {id:2,name:'Certified Menace', emoji:'😏',desc:'Level 2 — You\'re getting dangerous.',     threshold:1},
+  {id:3,name:'Chaos Master',  emoji:'🔥',desc:'Level 3 — The chaos flows through you.',      threshold:3},
+  {id:4,name:'Meme Lord',     emoji:'👑',desc:'Level 4 — You are a god among pranksters.',   threshold:6},
+  {id:5,name:'Ultimate Troll',emoji:'💀',desc:'Level 5 — Legend. Pure legend.',              threshold:10},
+];
+
+function loadState(){
+  return JSON.parse(localStorage.getItem('fc_prank_state')||'{"chaosPoints":0,"victimsFooled":0,"badgesCollected":0,"currentBadge":null}');
+}
+function saveState(s){localStorage.setItem('fc_prank_state',JSON.stringify(s));}
+
+function getLevel(pts){
+  let lv=LEVELS[0];
+  for(const l of LEVELS){if(pts>=l.threshold)lv=l;}
+  return lv;
+}
+function getLevelProgress(pts){
+  const idx=LEVELS.findIndex(l=>l===getLevel(pts));
+  if(idx>=LEVELS.length-1)return 100;
+  const cur=LEVELS[idx].threshold,nxt=LEVELS[idx+1].threshold;
+  return Math.min(100,((pts-cur)/(nxt-cur))*100);
+}
+
+function updateHUD(){
+  const s=loadState();
+  const lv=getLevel(s.chaosPoints);
+  document.getElementById('levelEmoji').textContent=lv.emoji;
+  document.getElementById('levelName').textContent=lv.name;
+  document.getElementById('chaosPoints').textContent=s.chaosPoints;
+  document.getElementById('levelSub').innerHTML=`Level ${lv.id} · <span id="chaosPoints">${s.chaosPoints}</span> Chaos Points`;
+  document.getElementById('xpFill').style.width=getLevelProgress(s.chaosPoints)+'%';
+  document.getElementById('victimsCount').textContent=s.victimsFooled;
+  document.getElementById('badgesCount').textContent=s.badgesCollected;
+}
+
+function awardChaosPoints(pts){
+  const s=loadState();
+  s.chaosPoints=(s.chaosPoints||0)+pts;
+  saveState(s);updateHUD();
+}
+
+/* ════════════════════════════════════════
+   SOUND (Web Audio API — optional)
+════════════════════════════════════════ */
+let soundOn=false;
+let audioCtx=null;
+function toggleSound(){
+  soundOn=!soundOn;
+  document.getElementById('soundBtn').textContent=soundOn?'🔊':'🔇';
+  if(soundOn&&!audioCtx) audioCtx=new(window.AudioContext||window.webkitAudioContext)();
+  showToast(soundOn?'🔊 Sound on':'🔇 Sound off');
+}
+function playTone(freq=440,dur=0.15,type='sine',vol=0.12){
+  if(!soundOn||!audioCtx)return;
+  const osc=audioCtx.createOscillator();
+  const gain=audioCtx.createGain();
+  osc.connect(gain);gain.connect(audioCtx.destination);
+  osc.type=type;osc.frequency.value=freq;
+  gain.gain.setValueAtTime(vol,audioCtx.currentTime);
+  gain.gain.exponentialRampToValueAtTime(0.001,audioCtx.currentTime+dur);
+  osc.start();osc.stop(audioCtx.currentTime+dur);
+}
+function playSuccess(){[523,659,784,1047].forEach((f,i)=>setTimeout(()=>playTone(f,.18,'triangle',.1),i*120));}
+function playPrank(){[523,440,349].forEach((f,i)=>setTimeout(()=>playTone(f,.25,'sawtooth',.08),i*150));}
+function playConfettiSound(){[880,1047,1319].forEach((f,i)=>setTimeout(()=>playTone(f,.12,'triangle',.08),i*80));}
+
+/* ════════════════════════════════════════
+   FLOATING EMOJI BG
+════════════════════════════════════════ */
+const BG_EMOJIS=['😂','🤣','💀','🎉','😈','🔥','👑','💎','⭐','🎭','🤡','😏'];
+function initFloatEmojis(){
+  const layer=document.getElementById('floatLayer');
+  BG_EMOJIS.forEach((em,i)=>{
+    const el=document.createElement('div');
+    el.className='float-emoji';
+    el.textContent=em;
+    el.style.left=Math.random()*100+'%';
+    const dur=8+Math.random()*14;
+    el.style.animationDuration=dur+'s';
+    el.style.animationDelay=(-Math.random()*dur)+'s';
+    layer.appendChild(el);
+  });
+  // Continuously spawn
+  setInterval(()=>{
+    const el=document.createElement('div');
+    el.className='float-emoji';
+    el.textContent=BG_EMOJIS[Math.floor(Math.random()*BG_EMOJIS.length)];
+    el.style.left=Math.random()*100+'%';
+    const dur=9+Math.random()*12;
+    el.style.animationDuration=dur+'s';
+    el.style.animationDelay='0s';
+    el.addEventListener('animationend',()=>el.remove());
+    document.getElementById('floatLayer').appendChild(el);
+  },2200);
+}
+
+/* ════════════════════════════════════════
+   SCREEN NAVIGATION
+════════════════════════════════════════ */
+let current=1;
+function goTo(step){
+  document.getElementById('screen-'+current).classList.remove('active');
+  current=step;
+  document.getElementById('screen-'+step).classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+  playTone(440+step*40,.12);
+  if(step===3)startVerification();
+  if(step===4)revealBadge();
+  if(step===5)triggerSecondPrank();
+  if(step===6)populateStats();
+}
+
+/* ════════════════════════════════════════
+   STEP 2 — DM SCRIPT POPUP
+════════════════════════════════════════ */
+const SITE_URL = 'https://friendship-check.in/free-100-challenge.html';
+
+const SHARE_SCRIPTS = {
+  'WhatsApp': {
+    icon: '💬',
+    script: `Bhai dekh ye 😭 I literally just got ₹100 for FREE doing this one quick challenge, no joke 💀\n\nComplete it here: ${SITE_URL}\n\nTell me if it worked for you too!! 👀`,
+    getLink: s => `https://wa.me/?text=${encodeURIComponent(s)}`
+  },
+  'Instagram Story': {
+    icon: '📸',
+    script: `POV: you're about to get FREE ₹100 😈🔥\n\n${SITE_URL}\n\nTag a friend who needs this 👇 #FriendCheck #Challenge`,
+    getLink: null
+  },
+  'Instagram DM': {
+    icon: '💌',
+    script: `OMG wait you HAVE to try this 😭 there's a ₹100 challenge going viral and I literally just completed it\n\n${SITE_URL}\n\nSeriously takes 30 seconds — let me know if you get the reward!! 😈`,
+    getLink: null
+  },
+  'Telegram': {
+    icon: '✈️',
+    script: `bro I'm not even joking 🤑 found this thing where you can get ₹100 free by doing a quick challenge\n\n${SITE_URL}\n\nJust did it, your turn now 😏`,
+    getLink: s => `https://t.me/share/url?url=${encodeURIComponent(SITE_URL)}&text=${encodeURIComponent('bro you HAVE to try this free ₹100 challenge 😭')}`
+  },
+  'Messenger': {
+    icon: '🟦',
+    script: `yo did you see this yet?? 😂 apparently this website gives ₹100 if you do their friendship challenge, I just tried it\n\n${SITE_URL}\n\nTry it quick before it expires!! 🔥`,
+    getLink: s => `https://www.facebook.com/dialog/send?link=${encodeURIComponent(SITE_URL)}&app_id=291494494221980&redirect_uri=${encodeURIComponent(SITE_URL)}`
+  }
+};
+
+let _activePlatform = '';
+
+function openShareScript(platform) {
+  const data = SHARE_SCRIPTS[platform];
+  if (!data) { markShared(platform); return; }
+
+  _activePlatform = platform;
+  document.getElementById('scriptIcon').textContent = data.icon;
+  document.getElementById('scriptPlatformName').textContent = platform;
+  document.getElementById('scriptText').value = data.script;
+  document.getElementById('scriptCopiedBadge').style.display = 'none';
+
+  const openBtn = document.getElementById('openAppBtn');
+  if (data.getLink) {
+    openBtn.style.display = '';
+    openBtn.textContent = '📤 Open ' + platform.split(' ')[0];
+  } else {
+    // Instagram has no direct DM URL — show "Copy & Open"
+    openBtn.style.display = '';
+    openBtn.textContent = '📲 Open ' + platform.split(' ')[0];
+    openBtn.onclick = function() {
+      copyScriptText();
+      window.open('https://instagram.com', '_blank');
+    };
+  }
+
+  document.getElementById('scriptPopup').classList.add('show');
+  playTone(523, .15, 'triangle', .08);
+}
+
+function closeScriptPopup() {
+  document.getElementById('scriptPopup').classList.remove('show');
+}
+
+function copyScriptText() {
+  const txt = document.getElementById('scriptText').value;
+  const badge = document.getElementById('scriptCopiedBadge');
+  const copy = () => { badge.style.display = 'block'; setTimeout(() => badge.style.display = 'none', 2200); showToast('📋 Script copied!'); playSuccess(); };
+  navigator.clipboard ? navigator.clipboard.writeText(txt).then(copy).catch(() => { document.getElementById('scriptText').select(); document.execCommand('copy'); copy(); }) : (document.getElementById('scriptText').select(), document.execCommand('copy'), copy());
+}
+
+function openPlatformLink() {
+  const data = SHARE_SCRIPTS[_activePlatform];
+  if (!data || !data.getLink) return;
+  window.open(data.getLink(data.script), '_blank');
+}
+
+function doneSharing() {
+  closeScriptPopup();
+  markShared(_activePlatform);
+}
+
+/* ════════════════════════════════════════
+   STEP 2 — SHARE (mark as done)
+════════════════════════════════════════ */
+function markShared(platform){
+  document.getElementById('sharedPlatform').textContent=platform;
+  document.getElementById('sharedConfirm').style.display='block';
+  document.getElementById('claimBtn').style.display='flex';
+  document.getElementById('shareHint').style.display='none';
+  playSuccess();
+}
+
+/* ════════════════════════════════════════
+   STEP 3 — FAKE AI VERIFICATION
+════════════════════════════════════════ */
+const VI_MESSAGES=[
+  'Checking social activity… 📱',
+  'Analyzing meme energy… 🧠',
+  'Contacting reward department… 📞',
+  'Processing payment… 💰',
+];
+function startVerification(){
+  const items=document.querySelectorAll('.vi');
+  const bar=document.getElementById('verifyBar');
+  items.forEach((item,i)=>{
+    setTimeout(()=>{
+      item.classList.add('show');
+      item.querySelector('span').textContent=VI_MESSAGES[i];
+      const bf=item.querySelector('.vi-bar-f');
+      if(bf)setTimeout(()=>bf.style.width='100%',80);
+      bar.style.width=(42+(i+1)*12)+'%';
+      playTone(440+i*55,.1,'sine',.08);
+    },i*1200);
+    setTimeout(()=>{
+      item.classList.add('done');
+      const sp=item.querySelector('.vi-spin');
+      if(sp){sp.style.animation='none';sp.innerHTML='✅';sp.style.border='none';sp.style.fontSize='1.1rem';sp.style.width='auto';sp.style.height='auto';}
+    },i*1200+950);
+  });
+  setTimeout(()=>{
+    bar.style.width='100%';
+    setTimeout(()=>goTo(4),550);
+  },5400);
+}
+
+/* ════════════════════════════════════════
+   STEP 4 — BADGE REVEAL
+════════════════════════════════════════ */
+const BADGES=[
+  {name:'Meme Ambassador',      stars:'⭐⭐⭐',    rare:false,pts:10},
+  {name:'Certified Menace',     stars:'⭐⭐⭐⭐',  rare:false,pts:15},
+  {name:'Chaos Master',         stars:'⭐⭐⭐⭐',  rare:false,pts:20},
+  {name:'Professional Troublemaker',stars:'⭐⭐⭐',rare:false,pts:10},
+  {name:'Meme Lord',            stars:'⭐⭐⭐⭐⭐',rare:false,pts:25},
+  {name:'FBI Watchlist Energy', stars:'🌟🌟🌟🌟🌟',rare:true, pts:50},
+  {name:'Legendary Troll',      stars:'🌟🌟🌟🌟🌟',rare:true, pts:60},
+  {name:'Ultimate Chaos King',  stars:'💎💎💎💎💎',rare:true, pts:75},
+  {name:'Certified Internet Criminal',stars:'💎💎💎💎',rare:true,pts:55},
+];
+function revealBadge(){
+  const isRare=Math.random()<.05;
+  const pool=BADGES.filter(b=>b.rare===isRare);
+  const b=pool[Math.floor(Math.random()*pool.length)];
+  document.getElementById('badgeName').textContent=b.name;
+  document.getElementById('badgeStars').textContent=b.stars;
+  const card=document.getElementById('badgeCard');
+  if(b.rare){
+    card.classList.add('rare');
+    const t=document.createElement('div');t.className='rare-tag';t.textContent='✨ RARE BADGE';
+    card.insertBefore(t,card.firstChild);
+  }
+  // Update state
+  const s=loadState();
+  s.victimsFooled=(s.victimsFooled||0)+1;
+  s.badgesCollected=(s.badgesCollected||0)+1;
+  s.chaosPoints=(s.chaosPoints||0)+b.pts;
+  s.currentBadge=b.name;
+  saveState(s);updateHUD();
+  launchConfetti(b.rare?220:90);
+  playPrank();
+}
+
+/* ════════════════════════════════════════
+   STEP 5 — SECOND PRANK POPUP
+════════════════════════════════════════ */
+function triggerSecondPrank(){
+  setTimeout(()=>{
+    document.getElementById('bonusPopup').classList.add('show');
+    playTone(523,.2,'triangle',.1);
+    setTimeout(()=>{
+      document.getElementById('popupReveal').style.display='block';
+      playPrank();
+    },2000);
+  },1300);
+}
+function closePopup(){
+  document.getElementById('bonusPopup').classList.remove('show');
+  awardChaosPoints(5);
+  goTo(6);
+  setTimeout(()=>{launchConfetti(130);playConfettiSound();},300);
+}
+
+/* ════════════════════════════════════════
+   STEP 6 — POPULATE STATS
+════════════════════════════════════════ */
+function populateStats(){
+  const s=loadState();
+  const lv=getLevel(s.chaosPoints);
+  document.getElementById('finalVictims').textContent=s.victimsFooled||0;
+  document.getElementById('finalChaos').textContent=s.chaosPoints||0;
+  document.getElementById('finalBadges').textContent=s.badgesCollected||0;
+  document.getElementById('finalLevelEmoji').textContent=lv.emoji;
+  document.getElementById('finalLevelName').textContent=lv.name;
+  document.getElementById('finalLevelDesc').textContent=lv.desc;
+}
+
+/* ════════════════════════════════════════
+   SHARE / COPY
+════════════════════════════════════════ */
+function sharePrank(p){
+  const url=encodeURIComponent(window.location.href);
+  const txt=encodeURIComponent('😂 Can you complete the Free ₹100 Challenge? I dare you! 👀');
+  if(p==='whatsapp') window.open('https://wa.me/?text='+txt+'%20'+url,'_blank');
+}
+function copyLink(){
+  navigator.clipboard.writeText(window.location.href).then(()=>{showToast('🔗 Link copied!');}).catch(()=>alert(window.location.href));
+}
+
+/* ════════════════════════════════════════
+   TOAST
+════════════════════════════════════════ */
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2800);
+}
+
+/* ════════════════════════════════════════
+   CONFETTI
+════════════════════════════════════════ */
+const canvas=document.getElementById('confetti-canvas');
+const ctx2=canvas.getContext('2d');
+let particles=[];let animRef;
+function launchConfetti(count=100){
+  canvas.width=window.innerWidth;canvas.height=window.innerHeight;
+  const colors=['#ff2d7a','#a259ff','#00d2ff','#ffd700','#00ff87','#ff7b00','#fff','#53bdeb'];
+  const shapes=['circle','rect','tri'];
+  for(let i=0;i<count;i++){
+    particles.push({
+      x:Math.random()*canvas.width,y:-10-Math.random()*200,
+      vx:(Math.random()-.5)*4.5,vy:1.5+Math.random()*4,
+      color:colors[Math.floor(Math.random()*colors.length)],
+      shape:shapes[Math.floor(Math.random()*shapes.length)],
+      size:4+Math.random()*11,rotation:Math.random()*360,
+      rotSpeed:(Math.random()-.5)*9,alpha:1,gravity:.065
+    });
+  }
+  cancelAnimationFrame(animRef);tick();
+}
+function tick(){
+  ctx2.clearRect(0,0,canvas.width,canvas.height);
+  particles=particles.filter(p=>p.alpha>.01&&p.y<canvas.height+20);
+  particles.forEach(p=>{
+    p.x+=p.vx;p.vy+=p.gravity;p.y+=p.vy;p.rotation+=p.rotSpeed;
+    if(p.y>canvas.height*.72)p.alpha-=.013;
+    ctx2.save();ctx2.translate(p.x,p.y);ctx2.rotate(p.rotation*Math.PI/180);
+    ctx2.globalAlpha=p.alpha;ctx2.fillStyle=p.color;
+    if(p.shape==='circle'){ctx2.beginPath();ctx2.arc(0,0,p.size/2,0,Math.PI*2);ctx2.fill();}
+    else if(p.shape==='rect'){ctx2.fillRect(-p.size/2,-p.size/4,p.size,p.size/2);}
+    else{ctx2.beginPath();ctx2.moveTo(0,-p.size/2);ctx2.lineTo(p.size/2,p.size/2);ctx2.lineTo(-p.size/2,p.size/2);ctx2.closePath();ctx2.fill();}
+    ctx2.restore();
+  });
+  if(particles.length>0)animRef=requestAnimationFrame(tick);
+  else ctx2.clearRect(0,0,canvas.width,canvas.height);
+}
+window.addEventListener('resize',()=>{canvas.width=window.innerWidth;canvas.height=window.innerHeight;});
+
+/* ════════════════════════════════════════
+   INIT
+════════════════════════════════════════ */
+initFloatEmojis();
+updateHUD();
+</script>
+
+
+<!-- ── AD: Mid-content ── -->
+<div id="ad-mid-banner" style="width:100%;max-width:728px;margin:1.5rem auto;padding:0 1rem;box-sizing:border-box;"></div>
+
+<!-- ── AFFILIATE strip ── -->
+<div id="fc-affiliate-strip"></div>
+
+<!-- ── AD: After content ── -->
+<div id="ad-post-result" style="width:100%;max-width:728px;margin:1rem auto 2rem;padding:0 1rem;box-sizing:border-box;"></div>
+
+<!-- ── STICKY FOOTER AD ── -->
+<div id="ad-footer-sticky"></div>
+
+<!-- ── SHARED SCRIPTS ── -->
+<script src="shared/fc-utils.js"></script>
+<script src="shared/fc-nav.js"></script>
+<script src="shared/fc-ads.js"></script>
+<script src="shared/fc-affiliate.js"></script>
+<script>
+  FCNav.init({ active: 'challenge' });
+
+  FCAds.initAll([
+    { type: 'banner', id: 'ad-mid-banner',    key: 'REPLACE_WITH_BANNER_KEY' },
+    { type: 'native', id: 'ad-post-result',   key: 'REPLACE_WITH_NATIVE_KEY' },
+    { type: 'footer', id: 'ad-footer-sticky', key: 'REPLACE_WITH_FOOTER_KEY', options: { sticky: true, closeable: true } },
+  ]);
+
+  // Show affiliate when challenge completes
+  window.addEventListener('fc-challenge-complete', function() {
+    FCAffiliate.render('fc-affiliate-strip', 'default');
+  });
+</script>
+
+</body>
+</html>

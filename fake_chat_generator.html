@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>FriendCheck | Fake Chat Generator 💬</title>
+<meta name="description" content="Create viral fake chat screenshots for WhatsApp, iMessage, Instagram DM, and Telegram. 50+ prank templates. For entertainment only."/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html-to-image/1.11.11/html-to-image.min.js" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="shared/fc-design-system.css"/>
+<style>
+:root {
+  --c-bg:#0a0a10;--c-surface:#13131c;--c-card:#1a1a26;--c-input:#1e1e2e;--c-hover:#252538;
+  --c-border:#2a2a42;--c-border2:#3a3a58;--c-txt:#f0f0ff;--c-txt2:#8888aa;--c-txt3:#4a4a68;
+  --c-purple:#7c5cfc;--c-blue:#4f9fff;--c-pink:#fc5c8a;--c-green:#25d366;--c-yellow:#ffd60a;
+  --r-sm:8px;--r-md:14px;--r-lg:20px;--r-xl:28px;
+  --shadow:0 8px 40px rgba(0,0,0,0.45);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Inter',sans-serif;background:var(--c-bg);color:var(--c-txt);min-height:100vh;overflow-x:hidden;}
+
+.disclaimer-bar{background:linear-gradient(90deg,rgba(255,214,10,0.12),rgba(252,92,138,0.12));border-bottom:1px solid rgba(255,214,10,0.2);padding:8px 20px;text-align:center;font-size:12px;font-weight:600;color:var(--c-yellow);letter-spacing:.5px;}
+.disclaimer-bar span{opacity:.7;color:var(--c-txt2);margin-left:6px;}
+
+header{background:rgba(19,19,28,0.95);border-bottom:1px solid var(--c-border);padding:13px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;backdrop-filter:blur(20px);}
+.logo{display:flex;align-items:center;gap:10px;}
+.logo-icon{width:34px;height:34px;background:linear-gradient(135deg,#7c5cfc,#4f9fff);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:17px;}
+.logo-name{font-size:17px;font-weight:800;background:linear-gradient(135deg,#7c5cfc,#4f9fff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.header-right{display:flex;align-items:center;gap:8px;}
+.hbtn{width:36px;height:36px;border-radius:10px;background:var(--c-card);border:1px solid var(--c-border);color:var(--c-txt2);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:15px;transition:.2s;}
+.hbtn:hover{background:var(--c-hover);color:var(--c-txt);}
+.badge-ent{display:flex;align-items:center;gap:5px;background:rgba(255,214,10,0.1);border:1px solid rgba(255,214,10,0.25);border-radius:20px;padding:4px 12px;font-size:11px;font-weight:700;color:var(--c-yellow);}
+
+.app{display:grid;grid-template-columns:1fr;max-width:1220px;margin:0 auto;padding:calc(20px + 60px) 16px 60px;gap:20px;}
+@media(min-width:960px){.app{grid-template-columns:440px 1fr;gap:24px;padding:24px 24px 60px;}}
+
+.card{background:var(--c-card);border:1px solid var(--c-border);border-radius:var(--r-xl);padding:22px;box-shadow:var(--shadow);margin-bottom:16px;}
+.card:last-child{margin-bottom:0;}
+.card-title{font-size:12px;font-weight:700;color:var(--c-txt3);text-transform:uppercase;letter-spacing:1.2px;margin-bottom:16px;display:flex;align-items:center;gap:7px;}
+
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.form-row.one{grid-template-columns:1fr;}
+.fg{margin-bottom:12px;}
+.fg label{display:block;font-size:11px;font-weight:700;color:var(--c-txt2);margin-bottom:5px;text-transform:uppercase;letter-spacing:.5px;}
+input[type=text],input[type=time],textarea,select{width:100%;background:var(--c-input);border:1px solid var(--c-border);border-radius:var(--r-md);padding:10px 13px;color:var(--c-txt);font-size:13px;font-family:'Inter',sans-serif;outline:none;transition:.2s;}
+input:focus,textarea:focus,select:focus{border-color:var(--c-purple);box-shadow:0 0 0 3px rgba(124,92,252,.12);}
+textarea{resize:vertical;min-height:62px;}
+select{cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 10 10'%3E%3Cpath fill='%238888aa' d='M5 7L0 2h10z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:32px;}
+@media(max-width:600px){.form-row{grid-template-columns:1fr;}}
+
+.theme-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:9px;margin-bottom:16px;}
+.theme-opt{padding:9px 12px;border-radius:var(--r-md);border:2px solid var(--c-border);background:var(--c-input);cursor:pointer;display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;color:var(--c-txt2);transition:.18s;}
+.theme-opt:hover{border-color:var(--c-border2);color:var(--c-txt);}
+.theme-opt.active{border-color:var(--c-purple);background:rgba(124,92,252,.08);color:var(--c-txt);}
+.theme-dot{width:16px;height:16px;border-radius:50%;flex-shrink:0;}
+
+.opts-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:4px;}
+.opt-toggle{display:flex;align-items:center;gap:7px;cursor:pointer;padding:8px 10px;border-radius:var(--r-sm);background:var(--c-input);border:1px solid var(--c-border);transition:.15s;}
+.opt-toggle:hover{border-color:var(--c-border2);}
+.opt-toggle input{display:none;}
+.opt-toggle .knob{width:32px;height:18px;border-radius:9px;background:var(--c-border2);position:relative;flex-shrink:0;transition:.2s;}
+.opt-toggle input:checked~.knob{background:var(--c-purple);}
+.knob::after{content:'';position:absolute;top:3px;left:3px;width:12px;height:12px;border-radius:50%;background:#fff;transition:.2s;}
+.opt-toggle input:checked~.knob::after{transform:translateX(14px);}
+.opt-lbl{font-size:12px;color:var(--c-txt2);}
+
+.msg-type-row{display:flex;gap:6px;margin-bottom:8px;}
+.type-btn{padding:4px 10px;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;border:1px solid var(--c-border);background:var(--c-input);color:var(--c-txt2);transition:.15s;}
+.type-btn.active{background:rgba(124,92,252,.15);border-color:var(--c-purple);color:var(--c-purple);}
+
+.msgs-list{display:flex;flex-direction:column;gap:10px;max-height:400px;overflow-y:auto;padding-right:2px;}
+.msgs-list::-webkit-scrollbar{width:3px;}
+.msgs-list::-webkit-scrollbar-thumb{background:var(--c-border2);border-radius:3px;}
+
+.msg-item{background:var(--c-input);border:1px solid var(--c-border);border-radius:var(--r-md);padding:12px;animation:fadeUp .22s ease;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.msg-top{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
+.msg-num{font-size:10px;font-weight:700;color:var(--c-txt3);background:var(--c-surface);padding:2px 6px;border-radius:5px;}
+.msg-sender-sel{flex:1;}
+.msg-del{width:26px;height:26px;border-radius:7px;background:rgba(252,92,138,.1);border:1px solid rgba(252,92,138,.2);color:var(--c-pink);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;transition:.15s;}
+.msg-del:hover{background:rgba(252,92,138,.2);}
+.msg-bottom{display:flex;gap:8px;margin-top:8px;align-items:center;flex-wrap:wrap;}
+.msg-time-input{width:100px !important;}
+.reaction-input{flex:1;min-width:80px;}
+
+.btn{display:flex;align-items:center;justify-content:center;gap:7px;padding:11px 16px;border-radius:var(--r-md);font-size:13px;font-weight:700;cursor:pointer;border:none;transition:.2s;white-space:nowrap;}
+.btn-primary{background:linear-gradient(135deg,#7c5cfc,#4f9fff);color:#fff;box-shadow:0 4px 20px rgba(124,92,252,.3);}
+.btn-primary:hover{transform:translateY(-1px);box-shadow:0 6px 28px rgba(124,92,252,.4);}
+.btn-secondary{background:var(--c-input);color:var(--c-txt);border:1px solid var(--c-border);}
+.btn-secondary:hover{background:var(--c-hover);border-color:var(--c-border2);}
+.btn-green{background:linear-gradient(135deg,#25d366,#128c7e);color:#fff;box-shadow:0 4px 18px rgba(37,211,102,.25);}
+.btn-green:hover{transform:translateY(-1px);}
+.btn-pink{background:linear-gradient(135deg,#fc5c8a,#ff9f5c);color:#fff;box-shadow:0 4px 18px rgba(252,92,138,.25);}
+.btn-pink:hover{transform:translateY(-1px);}
+.btn-ghost{background:transparent;color:var(--c-purple);border:1px solid rgba(124,92,252,.3);}
+.btn-ghost:hover{background:rgba(124,92,252,.08);}
+.btn-full{width:100%;}
+.btns-2{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:12px;}
+.btns-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:9px;}
+.add-btn{width:100%;padding:11px;border-radius:var(--r-md);border:2px dashed var(--c-border2);background:transparent;color:var(--c-purple);font-size:13px;font-weight:700;cursor:pointer;transition:.2s;display:flex;align-items:center;justify-content:center;gap:7px;margin-top:12px;}
+.add-btn:hover{border-color:var(--c-purple);background:rgba(124,92,252,.06);}
+
+.empty{text-align:center;padding:28px 16px;color:var(--c-txt3);}
+.empty .e-ico{font-size:30px;margin-bottom:8px;}
+
+.preview-panel{position:sticky;top:72px;}
+.phone-wrap{display:flex;justify-content:center;padding:8px 0 16px;}
+.phone{width:min(320px,100%);border-radius:40px;overflow:hidden;box-shadow:0 0 0 2px rgba(255,255,255,0.06),0 0 0 9px #1e1e28,0 0 0 10px #111,0 30px 70px rgba(0,0,0,0.75);background:#000;position:relative;}
+.dyn-island{position:absolute;top:11px;left:50%;transform:translateX(-50%);width:88px;height:26px;background:#000;border-radius:16px;z-index:50;}
+
+.sbar{padding:14px 18px 4px;display:flex;align-items:center;justify-content:space-between;font-size:12px;font-weight:700;}
+.pinned-banner{display:flex;align-items:center;gap:8px;padding:7px 12px;font-size:12px;border-left:3px solid;}
+
+/* WhatsApp */
+.chat-wa{background:#0b141a;min-height:540px;display:flex;flex-direction:column;}
+.chat-wa .sbar{background:#1f2c34;color:#e9edef;}
+.chat-wa .hdr{background:#1f2c34;padding:9px 12px;display:flex;align-items:center;gap:9px;border-bottom:1px solid #2a3942;}
+.chat-wa .hdr-name{font-weight:700;color:#e9edef;font-size:14.5px;}
+.chat-wa .hdr-status{font-size:11.5px;color:#8696a0;}
+.chat-wa .hdr-icons{margin-left:auto;display:flex;gap:14px;color:#8696a0;font-size:18px;}
+.chat-wa .body{flex:1;padding:8px 8px 4px;background:#0b141a;overflow-y:auto;display:flex;flex-direction:column;gap:1px;}
+.chat-wa .date-sep{align-self:center;background:#182229;color:#8696a0;font-size:11.5px;padding:4px 11px;border-radius:6px;margin:6px 0;}
+.wa-bbl{max-width:76%;padding:6px 9px 4px;border-radius:8px;font-size:13.5px;line-height:1.42;position:relative;margin-bottom:2px;}
+.wa-bbl.s{background:#005c4b;color:#e9edef;align-self:flex-end;border-bottom-right-radius:2px;}
+.wa-bbl.r{background:#1f2c34;color:#e9edef;align-self:flex-start;border-bottom-left-radius:2px;}
+.wa-meta{display:flex;align-items:center;gap:3px;justify-content:flex-end;margin-top:2px;}
+.wa-time{font-size:10.5px;color:#8696a0;}
+.wa-tick-read{font-size:13px;color:#53bdeb;}
+.wa-tick-del{font-size:13px;color:#8696a0;}
+.chat-wa .ftr{background:#1f2c34;padding:7px 10px;display:flex;align-items:center;gap:8px;}
+.wa-inp{flex:1;background:#2a3942;border-radius:20px;padding:7px 13px;color:#8696a0;font-size:13px;}
+.wa-send{width:38px;height:38px;border-radius:50%;background:#00a884;display:flex;align-items:center;justify-content:center;color:#fff;font-size:17px;flex-shrink:0;}
+
+.va-bbl{display:flex;align-items:center;gap:8px;padding:8px 11px;}
+.va-play{width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0;}
+.va-wave{flex:1;height:28px;}
+.va-dur{font-size:11px;color:#8696a0;white-space:nowrap;}
+.img-bbl{width:160px;height:110px;border-radius:6px;background:rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;font-size:28px;position:relative;}
+.img-bbl-cap{font-size:12.5px;padding:4px 2px 2px;}
+.reactions{display:flex;gap:3px;flex-wrap:wrap;margin-top:3px;}
+.rxn{font-size:14px;background:rgba(255,255,255,.1);border-radius:10px;padding:1px 5px;}
+
+/* Instagram */
+.chat-ig{background:#000;min-height:540px;display:flex;flex-direction:column;}
+.chat-ig .sbar{background:#000;color:#fff;}
+.chat-ig .hdr{background:#000;padding:10px 13px;display:flex;align-items:center;gap:9px;border-bottom:1px solid #1c1c1c;}
+.chat-ig .hdr-name{font-weight:700;color:#fff;font-size:14.5px;}
+.chat-ig .hdr-status{font-size:11.5px;color:#a8a8a8;}
+.chat-ig .hdr-icons{margin-left:auto;display:flex;gap:14px;color:#fff;font-size:18px;}
+.chat-ig .body{flex:1;padding:8px 12px 4px;background:#000;overflow-y:auto;display:flex;flex-direction:column;gap:2px;}
+.chat-ig .date-sep{align-self:center;color:#a8a8a8;font-size:11px;margin:6px 0;}
+.ig-bbl{max-width:74%;padding:9px 13px;border-radius:22px;font-size:13.5px;line-height:1.42;margin-bottom:2px;}
+.ig-bbl.s{background:linear-gradient(135deg,#833ab4,#c13584,#e1306c);color:#fff;align-self:flex-end;border-bottom-right-radius:4px;}
+.ig-bbl.r{background:#1c1c1c;color:#fff;align-self:flex-start;border-bottom-left-radius:4px;border:1px solid #2c2c2c;}
+.ig-seen{font-size:10.5px;color:#a8a8a8;text-align:right;margin-right:4px;margin-top:1px;}
+.chat-ig .ftr{background:#000;padding:8px 12px;display:flex;align-items:center;gap:9px;border-top:1px solid #1c1c1c;}
+.ig-inp{flex:1;background:#000;border:1px solid #333;border-radius:22px;padding:9px 15px;color:#a8a8a8;font-size:13px;}
+
+/* Telegram */
+.chat-tg{background:#17212b;min-height:540px;display:flex;flex-direction:column;}
+.chat-tg .sbar{background:#17212b;color:#fff;}
+.chat-tg .hdr{background:#17212b;padding:9px 12px;display:flex;align-items:center;gap:9px;border-bottom:1px solid #0e1621;box-shadow:0 1px 4px rgba(0,0,0,.3);}
+.chat-tg .hdr-name{font-weight:600;color:#fff;font-size:14.5px;}
+.chat-tg .hdr-status{font-size:11.5px;color:#5fb8f6;}
+.chat-tg .hdr-icons{margin-left:auto;display:flex;gap:14px;color:#8ba2b5;font-size:18px;}
+.chat-tg .body{flex:1;padding:8px 10px 4px;background:#0e1621;overflow-y:auto;display:flex;flex-direction:column;gap:1px;}
+.chat-tg .date-sep{align-self:center;background:rgba(0,0,0,.35);color:#8ba2b5;font-size:11.5px;padding:4px 12px;border-radius:10px;margin:6px 0;}
+.tg-bbl{max-width:76%;padding:6px 9px 4px;border-radius:12px;font-size:13.5px;line-height:1.42;position:relative;margin-bottom:2px;}
+.tg-bbl.s{background:#2b5278;color:#fff;align-self:flex-end;border-bottom-right-radius:2px;}
+.tg-bbl.r{background:#182533;color:#fff;align-self:flex-start;border-bottom-left-radius:2px;}
+.tg-sender{font-size:11.5px;color:#5fb8f6;font-weight:700;margin-bottom:2px;}
+.tg-meta{display:flex;align-items:center;gap:3px;justify-content:flex-end;margin-top:2px;}
+.tg-time{font-size:10.5px;color:#8ba2b5;}
+.tg-tick-read{font-size:12px;color:#5fb8f6;}
+.tg-tick-del{font-size:12px;color:#8ba2b5;}
+.chat-tg .ftr{background:#17212b;padding:7px 10px;display:flex;align-items:center;gap:8px;border-top:1px solid #0e1621;}
+.tg-inp{flex:1;background:#242f3d;border-radius:20px;padding:7px 13px;color:#8ba2b5;font-size:13px;}
+.tg-send{width:38px;height:38px;border-radius:50%;background:#2b9fd6;display:flex;align-items:center;justify-content:center;color:#fff;font-size:17px;flex-shrink:0;}
+
+/* iMessage */
+.chat-im{background:#000;min-height:540px;display:flex;flex-direction:column;}
+.chat-im .sbar{background:#000;color:#fff;}
+.chat-im .hdr{background:rgba(28,28,30,.97);padding:10px 13px;display:flex;align-items:center;gap:9px;border-bottom:1px solid #2c2c2e;}
+.chat-im .hdr-name{font-weight:600;color:#fff;font-size:15px;flex:1;text-align:center;}
+.chat-im .hdr-status{font-size:11.5px;color:#8e8e93;text-align:center;}
+.chat-im .body{flex:1;padding:8px 11px 4px;background:#000;overflow-y:auto;display:flex;flex-direction:column;gap:2px;}
+.chat-im .date-sep{align-self:center;color:#8e8e93;font-size:11px;margin:7px 0;}
+.im-bbl{max-width:74%;padding:9px 14px;border-radius:18px;font-size:14px;line-height:1.42;margin-bottom:2px;}
+.im-bbl.s{background:#0a84ff;color:#fff;align-self:flex-end;border-bottom-right-radius:4px;}
+.im-bbl.r{background:#1c1c1e;color:#fff;align-self:flex-start;border-bottom-left-radius:4px;}
+.im-read{font-size:10.5px;color:#8e8e93;text-align:right;margin-right:4px;margin-top:1px;}
+.chat-im .ftr{background:rgba(28,28,30,.97);padding:8px 12px;display:flex;align-items:center;gap:8px;border-top:1px solid #2c2c2e;}
+.im-inp{flex:1;background:#1c1c1e;border:1px solid #3a3a3c;border-radius:18px;padding:8px 13px;color:#8e8e93;font-size:13px;}
+
+.av{width:33px;height:33px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;flex-shrink:0;}
+.av-sm{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:10px;flex-shrink:0;}
+
+.typing{display:flex;align-items:center;gap:3px;padding:9px 12px;border-radius:18px;align-self:flex-start;width:52px;}
+.tdot{width:6px;height:6px;border-radius:50%;animation:tdot 1.3s infinite;}
+.tdot:nth-child(2){animation-delay:.15s;}
+.tdot:nth-child(3){animation-delay:.3s;}
+@keyframes tdot{0%,60%,100%{transform:translateY(0);opacity:.5;}30%{transform:translateY(-5px);opacity:1;}}
+
+.online-dot{width:8px;height:8px;border-radius:50%;background:#25d366;display:inline-block;box-shadow:0 0 0 2px rgba(37,211,102,.2);margin-right:3px;}
+
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:500;display:flex;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(6px);}
+.modal-bg.hidden{display:none;}
+.modal{background:var(--c-card);border:1px solid var(--c-border);border-radius:var(--r-xl);width:100%;max-width:680px;max-height:85vh;display:flex;flex-direction:column;overflow:hidden;}
+.modal-hdr{padding:20px 22px 16px;border-bottom:1px solid var(--c-border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
+.modal-hdr h2{font-size:17px;font-weight:800;}
+.modal-close{width:32px;height:32px;border-radius:8px;background:var(--c-input);border:1px solid var(--c-border);color:var(--c-txt2);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:16px;}
+.modal-close:hover{background:var(--c-hover);}
+.modal-cats{display:flex;gap:7px;flex-wrap:wrap;padding:14px 22px;border-bottom:1px solid var(--c-border);flex-shrink:0;}
+.cat-btn{padding:5px 13px;border-radius:20px;font-size:12px;font-weight:700;cursor:pointer;border:1.5px solid var(--c-border);background:var(--c-input);color:var(--c-txt2);transition:.15s;}
+.cat-btn.active{border-color:var(--c-purple);background:rgba(124,92,252,.1);color:var(--c-purple);}
+.templates-grid{overflow-y:auto;padding:16px 22px;display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:11px;flex:1;}
+.templates-grid::-webkit-scrollbar{width:4px;}
+.templates-grid::-webkit-scrollbar-thumb{background:var(--c-border2);border-radius:4px;}
+.tpl-card{background:var(--c-input);border:1.5px solid var(--c-border);border-radius:var(--r-md);padding:13px;cursor:pointer;transition:.18s;}
+.tpl-card:hover{border-color:var(--c-purple);background:rgba(124,92,252,.06);transform:translateY(-1px);}
+.tpl-name{font-size:13px;font-weight:700;margin-bottom:6px;}
+.tpl-preview{font-size:11.5px;color:var(--c-txt2);line-height:1.5;white-space:pre-line;}
+
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--c-card);border:1px solid var(--c-border);border-radius:var(--r-md);padding:11px 18px;font-size:13px;font-weight:600;color:var(--c-txt);box-shadow:var(--shadow);z-index:1000;transition:transform .32s cubic-bezier(.34,1.56,.64,1);display:flex;align-items:center;gap:9px;white-space:nowrap;}
+.toast.show{transform:translateX(-50%) translateY(0);}
+
+.tip{background:rgba(79,159,255,.08);border:1px solid rgba(79,159,255,.15);border-radius:var(--r-md);padding:9px 13px;font-size:12px;color:var(--c-blue);margin-bottom:14px;display:flex;gap:7px;}
+.ent-watermark{text-align:center;font-size:9.5px;font-weight:700;color:rgba(255,255,255,.2);letter-spacing:.8px;padding:4px 0 2px;text-transform:uppercase;}
+
+@media(max-width:600px){.btns-2,.btns-3{grid-template-columns:1fr;}.opts-grid{grid-template-columns:1fr;}}
+</style>
+
+  <!-- ── SEO ── -->
+  <link rel="canonical" href="https://friendship-check.in/fake_chat_generator.html"/>
+  <meta name="robots" content="index, follow"/>
+  <meta property="og:type" content="website"/>
+  <meta property="og:url" content="https://friendship-check.in/fake_chat_generator.html"/>
+  <meta property="og:title" content="FriendCheck | Fake Chat Generator 💬 — Create Prank Screenshots"/>
+  <meta property="og:description" content="Create viral fake chat screenshots for WhatsApp, iMessage, Instagram DM, and Telegram. 50+ prank templates. For entertainment only."/>
+  <meta property="og:image" content="https://friendship-check.in/og-fake-chat.png"/>
+  <meta property="og:site_name" content="FriendCheck"/>
+  <meta name="twitter:card" content="summary_large_image"/>
+  <meta name="twitter:title" content="FriendCheck | Fake Chat Generator 💬"/>
+  <meta name="twitter:description" content="Create viral fake chat screenshots. 50+ templates. For entertainment only."/>
+  <meta name="twitter:image" content="https://friendship-check.in/og-fake-chat.png"/>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"WebApplication","name":"FriendCheck Fake Chat Generator",
+  "url":"https://friendship-check.in/fake_chat_generator.html",
+  "description":"Create viral fake chat screenshots for WhatsApp, iMessage, Instagram DM, Telegram.",
+  "applicationCategory":"UtilitiesApplication","isAccessibleForFree":true,
+  "provider":{"@type":"Organization","name":"FriendCheck","url":"https://friendship-check.in"}}
+  </script>
+</head>
+<body>
+
+<div class="disclaimer-bar">
+  ⚠️ FOR ENTERTAINMENT ONLY — PRANK TOOL
+  <span>All chats are 100% fake. Do not use to deceive, harm, or mislead others.</span>
+</div>
+
+<header>
+  <div class="logo">
+    <div class="logo-icon">💬</div>
+    <span class="logo-name">FakeChat</span>
+  </div>
+  <div class="header-right">
+    <div class="badge-ent">🎭 Prank Mode</div>
+    <button class="hbtn" title="Prank Templates" onclick="openTemplates()">📋</button>
+    <button class="hbtn" title="Random Conversation" onclick="randomConvo()">🎲</button>
+  </div>
+</header>
+
+<div class="app">
+  <!-- LEFT: CONTROLS -->
+  <div class="controls">
+
+    <div class="card">
+      <div class="card-title">👤 Participants</div>
+      <div class="form-row">
+        <div class="fg"><label>Person 1 (received / left)</label><input type="text" id="p1name" value="Alex" oninput="render()"/></div>
+        <div class="fg"><label>Person 2 (sent / right)</label><input type="text" id="p2name" value="Jordan" oninput="render()"/></div>
+      </div>
+      <div class="form-row">
+        <div class="fg">
+          <label>Status</label>
+          <select id="p2status" onchange="onStatusChange()">
+            <option value="online">🟢 Online</option>
+            <option value="typing">⌨️ Typing…</option>
+            <option value="last_seen">Last seen today</option>
+            <option value="active_now">Active now</option>
+            <option value="custom">Custom…</option>
+          </select>
+        </div>
+        <div class="fg" id="customStatusWrap" style="display:none">
+          <label>Custom status text</label>
+          <input type="text" id="customStatus" value="last seen 5 min ago" oninput="render()"/>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">🎨 App Theme</div>
+      <div class="theme-grid">
+        <button class="theme-opt active" data-theme="wa" onclick="setTheme('wa',this)"><div class="theme-dot" style="background:#25d366"></div>WhatsApp</button>
+        <button class="theme-opt" data-theme="im" onclick="setTheme('im',this)"><div class="theme-dot" style="background:#0a84ff"></div>iMessage</button>
+        <button class="theme-opt" data-theme="ig" onclick="setTheme('ig',this)"><div class="theme-dot" style="background:linear-gradient(135deg,#833ab4,#e1306c)"></div>Instagram DM</button>
+        <button class="theme-opt" data-theme="tg" onclick="setTheme('tg',this)"><div class="theme-dot" style="background:#2b9fd6"></div>Telegram</button>
+      </div>
+      <div class="opts-grid">
+        <label class="opt-toggle"><input type="checkbox" id="optTyping" onchange="render()"/><div class="knob"></div><span class="opt-lbl">Typing indicator</span></label>
+        <label class="opt-toggle"><input type="checkbox" id="optRead" checked onchange="render()"/><div class="knob"></div><span class="opt-lbl">Read receipts</span></label>
+        <label class="opt-toggle"><input type="checkbox" id="optAvatars" checked onchange="render()"/><div class="knob"></div><span class="opt-lbl">Show avatars</span></label>
+        <label class="opt-toggle"><input type="checkbox" id="optDate" checked onchange="render()"/><div class="knob"></div><span class="opt-lbl">Date separator</span></label>
+        <label class="opt-toggle"><input type="checkbox" id="optPinned" onchange="togglePinnedInput()"/><div class="knob"></div><span class="opt-lbl">Pinned message</span></label>
+        <label class="opt-toggle"><input type="checkbox" id="optWatermark" checked onchange="render()"/><div class="knob"></div><span class="opt-lbl">Ent. watermark</span></label>
+      </div>
+      <div id="pinnedInputWrap" style="display:none;margin-top:10px;">
+        <input type="text" id="pinnedText" value="📌 This is a pinned message" oninput="render()"/>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">💬 Build Conversation</div>
+      <div class="tip">ℹ️ Add text, voice clips, or image placeholders. Set emoji reactions and tick status per bubble.</div>
+      <div class="msgs-list" id="msgsList"></div>
+      <div id="emptyState" class="empty"><div class="e-ico">📭</div><div>No messages yet — add one below!</div></div>
+      <button class="add-btn" onclick="addMsg()">＋ Add Message</button>
+    </div>
+
+    <div class="card">
+      <div class="card-title">🚀 Export</div>
+      <button class="btn btn-primary btn-full" onclick="render()">⚡ Refresh Preview</button>
+      <div class="btns-2">
+        <button class="btn btn-secondary" onclick="downloadPNG()">📥 Download PNG</button>
+        <button class="btn btn-ghost" onclick="copyImage()">📋 Copy Image</button>
+      </div>
+      <div class="btns-3" style="margin-top:9px;">
+        <button class="btn btn-green" onclick="shareWA()">💬 Share</button>
+        <button class="btn btn-pink" onclick="openTemplates()">📋 Templates</button>
+        <button class="btn btn-secondary" style="border-color:rgba(252,92,138,.3);color:var(--c-pink);" onclick="resetAll()">🗑️ Reset</button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- RIGHT: PREVIEW -->
+  <div class="preview-panel">
+    <div class="card">
+      <div class="card-title">📱 Live Preview <span style="margin-left:auto;font-size:11px;color:var(--c-txt3);font-weight:400;text-transform:none;letter-spacing:0;">Updates as you type</span></div>
+      <div class="phone-wrap">
+        <div class="phone" id="phoneEl">
+          <div class="dyn-island"></div>
+          <div id="chatPreview"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TEMPLATES MODAL -->
+<div class="modal-bg hidden" id="tplModal">
+  <div class="modal">
+    <div class="modal-hdr">
+      <h2>📋 Prank Templates <span style="font-size:13px;font-weight:400;color:var(--c-txt2);margin-left:8px;">50+ conversations</span></h2>
+      <button class="modal-close" onclick="closeTemplates()">✕</button>
+    </div>
+    <div class="modal-cats" id="tplCats"></div>
+    <div class="templates-grid" id="tplGrid"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"><span id="toastIco">✅</span><span id="toastTxt">Done!</span></div>
+
+
+  <!-- ── AD: Mid-content ── -->
+  <div id="ad-mid-banner" style="width:100%;max-width:728px;margin:1.5rem auto;padding:0 1rem;box-sizing:border-box;"></div>
+
+  <!-- ── AFFILIATE + AD: After use ── -->
+  <div id="fc-affiliate-strip"></div>
+  <div id="ad-post-result" style="width:100%;max-width:728px;margin:1rem auto 2rem;padding:0 1rem;box-sizing:border-box;"></div>
+
+  <!-- ── STICKY FOOTER AD ── -->
+  <div id="ad-footer-sticky"></div>
+
+  <!-- ── AD + AFFILIATE SCRIPTS ── -->
+  <script src="shared/fc-ads.js"></script>
+  <script src="shared/fc-affiliate.js"></script>
+  <script>
+    FCAds.initAll([
+      { type: 'banner', id: 'ad-mid-banner',    key: 'REPLACE_WITH_BANNER_KEY' },
+      { type: 'native', id: 'ad-post-result',   key: 'REPLACE_WITH_NATIVE_KEY' },
+      { type: 'footer', id: 'ad-footer-sticky', key: 'REPLACE_WITH_FOOTER_KEY', options: { sticky: true, closeable: true } },
+    ]);
+    // Show affiliate when user downloads / generates their chat
+    document.addEventListener('fc-chat-generated', function() {
+      FCAffiliate.render('fc-affiliate-strip', 'default');
+    });
+  </script>
+
+<script src="shared/fc-utils.js"></script>
+<script src="shared/fc-nav.js"></script>
+<script>
+if(window.FCNav) FCNav.init({active:'fake-chat'});
+
+/* ── STATE ── */
+let theme='wa', msgs=[], idCnt=0;
+const AV_COLORS=[['#7c5cfc','#fff'],['#25d366','#fff'],['#fc5c8a','#fff'],['#4f9fff','#fff'],['#ff9f5c','#fff'],['#e91e8c','#fff']];
+
+function avColor(name){let h=0;for(let c of (name||'?'))h=(h*31+c.charCodeAt(0))&0xffffffff;return AV_COLORS[Math.abs(h)%AV_COLORS.length];}
+function esc(s){return(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function nowTime(){const d=new Date();return pad(d.getHours())+':'+pad(d.getMinutes());}
+function pad(n){return String(n).padStart(2,'0');}
+function fmtTime(t){return t||nowTime();}
+function todayStr(){return new Date().toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'});}
+
+function svgWave(seed,color){
+  const p=[];for(let i=0;i<28;i++){const h=4+Math.abs(Math.sin(i*2.1+seed)*10);p.push(`<rect x="${i*5}" y="${(14-h/2).toFixed(1)}" width="3" height="${h.toFixed(1)}" rx="1.5" fill="${color}" opacity="${(0.4+Math.abs(Math.sin(i))*0.6).toFixed(2)}"/>`);}
+  return `<svg width="140" height="28" viewBox="0 0 140 28">${p.join('')}</svg>`;
+}
+
+/* ── THEME / CONTROLS ── */
+function setTheme(t,el){theme=t;document.querySelectorAll('.theme-opt').forEach(b=>b.classList.remove('active'));el.classList.add('active');render();}
+function togglePinnedInput(){document.getElementById('pinnedInputWrap').style.display=document.getElementById('optPinned').checked?'block':'none';render();}
+function onStatusChange(){document.getElementById('customStatusWrap').style.display=document.getElementById('p2status').value==='custom'?'block':'none';render();}
+
+/* ── MESSAGE BUILDER ── */
+function addMsg(sender,type,text,time,reactions,status){
+  const id=++idCnt;
+  msgs.push({id,sender:sender||'p1',type:type||'text',text:text||'',time:time||'',reactions:reactions||'',status:status||'read'});
+  rebuildList();render();
+}
+function delMsg(id){msgs=msgs.filter(m=>m.id!==id);rebuildList();render();}
+function upd(id,field,val){const m=msgs.find(m=>m.id===id);if(m){m[field]=val;render();}}
+function updType(id,type){const m=msgs.find(m=>m.id===id);if(m){m.type=type;rebuildList();render();}}
+
+function rebuildList(){
+  const list=document.getElementById('msgsList');
+  const empty=document.getElementById('emptyState');
+  empty.style.display=msgs.length?'none':'block';
+  const p1=document.getElementById('p1name').value||'Person 1';
+  const p2=document.getElementById('p2name').value||'Person 2';
+  list.innerHTML=msgs.map((msg,i)=>{
+    const typeOpts=['text','voice','image'].map(t=>`<button class="type-btn${msg.type===t?' active':''}" onclick="updType(${msg.id},'${t}')">${t==='text'?'💬 Text':t==='voice'?'🎤 Voice':'🖼️ Image'}</button>`).join('');
+    const statusOpts=msg.sender==='p2'?`<select style="width:110px;" onchange="upd(${msg.id},'status',this.value)"><option value="read"${msg.status==='read'?' selected':''}>✓✓ Read</option><option value="delivered"${msg.status==='delivered'?' selected':''}>✓✓ Delivered</option><option value="sent"${msg.status==='sent'?' selected':''}>✓ Sent</option><option value="none"${msg.status==='none'?' selected':''}>No tick</option></select>`:'';
+    const bodyInput=msg.type==='text'?`<textarea placeholder="Type message…" oninput="upd(${msg.id},'text',this.value)">${esc(msg.text)}</textarea>`:msg.type==='image'?`<input type="text" placeholder="Caption (optional)" value="${esc(msg.text)}" oninput="upd(${msg.id},'text',this.value)"/>`:`<div style="font-size:12px;color:var(--c-txt3);padding:6px 0;">🎤 Voice bubble in preview</div>`;
+    return `<div class="msg-item" id="mi${msg.id}">
+      <div class="msg-top"><span class="msg-num">#${i+1}</span><select class="msg-sender-sel" onchange="upd(${msg.id},'sender',this.value)"><option value="p1"${msg.sender==='p1'?' selected':''}>← ${esc(p1)}</option><option value="p2"${msg.sender==='p2'?' selected':''}>→ ${esc(p2)}</option></select><button class="msg-del" onclick="delMsg(${msg.id})">✕</button></div>
+      <div class="msg-type-row">${typeOpts}</div>
+      ${bodyInput}
+      <div class="msg-bottom"><input type="time" class="msg-time-input" value="${msg.time}" onchange="upd(${msg.id},'time',this.value)"/><input type="text" class="reaction-input" placeholder="Reactions: ❤️😂👍" value="${esc(msg.reactions)}" oninput="upd(${msg.id},'reactions',this.value)"/>${statusOpts}</div>
+    </div>`;
+  }).join('');
+}
+
+/* ── RENDER ── */
+function render(){
+  const p1=document.getElementById('p1name').value||'Alex';
+  const p2=document.getElementById('p2name').value||'Jordan';
+  const sv=document.getElementById('p2status').value;
+  let statusLabel=sv==='online'?'online':sv==='typing'?'typing…':sv==='last_seen'?'last seen today':sv==='active_now'?'Active now':document.getElementById('customStatus').value;
+  const opts={showTyping:document.getElementById('optTyping').checked,showRead:document.getElementById('optRead').checked,showAv:document.getElementById('optAvatars').checked,showDate:document.getElementById('optDate').checked,showPinned:document.getElementById('optPinned').checked,pinnedTxt:document.getElementById('pinnedText').value,showWm:document.getElementById('optWatermark').checked,isOnline:sv==='online'||sv==='active_now'||sv==='typing'};
+  const builders={wa:buildWA,im:buildIM,ig:buildIG,tg:buildTG};
+  document.getElementById('chatPreview').innerHTML=(builders[theme]||buildWA)(p1,p2,statusLabel,opts);
+}
+
+/* ── TICK HELPERS ── */
+function waTick(s){return s==='read'?`<span class="wa-tick-read">✓✓</span>`:s==='delivered'?`<span class="wa-tick-del">✓✓</span>`:s==='sent'?`<span style="font-size:13px;color:#8696a0;">✓</span>`:'';
+}
+function tgTick(s){return s==='read'?`<span class="tg-tick-read">✓✓</span>`:s==='delivered'?`<span class="tg-tick-del">✓✓</span>`:s==='sent'?`<span style="font-size:12px;color:#8ba2b5;">✓</span>`:'';
+}
+function voiceBubble(id,th,isSent){
+  const wc=th==='wa'?(isSent?'#a0cdb5':'#8696a0'):th==='tg'?(isSent?'#7fb3e0':'#5fb8f6'):th==='ig'?(isSent?'#ffd5e0':'#a8a8a8'):'#636366';
+  return `<div class="va-bbl"><div class="va-play">▶</div><div class="va-wave">${svgWave(id,wc)}</div><span class="va-dur">0:${pad(8+id%14)}</span></div>`;
+}
+function imgBubble(cap){return `<div class="img-bbl">🖼️</div>${cap?`<div class="img-bbl-cap">${esc(cap)}</div>`:''}`;
+}
+function rxnHtml(r){if(!r||!r.trim())return '';const e=[...r].filter(c=>c.trim());if(!e.length)return '';return `<div class="reactions">${e.map(x=>`<span class="rxn">${x}</span>`).join('')}</div>`;}
+function onlineDot(online){return online?`<span class="online-dot"></span>`:'';
+}
+
+/* ── WhatsApp ── */
+function buildWA(p1,p2,statusLabel,o){
+  const [bg1,fg1]=avColor(p1),[bg2,fg2]=avColor(p2);
+  let body='';
+  if(o.showDate&&msgs.length) body+=`<div class="date-sep">TODAY</div>`;
+  msgs.forEach((m,i)=>{
+    const isSent=m.sender==='p2';const t=fmtTime(m.time);
+    const tick=isSent&&o.showRead?waTick(m.status):'';
+    const name=isSent?p2:p1;const [bg,fg]=avColor(name);
+    const inner=m.type==='voice'?voiceBubble(m.id,'wa',isSent):m.type==='image'?imgBubble(m.text):`<span style="white-space:pre-wrap;">${esc(m.text)||'…'}</span>`;
+    const bbl=`<div class="wa-bbl ${isSent?'s':'r'}">${inner}${rxnHtml(m.reactions)}<div class="wa-meta"><span class="wa-time">${t}</span>${tick}</div></div>`;
+    if(!isSent&&o.showAv) body+=`<div style="display:flex;align-items:flex-end;gap:4px;"><div class="av-sm" style="background:${bg};color:${fg};">${name[0].toUpperCase()}</div>${bbl}</div>`;
+    else body+=bbl;
+  });
+  if(!msgs.length) body+=`<div style="text-align:center;color:#8696a0;font-size:12.5px;padding:24px;">🔒 Messages are end-to-end encrypted</div>`;
+  if(o.showTyping){const [bg,fg]=avColor(p1);const av=o.showAv?`<div class="av-sm" style="background:${bg};color:${fg};">${p1[0].toUpperCase()}</div>`:'';body+=`<div style="display:flex;align-items:flex-end;gap:4px;">${av}<div class="typing" style="background:#1f2c34;"><div class="tdot" style="background:#8696a0"></div><div class="tdot" style="background:#8696a0"></div><div class="tdot" style="background:#8696a0"></div></div></div>`;}
+  const pinned=o.showPinned?`<div class="pinned-banner" style="background:rgba(0,168,132,.08);border-left-color:#00a884;">📌 <span style="color:#8696a0;">${esc(o.pinnedTxt)}</span></div>`:'';
+  const wm=o.showWm?`<div class="ent-watermark">for entertainment only · friendcheck</div>`:'';
+  return `<div class="chat-wa"><div class="sbar" style="background:#1f2c34;color:#e9edef;"><span>${nowTime()}</span><span>📶 🔋</span></div><div class="hdr"><span style="color:#8696a0;font-size:20px;">‹</span>${o.showAv?`<div class="av" style="background:${bg2};color:${fg2};">${p2[0].toUpperCase()}</div>`:''}<div><div class="hdr-name">${esc(p2)}</div><div class="hdr-status">${onlineDot(o.isOnline)}${esc(statusLabel)}</div></div><div class="hdr-icons"><span>📹</span><span>📞</span><span>⋮</span></div></div>${pinned}<div class="body">${body}</div><div class="ftr"><span style="font-size:19px;color:#8696a0;">😊</span><div class="wa-inp">Message</div><span style="font-size:19px;color:#8696a0;">📎</span><div class="wa-send">🎤</div></div>${wm}</div>`;
+}
+
+/* ── iMessage ── */
+function buildIM(p1,p2,statusLabel,o){
+  const [bg2,fg2]=avColor(p2);
+  let body='';
+  if(o.showDate&&msgs.length) body+=`<div class="date-sep">${todayStr()}</div>`;
+  msgs.forEach((m,i)=>{
+    const isSent=m.sender==='p2';const t=fmtTime(m.time);const isLast=i===msgs.length-1;
+    const inner=m.type==='voice'?voiceBubble(m.id,'im',isSent):m.type==='image'?imgBubble(m.text):`<span style="white-space:pre-wrap;">${esc(m.text)||'…'}</span>`;
+    body+=`<div class="im-bbl ${isSent?'s':'r'}">${inner}${rxnHtml(m.reactions)}</div>`;
+    if(isLast&&o.showRead&&isSent) body+=`<div class="im-read">Read ${t}</div>`;
+  });
+  if(!msgs.length) body+=`<div style="text-align:center;color:#8e8e93;font-size:12.5px;padding:24px;">Today</div>`;
+  if(o.showTyping) body+=`<div class="typing" style="background:#1c1c1e;margin-top:4px;"><div class="tdot" style="background:#8e8e93"></div><div class="tdot" style="background:#8e8e93"></div><div class="tdot" style="background:#8e8e93"></div></div>`;
+  const pinned=o.showPinned?`<div class="pinned-banner" style="background:rgba(10,132,255,.08);border-left-color:#0a84ff;">📌 <span style="color:#8e8e93;">${esc(o.pinnedTxt)}</span></div>`:'';
+  const wm=o.showWm?`<div class="ent-watermark">for entertainment only · friendcheck</div>`:'';
+  return `<div class="chat-im"><div class="sbar" style="background:#000;color:#fff;"><span>${nowTime()}</span><span>●●● 5G 🔋</span></div><div class="hdr"><span style="color:#0a84ff;font-size:13px;font-weight:600;">‹ Back</span><div style="flex:1;text-align:center;">${o.showAv?`<div class="av" style="background:${bg2};color:${fg2};margin:0 auto 3px;">${p2[0].toUpperCase()}</div>`:''}<div class="hdr-name">${esc(p2)}</div><div class="hdr-status">${onlineDot(o.isOnline)}${esc(statusLabel)}</div></div><span style="color:#0a84ff;font-size:19px;">📹</span></div>${pinned}<div class="body">${body}</div><div class="ftr"><span style="font-size:21px;color:#8e8e93;">⊕</span><div class="im-inp">iMessage</div><span style="font-size:21px;color:#0a84ff;">🎤</span></div>${wm}</div>`;
+}
+
+/* ── Instagram ── */
+function buildIG(p1,p2,statusLabel,o){
+  const [bg1,fg1]=avColor(p1),[bg2,fg2]=avColor(p2);
+  let body='';
+  if(o.showDate&&msgs.length) body+=`<div class="date-sep">Today</div>`;
+  msgs.forEach((m,i)=>{
+    const isSent=m.sender==='p2';const t=fmtTime(m.time);const isLast=i===msgs.length-1;
+    const name=isSent?p2:p1;const [bg,fg]=avColor(name);
+    const inner=m.type==='voice'?voiceBubble(m.id,'ig',isSent):m.type==='image'?imgBubble(m.text):`<span style="white-space:pre-wrap;">${esc(m.text)||'…'}</span>`;
+    const bbl=`<div class="ig-bbl ${isSent?'s':'r'}">${inner}${rxnHtml(m.reactions)}</div>`;
+    if(!isSent&&o.showAv) body+=`<div style="display:flex;align-items:flex-end;gap:5px;"><div class="av-sm" style="background:${bg};color:${fg};">${name[0].toUpperCase()}</div>${bbl}</div>`;
+    else body+=bbl;
+    if(isLast&&o.showRead&&isSent) body+=`<div class="ig-seen">Seen ${t}</div>`;
+  });
+  if(!msgs.length) body+=`<div style="text-align:center;color:#a8a8a8;font-size:12.5px;padding:24px;">👋 Say hi to ${esc(p2)}!</div>`;
+  if(o.showTyping){const [bg,fg]=avColor(p1);const av=o.showAv?`<div class="av-sm" style="background:${bg};color:${fg};">${p1[0].toUpperCase()}</div>`:'';body+=`<div style="display:flex;align-items:flex-end;gap:5px;margin-top:5px;">${av}<div class="typing" style="background:#1c1c1c;border:1px solid #2c2c2c;"><div class="tdot" style="background:#a8a8a8"></div><div class="tdot" style="background:#a8a8a8"></div><div class="tdot" style="background:#a8a8a8"></div></div></div>`;}
+  const pinned=o.showPinned?`<div class="pinned-banner" style="background:rgba(193,53,132,.08);border-left-color:#c13584;">📌 <span style="color:#a8a8a8;">${esc(o.pinnedTxt)}</span></div>`:'';
+  const wm=o.showWm?`<div class="ent-watermark" style="background:#000;">for entertainment only · friendcheck</div>`:'';
+  return `<div class="chat-ig"><div class="sbar" style="background:#000;color:#fff;"><span>${nowTime()}</span><span>📶 5G 🔋</span></div><div class="hdr"><span style="color:#fff;font-size:21px;">‹</span><div style="flex:1;">${o.showAv?`<div class="av" style="background:${bg2};color:${fg2};">${p2[0].toUpperCase()}</div>`:''}<div class="hdr-name">${esc(p2)}</div><div class="hdr-status">${onlineDot(o.isOnline)}${esc(statusLabel)}</div></div><div class="hdr-icons"><span>📞</span><span>🎥</span></div></div>${pinned}<div class="body">${body}</div><div class="ftr"><span style="font-size:21px;color:#fff;">📷</span><div class="ig-inp">Message…</div><span style="font-size:21px;color:#fff;">🎙️</span><span style="font-size:21px;color:#fff;">👍</span></div>${wm}</div>`;
+}
+
+/* ── Telegram ── */
+function buildTG(p1,p2,statusLabel,o){
+  const [bg1,fg1]=avColor(p1),[bg2,fg2]=avColor(p2);
+  let body='';
+  if(o.showDate&&msgs.length) body+=`<div class="date-sep">Today</div>`;
+  msgs.forEach((m,i)=>{
+    const isSent=m.sender==='p2';const t=fmtTime(m.time);
+    const name=isSent?p2:p1;const [bg,fg]=avColor(name);
+    const tick=isSent&&o.showRead?tgTick(m.status):'';
+    const inner=m.type==='voice'?voiceBubble(m.id,'tg',isSent):m.type==='image'?imgBubble(m.text):`<span style="white-space:pre-wrap;">${esc(m.text)||'…'}</span>`;
+    const senderLine=!isSent&&o.showAv?`<div class="tg-sender">${esc(p1)}</div>`:'';
+    const bbl=`<div class="tg-bbl ${isSent?'s':'r'}">${senderLine}${inner}${rxnHtml(m.reactions)}<div class="tg-meta"><span class="tg-time">${t}</span>${tick}</div></div>`;
+    if(!isSent&&o.showAv) body+=`<div style="display:flex;align-items:flex-end;gap:4px;"><div class="av-sm" style="background:${bg};color:${fg};">${name[0].toUpperCase()}</div>${bbl}</div>`;
+    else body+=bbl;
+  });
+  if(!msgs.length) body+=`<div style="text-align:center;color:#8ba2b5;font-size:12.5px;padding:24px;">No messages yet</div>`;
+  if(o.showTyping){const [bg,fg]=avColor(p1);const av=o.showAv?`<div class="av-sm" style="background:${bg};color:${fg};">${p1[0].toUpperCase()}</div>`:'';body+=`<div style="display:flex;align-items:flex-end;gap:4px;margin-top:4px;">${av}<div class="typing" style="background:#182533;"><div class="tdot" style="background:#5fb8f6"></div><div class="tdot" style="background:#5fb8f6"></div><div class="tdot" style="background:#5fb8f6"></div></div></div>`;}
+  const pinned=o.showPinned?`<div class="pinned-banner" style="background:rgba(91,184,246,.08);border-left-color:#5fb8f6;">📌 <span style="color:#8ba2b5;">${esc(o.pinnedTxt)}</span></div>`:'';
+  const wm=o.showWm?`<div class="ent-watermark" style="background:#17212b;">for entertainment only · friendcheck</div>`:'';
+  return `<div class="chat-tg"><div class="sbar" style="background:#17212b;color:#fff;"><span>${nowTime()}</span><span>📶 LTE 🔋</span></div><div class="hdr"><span style="color:#5fb8f6;font-size:21px;">‹</span>${o.showAv?`<div class="av" style="background:${bg2};color:${fg2};">${p2[0].toUpperCase()}</div>`:''}<div><div class="hdr-name">${esc(p2)}</div><div class="hdr-status">${onlineDot(o.isOnline)}${esc(statusLabel)}</div></div><div class="hdr-icons"><span>🔍</span><span>📞</span><span>⋮</span></div></div>${pinned}<div class="body">${body}</div><div class="ftr"><span style="font-size:19px;color:#8ba2b5;">😊</span><div class="tg-inp">Message</div><span style="font-size:19px;color:#8ba2b5;">📎</span><div class="tg-send">➤</div></div>${wm}</div>`;
+}
+
+/* ── EXPORT ── */
+async function downloadPNG(){
+  showToast('⏳','Generating…');
+  try{
+    const el=document.getElementById('phoneEl');
+    const di=el.querySelector('.dyn-island');
+    if(di)di.style.display='none';
+    const url=await htmlToImage.toPng(el,{pixelRatio:3,cacheBust:true,quality:1});
+    if(di)di.style.display='';
+    const a=document.createElement('a');a.download=`FriendCheck_FakeChat_${theme}_${Date.now()}.png`;a.href=url;a.click();
+    showToast('✅','Downloaded!');
+  }catch(e){console.error(e);showToast('❌','Failed — try again.');}
+}
+async function copyImage(){
+  showToast('⏳','Capturing…');
+  try{
+    const el=document.getElementById('phoneEl');
+    const di=el.querySelector('.dyn-island');if(di)di.style.display='none';
+    const url=await htmlToImage.toPng(el,{pixelRatio:3,cacheBust:true});if(di)di.style.display='';
+    const blob=await(await fetch(url)).blob();
+    await navigator.clipboard.write([new ClipboardItem({'image/png':blob})]);
+    showToast('📋','Copied!');
+  }catch(e){showToast('❌','Clipboard blocked — use Download.');}
+}
+function shareWA(){const p1=document.getElementById('p1name').value||'Person 1',p2=document.getElementById('p2name').value||'Person 2';window.open(`https://wa.me/?text=${encodeURIComponent('😂 Check out this fake chat between '+p1+' & '+p2+'!\nhttps://friendship-check.in')}`, '_blank');}
+function resetAll(){msgs=[];idCnt=0;['p1name','p2name'].forEach(id=>document.getElementById(id).value=id==='p1name'?'Alex':'Jordan');document.getElementById('p2status').value='online';['optTyping','optPinned'].forEach(id=>document.getElementById(id).checked=false);['optRead','optAvatars','optDate','optWatermark'].forEach(id=>document.getElementById(id).checked=true);document.getElementById('pinnedInputWrap').style.display='none';rebuildList();render();showToast('🆕','Cleared!');}
+
+function showToast(ico,txt){const t=document.getElementById('toast');document.getElementById('toastIco').textContent=ico;document.getElementById('toastTxt').textContent=txt;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3000);}
+
+/* ── 50+ PRANK TEMPLATES ── */
+const TEMPLATES=[
+  {cat:'💘 Crush',name:'Confession Rejected',preview:'Hey I like you\n→ lol ok',msgs:[{s:'p1',t:'Hey… I have to tell you something',time:'21:00'},{s:'p1',t:'I like you. Like, a lot 😰',time:'21:01'},{s:'p2',t:'…',time:'21:03'},{s:'p2',t:'lol ok',time:'21:04'},{s:'p1',t:'That\'s it?? lol ok??',time:'21:04'},{s:'p2',t:'I mean… I\'m flattered? But no 😬',time:'21:05'}]},
+  {cat:'💘 Crush',name:'Date Ditched',preview:'Plans cancelled last minute',msgs:[{s:'p2',t:'Hey so tonight… I can\'t make it 😔',time:'18:30'},{s:'p1',t:'WHAT? I already got ready!!',time:'18:31'},{s:'p2',t:'My grandma got a cold sore 😭',time:'18:31'},{s:'p1',t:'A cold sore is not an emergency 💀',time:'18:32'},{s:'p2',t:'Family first babe',time:'18:33'}]},
+  {cat:'💘 Crush',name:'Left on Read',preview:'Double text spiral',msgs:[{s:'p1',t:'Hey 👋',time:'14:00'},{s:'p1',t:'Did you see my message?',time:'16:00'},{s:'p1',t:'Ok so you\'re just not gonna reply 😭',time:'20:00'},{s:'p2',t:'Sorry was busy lol',time:'22:00'},{s:'p1',t:'7 hours of busy??',time:'22:01'}]},
+  {cat:'💘 Crush',name:'Wrong Chat',preview:'Sent confession to the wrong person',msgs:[{s:'p1',t:'OMG they actually smiled at me today I\'m DEAD 😍😍',time:'15:10'},{s:'p1',t:'Like full teeth smile and everything',time:'15:11'},{s:'p2',t:'… you know this is me right',time:'15:12'},{s:'p1',t:'WHAT',time:'15:12'},{s:'p1',t:'IGNORE EVERYTHING',time:'15:12'},{s:'p2',t:'😭😭😭',time:'15:13'}]},
+  {cat:'💘 Crush',name:'Caught Simping',preview:'Friend exposes your DMs',msgs:[{s:'p2',t:'So I heard you\'ve been asking about me 👀',time:'19:45'},{s:'p1',t:'Who told you that',time:'19:46'},{s:'p2',t:'Everyone. You asked 6 people if I was single.',time:'19:46'},{s:'p1',t:'I was doing research',time:'19:47'},{s:'p2',t:'For what?? A dissertation???',time:'19:47'},{s:'p1',t:'…yes',time:'19:48'}]},
+  {cat:'💘 Crush',name:'Accidental Like',preview:'Liked a 3-year-old photo',msgs:[{s:'p1',t:'I need to tell you something I accidentally liked your photo from 2021',time:'23:00'},{s:'p2',t:'You were scrolling back 3 YEARS?',time:'23:01'},{s:'p1',t:'It was research',time:'23:01'},{s:'p2',t:'So you\'re a stalker',time:'23:02'},{s:'p1',t:'A CURIOUS person thank you',time:'23:02'}]},
+  {cat:'👫 Friends',name:'Who Ate My Food',preview:'Fridge crime investigation',msgs:[{s:'p1',t:'WHO ATE MY LEFTOVERS',time:'12:30'},{s:'p2',t:'Not me',time:'12:31'},{s:'p1',t:'There were only two of us home',time:'12:31'},{s:'p2',t:'Gremlins maybe',time:'12:32'},{s:'p1',t:'I labelled it with my name and a warning',time:'12:32'},{s:'p2',t:'The warning made it look more interesting honestly',time:'12:33'}]},
+  {cat:'👫 Friends',name:'Cancel Again',preview:'Classic last-minute bail',msgs:[{s:'p2',t:'I\'m not gonna make it tonight 😬',time:'20:05'},{s:'p1',t:'bro this is the FIFTH time',time:'20:06'},{s:'p2',t:'I know I know I\'m sorry 😭',time:'20:06'},{s:'p1',t:'You\'re dead to me',time:'20:07'},{s:'p2',t:'Dinner on me?',time:'20:07'},{s:'p1',t:'...fine. But you\'re paying for dessert too',time:'20:08'}]},
+  {cat:'👫 Friends',name:'Borrow Money',preview:'Asking for money back',msgs:[{s:'p1',t:'Hey remember that $50?',time:'11:00'},{s:'p2',t:'What $50',time:'11:02'},{s:'p1',t:'The $50 I lent you 3 months ago',time:'11:02'},{s:'p2',t:'I thought that was a gift 😇',time:'11:03'},{s:'p1',t:'I SAID "can you pay me back"',time:'11:03'},{s:'p2',t:'I interpreted that differently',time:'11:04'}]},
+  {cat:'👫 Friends',name:'Secret Spilled',preview:'They told EVERYONE',msgs:[{s:'p1',t:'Did you tell people what I told you?!',time:'16:20'},{s:'p2',t:'I only told ONE person',time:'16:21'},{s:'p1',t:'5 people came up to me about it today',time:'16:22'},{s:'p2',t:'Ok so that one person might have a big mouth',time:'16:22'},{s:'p1',t:'You\'re not my friend anymore',time:'16:23'},{s:'p2',t:'That\'s fair 😬',time:'16:23'}]},
+  {cat:'👫 Friends',name:'Brutal Honesty',preview:'No chill whatsoever',msgs:[{s:'p1',t:'Rate my new profile pic honestly',time:'17:00'},{s:'p2',t:'You asked for honest',time:'17:01'},{s:'p2',t:'3/10',time:'17:01'},{s:'p1',t:'WTF',time:'17:01'},{s:'p2',t:'The lighting is bad and you look tired',time:'17:02'},{s:'p1',t:'You\'re supposed to be my friend',time:'17:03'},{s:'p2',t:'I AM your friend, that\'s why I\'m telling you',time:'17:03'}]},
+  {cat:'👫 Friends',name:'Group Chat Drama',preview:'Accidentally left someone out',msgs:[{s:'p2',t:'Why wasn\'t I in the group chat',time:'14:00'},{s:'p1',t:'What group chat',time:'14:01'},{s:'p2',t:'The one you all used to plan the party',time:'14:01'},{s:'p1',t:'It was a surprise FOR YOU',time:'14:02'},{s:'p2',t:'Oh',time:'14:03'},{s:'p2',t:'Oh no I said some things to people about "being excluded" 😬',time:'14:03'}]},
+  {cat:'👨‍👩‍👧 Family',name:'Mom Already Knows',preview:'She always knows everything',msgs:[{s:'p2',t:'I heard you came home at 3am last night',time:'09:00'},{s:'p1',t:'Mom I was at Sarah\'s studying',time:'09:01'},{s:'p2',t:'Sarah called looking for you at midnight',time:'09:01'},{s:'p1',t:'...',time:'09:03'},{s:'p2',t:'Exactly. Dinner at 6. No excuses.',time:'09:03'}]},
+  {cat:'👨‍👩‍👧 Family',name:'Dad Jokes Attack',preview:'The puns never stop',msgs:[{s:'p2',t:'Why don\'t scientists trust atoms?',time:'14:00'},{s:'p1',t:'Dad please no',time:'14:01'},{s:'p2',t:'Because they make up everything 😂',time:'14:01'},{s:'p1',t:'I\'m blocking you',time:'14:02'},{s:'p2',t:'What do you call cheese that isn\'t yours?',time:'14:02'},{s:'p1',t:'STOP',time:'14:02'},{s:'p2',t:'Nacho cheese!! 😂😂',time:'14:03'}]},
+  {cat:'👨‍👩‍👧 Family',name:'Sibling Rivalry',preview:'Classic charger theft',msgs:[{s:'p1',t:'Did you use my charger',time:'10:00'},{s:'p2',t:'No',time:'10:01'},{s:'p1',t:'It\'s literally in your room',time:'10:01'},{s:'p2',t:'I don\'t know how it got there',time:'10:02'},{s:'p1',t:'YOU TOOK IT',time:'10:02'},{s:'p2',t:'Can\'t prove it',time:'10:03'},{s:'p1',t:'I\'m telling mom',time:'10:03'}]},
+  {cat:'👨‍👩‍👧 Family',name:'Curfew Negotiation',preview:'Classic parent bargaining',msgs:[{s:'p1',t:'Can I stay out until midnight?',time:'18:00'},{s:'p2',t:'11pm',time:'18:01'},{s:'p1',t:'11:30?',time:'18:01'},{s:'p2',t:'11:15 and that\'s final',time:'18:02'},{s:'p1',t:'Deal 🤝',time:'18:02'},{s:'p2',t:'And text me every hour',time:'18:03'},{s:'p1',t:'Moooooom',time:'18:03'}]},
+  {cat:'👨‍👩‍👧 Family',name:'Grandma Tech Help',preview:'She needs phone help again',msgs:[{s:'p2',t:'Hello dear how do I make the letters bigger again',time:'11:30'},{s:'p1',t:'Settings > Display > Font size, grandma',time:'11:31'},{s:'p2',t:'It says setting',time:'11:32'},{s:'p2',t:'I pressed it and now the screen is upside down',time:'11:33'},{s:'p1',t:'WHAT',time:'11:33'},{s:'p2',t:'Also I may have bought something from Amazon',time:'11:34'}]},
+  {cat:'💼 Work',name:'Fake Sick Day',preview:'Obviously not sick at all',msgs:[{s:'p1',t:'Hey boss, I\'m not feeling well today 🤒',time:'08:55'},{s:'p2',t:'Feel better. Also, saw your Instagram story at the beach.',time:'09:10'},{s:'p1',t:'...',time:'09:11'},{s:'p1',t:'The fresh air helps with my condition',time:'09:12'},{s:'p2',t:'We\'ll discuss this Monday.',time:'09:13'}]},
+  {cat:'💼 Work',name:'Reply All Disaster',preview:'Hit Reply All by accident',msgs:[{s:'p2',t:'Did you just reply-all to the whole company?',time:'10:15'},{s:'p1',t:'Oh god. WHAT DID I SAY',time:'10:16'},{s:'p2',t:'"This client is such a pain lol"',time:'10:16'},{s:'p1',t:'I need to leave the country',time:'10:17'},{s:'p2',t:'The client is in the email chain',time:'10:17'},{s:'p1',t:'I quit',time:'10:18'}]},
+  {cat:'💼 Work',name:'Wrong Slides Sent',preview:'Placeholder slide in client deck',msgs:[{s:'p1',t:'Please tell me you didn\'t send the slides yet',time:'14:00'},{s:'p2',t:'I sent them 10 minutes ago, why?',time:'14:01'},{s:'p1',t:'The file called "FINAL_v2_REAL_THIS_ONE"?',time:'14:01'},{s:'p2',t:'Yes',time:'14:02'},{s:'p1',t:'That one has a slide that just says "idk figure it out" on it',time:'14:02'},{s:'p2',t:'...',time:'14:03'},{s:'p2',t:'I\'ll call them',time:'14:03'}]},
+  {cat:'💼 Work',name:'Essay Due Today',preview:'Forgot assignment',msgs:[{s:'p1',t:'Did you do the English essay??',time:'07:45'},{s:'p2',t:'What essay',time:'07:46'},{s:'p1',t:'IT WAS DUE TODAY',time:'07:46'},{s:'p2',t:'WHAT',time:'07:46'},{s:'p2',t:'How long??',time:'07:47'},{s:'p1',t:'1500 words. Class is in 45 mins.',time:'07:47'},{s:'p2',t:'I\'m going to fail',time:'07:48'}]},
+  {cat:'💼 Work',name:'Caught on TikTok',preview:'Boss saw your screen',msgs:[{s:'p2',t:'What are you doing on your computer right now',time:'14:20'},{s:'p1',t:'Working obviously',time:'14:21'},{s:'p2',t:'I can see your screen from my desk',time:'14:21'},{s:'p1',t:'I\'m researching',time:'14:22'},{s:'p2',t:'Is TikTok considered research now?',time:'14:22'},{s:'p1',t:'...market research',time:'14:23'}]},
+  {cat:'😂 Funny',name:'Autocorrect Duck',preview:'Autocorrect at its finest',msgs:[{s:'p1',t:'Can you pick up some duck from the store?',time:'16:00'},{s:'p2',t:'...duck?',time:'16:01'},{s:'p1',t:'YES DUCK FOR DINNER',time:'16:01'},{s:'p2',t:'From which store do I get a live duck?',time:'16:02'},{s:'p1',t:'WAIT I MEANT MILK',time:'16:02'},{s:'p2',t:'I\'m at the pond already 😭',time:'16:03'}]},
+  {cat:'😂 Funny',name:'Texted Professor',preview:'Sent to the wrong person',msgs:[{s:'p1',t:'DUDE she looked at me in class I think she likes me',time:'13:00'},{s:'p2',t:'This is your professor.',time:'13:01'},{s:'p1',t:'NO',time:'13:01'},{s:'p2',t:'I teach your 2pm Statistics class.',time:'13:01'},{s:'p1',t:'I am transferring schools',time:'13:02'}]},
+  {cat:'😂 Funny',name:'Soft Ghost',preview:'Suddenly very busy',msgs:[{s:'p1',t:'Wanna hang out this weekend?',time:'15:00'},{s:'p2',t:'Oh sorry I\'m busy',time:'15:01'},{s:'p1',t:'How about next weekend?',time:'15:01'},{s:'p2',t:'Also busy 😬',time:'15:02'},{s:'p1',t:'The one after?',time:'15:02'},{s:'p2',t:'I\'ll check... yeah busy',time:'15:03'},{s:'p1',t:'Are you ghosting me',time:'15:03'},{s:'p2',t:'No! I\'m just a very busy person',time:'15:04'}]},
+  {cat:'😂 Funny',name:'Dramatic Exit',preview:'The most dramatic departure',msgs:[{s:'p2',t:'I\'m leaving',time:'22:00'},{s:'p1',t:'What? Where are you going?',time:'22:00'},{s:'p2',t:'Somewhere where I\'m appreciated',time:'22:01'},{s:'p1',t:'You\'re just going to your room aren\'t you',time:'22:01'},{s:'p2',t:'...yes. But dramatically.',time:'22:02'}]},
+  {cat:'😂 Funny',name:'Lost the Bet',preview:'Had to admit you were wrong',msgs:[{s:'p2',t:'Ok fine. You were right. I was wrong.',time:'18:00'},{s:'p1',t:'SCREENSHOT. FRAMING THIS.',time:'18:01'},{s:'p2',t:'Don\'t you dare',time:'18:01'},{s:'p1',t:'Too late, sent to the group chat',time:'18:02'},{s:'p2',t:'I hate you so much 😭',time:'18:02'},{s:'p1',t:'Also you owe me $20',time:'18:03'}]},
+  {cat:'😂 Funny',name:'2AM Hunger',preview:'Late night snack emergency',msgs:[{s:'p1',t:'Are you awake',time:'02:14'},{s:'p2',t:'why',time:'02:15'},{s:'p1',t:'Do we have food',time:'02:15'},{s:'p2',t:'it\'s 2am',time:'02:16'},{s:'p1',t:'Is that a yes or a no',time:'02:16'},{s:'p2',t:'there\'s cereal',time:'02:17'},{s:'p1',t:'Perfect. Crisis averted.',time:'02:17'}]},
+  {cat:'😂 Funny',name:'Phone Selfies',preview:'47 selfies in your camera roll',msgs:[{s:'p1',t:'Why are there 47 selfies of you in my camera roll',time:'12:00'},{s:'p2',t:'I was testing your camera quality',time:'12:01'},{s:'p1',t:'They\'re all the same pose',time:'12:01'},{s:'p2',t:'I was looking for the best angle',time:'12:02'},{s:'p1',t:'For 47 photos',time:'12:02'},{s:'p2',t:'I\'m very photogenic, it takes time',time:'12:03'}]},
+  {cat:'😂 Funny',name:'Ice Cream Drama',preview:'Major drama over nothing',msgs:[{s:'p2',t:'I need to tell you something serious',time:'19:00'},{s:'p1',t:'Oh no what happened?? Are you ok??',time:'19:01'},{s:'p2',t:'I dropped my ice cream 😭',time:'19:01'},{s:'p1',t:'I thought someone DIED',time:'19:02'},{s:'p2',t:'Someone did. My happiness.',time:'19:02'}]},
+  {cat:'😂 Funny',name:'Predictive Text',preview:'Phone finished the sentence badly',msgs:[{s:'p1',t:'Can you help me I accidentally let my phone finish my text and it said',time:'20:00'},{s:'p1',t:'"I love you and want to marry your dog"',time:'20:00'},{s:'p2',t:'Who did you send that to',time:'20:01'},{s:'p1',t:'My landlord',time:'20:01'},{s:'p2',t:'HAHAHAHAHAH',time:'20:02'}]},
+  {cat:'😂 Funny',name:'Zoom Sneeze',preview:'Sneezed on camera',msgs:[{s:'p1',t:'I just sneezed so hard I fell off my chair',time:'14:45'},{s:'p2',t:'are you ok???',time:'14:46'},{s:'p1',t:'physically yes, emotionally no',time:'14:46'},{s:'p2',t:'why emotionally',time:'14:47'},{s:'p1',t:'my boss saw it on the zoom call',time:'14:47'},{s:'p2',t:'💀💀💀',time:'14:48'},{s:'p1',t:'I\'m quitting',time:'14:48'}]},
+  {cat:'🎭 Drama',name:'Party Karaoke',preview:'Wouldn\'t stop singing',msgs:[{s:'p1',t:'I heard what happened at Sarah\'s party',time:'10:00'},{s:'p2',t:'It\'s not what you think',time:'10:01'},{s:'p1',t:'You karaoke\'d for 2 HOURS',time:'10:01'},{s:'p2',t:'I was passionate',time:'10:02'},{s:'p1',t:'They had to unplug the machine to stop you',time:'10:02'},{s:'p2',t:'My encore was just getting started',time:'10:03'}]},
+  {cat:'🎭 Drama',name:'Overhear Drama',preview:'Heard something juicy',msgs:[{s:'p2',t:'Ok so don\'t freak out but',time:'16:00'},{s:'p1',t:'why do sentences that start like that always end badly',time:'16:01'},{s:'p2',t:'I overheard something about you at lunch',time:'16:01'},{s:'p1',t:'WHAT WHAT WHAT',time:'16:02'},{s:'p2',t:'Someone said you\'re the nicest person in class',time:'16:02'},{s:'p1',t:'I PANICKED FOR NOTHING',time:'16:03'},{s:'p2',t:'Hehe sorry 😂',time:'16:03'}]},
+  {cat:'🎭 Drama',name:'Cold War Over',preview:'Silent treatment ends',msgs:[{s:'p2',t:'Are we still not talking',time:'17:00'},{s:'p1',t:'I wasn\'t aware we stopped',time:'17:01'},{s:'p2',t:'You\'ve been giving me looks all day',time:'17:01'},{s:'p1',t:'That\'s just my face',time:'17:02'},{s:'p2',t:'Your face specifically looks annoyed at ME',time:'17:02'},{s:'p1',t:'Fine. You ate the last slice again.',time:'17:03'},{s:'p2',t:'...oh. Sorry. I\'ll buy another pizza.',time:'17:03'}]},
+  {cat:'🎭 Drama',name:'Surprise Exposed',preview:'Ruined their own surprise party',msgs:[{s:'p1',t:'Don\'t go to the house before 7 ok?',time:'15:00'},{s:'p2',t:'Why??',time:'15:01'},{s:'p1',t:'We\'re... cleaning',time:'15:01'},{s:'p2',t:'Is this a surprise party',time:'15:02'},{s:'p1',t:'NO',time:'15:02'},{s:'p2',t:'You just answered too fast',time:'15:03'},{s:'p1',t:'ugh FINE yes it\'s a surprise party',time:'15:03'}]},
+  {cat:'🌙 Late Night',name:'Fish Philosophy',preview:'3am deep questions',msgs:[{s:'p1',t:'are you awake',time:'03:11'},{s:'p2',t:'i am now',time:'03:12'},{s:'p1',t:'do you think fish get thirsty',time:'03:12'},{s:'p2',t:'please go to sleep',time:'03:13'},{s:'p1',t:'but like. they\'re surrounded by water. can they drink it',time:'03:13'},{s:'p2',t:'WHY ARE YOU LIKE THIS',time:'03:14'}]},
+  {cat:'🌙 Late Night',name:'Exam Spiral',preview:'We\'re all failing',msgs:[{s:'p1',t:'I have been studying for 6 hours and I know less than when I started',time:'23:45'},{s:'p2',t:'same. I just read the same page 11 times',time:'23:46'},{s:'p1',t:'Do you think the exam will be cancelled',time:'23:47'},{s:'p2',t:'There\'s literally no scenario where that happens',time:'23:47'},{s:'p1',t:'What if a pigeon flew into the exam hall',time:'23:48'},{s:'p2',t:'Go to sleep',time:'23:48'}]},
+  {cat:'🌙 Late Night',name:'Overthinking',preview:'Brain attacks at midnight',msgs:[{s:'p1',t:'I can\'t sleep',time:'01:20'},{s:'p2',t:'same honestly',time:'01:22'},{s:'p1',t:'I keep thinking about that embarrassing thing I did in 2017',time:'01:22'},{s:'p2',t:'oh god same. mine is from 2014 and it still lives rent-free',time:'01:23'},{s:'p1',t:'Why does the brain do this to us at 1am specifically',time:'01:24'},{s:'p2',t:'It waits until there are no distractions and then attacks',time:'01:24'}]},
+  {cat:'🌙 Late Night',name:'Pizza Emergency',preview:'1am food crisis',msgs:[{s:'p1',t:'are you awake',time:'01:00'},{s:'p2',t:'why',time:'01:01'},{s:'p2',t:'it\'s 1am',time:'01:01'},{s:'p1',t:'we should order pizza',time:'01:01'},{s:'p2',t:'peak pizza hours',time:'01:02'},{s:'p1',t:'exactly',time:'01:02'},{s:'p2',t:'...fine what do you want on it',time:'01:03'}]},
+  {cat:'🌙 Late Night',name:'Netflix Shame',preview:'Rewatching the same shows',msgs:[{s:'p2',t:'confession time',time:'22:00'},{s:'p1',t:'uh oh',time:'22:01'},{s:'p2',t:'I\'ve been rewatching the same 3 shows for 2 years',time:'22:01'},{s:'p1',t:'SAME what are yours',time:'22:02'},{s:'p2',t:'can\'t say or we\'ll both be judged',time:'22:02'},{s:'p1',t:'valid. mine involve vampires.',time:'22:03'},{s:'p2',t:'...same 😭',time:'22:03'}]},
+  {cat:'🤣 Savage',name:'No Filter',preview:'The most honest review',msgs:[{s:'p1',t:'What do you honestly think of my essay',time:'20:00'},{s:'p2',t:'Do you actually want honest',time:'20:01'},{s:'p1',t:'Yes',time:'20:01'},{s:'p2',t:'It reads like you wrote it at 3am the day before',time:'20:02'},{s:'p1',t:'I did write it at 3am the day before',time:'20:02'},{s:'p2',t:'It shows',time:'20:03'}]},
+  {cat:'🤣 Savage',name:'Unsolicited Advice',preview:'They asked for it',msgs:[{s:'p2',t:'My new haircut looks bad right',time:'14:00'},{s:'p1',t:'I wasn\'t going to say anything',time:'14:01'},{s:'p2',t:'WHAT',time:'14:01'},{s:'p1',t:'It\'s... a choice',time:'14:02'},{s:'p2',t:'YOU\'RE SUPPOSED TO SAY IT LOOKS FINE',time:'14:02'},{s:'p1',t:'You specifically said "no lies"',time:'14:03'}]},
+  {cat:'🤣 Savage',name:'Terrible Cook',preview:'Cooking experiment gone wrong',msgs:[{s:'p1',t:'I tried to cook tonight',time:'19:00'},{s:'p2',t:'oh no. how bad',time:'19:01'},{s:'p1',t:'The smoke alarm went off twice',time:'19:01'},{s:'p2',t:'what were you making',time:'19:02'},{s:'p1',t:'toast',time:'19:02'},{s:'p2',t:'...',time:'19:03'},{s:'p2',t:'TOAST',time:'19:03'}]},
+  {cat:'🤣 Savage',name:'The Comparison',preview:'Sibling favoritism confirmed',msgs:[{s:'p1',t:'Mom just said I\'m her favorite child',time:'16:00'},{s:'p2',t:'She says that to all of us',time:'16:01'},{s:'p1',t:'Wait she says that to YOU too??',time:'16:01'},{s:'p2',t:'She told me last week lol',time:'16:02'},{s:'p1',t:'I feel so betrayed',time:'16:02'},{s:'p2',t:'Welcome to the club',time:'16:03'}]},
+  {cat:'🤣 Savage',name:'Diet Motivation',preview:'Accountability partner fails',msgs:[{s:'p2',t:'I told you to stop me if I ordered fast food',time:'21:00'},{s:'p1',t:'You ordered before you texted me',time:'21:01'},{s:'p2',t:'You\'re supposed to be proactive',time:'21:01'},{s:'p1',t:'I don\'t have psychic abilities',time:'21:02'},{s:'p2',t:'Bad accountability partner, zero stars',time:'21:02'},{s:'p1',t:'You literally ordered the large meal',time:'21:03'}]},
+  {cat:'🎉 Fun',name:'Road Trip Drama',preview:'Wrong turn chaos',msgs:[{s:'p1',t:'Ok so minor issue',time:'14:00'},{s:'p2',t:'when you say minor',time:'14:01'},{s:'p1',t:'We might be going the wrong direction',time:'14:01'},{s:'p2',t:'MIGHT be??',time:'14:02'},{s:'p1',t:'I\'m 70% sure we should have turned left',time:'14:02'},{s:'p2',t:'CHECK THE MAP',time:'14:03'},{s:'p1',t:'my phone died',time:'14:03'}]},
+  {cat:'🎉 Fun',name:'Surprise Backfire',preview:'The surprise didn\'t land',msgs:[{s:'p2',t:'I did the surprise you suggested',time:'17:00'},{s:'p1',t:'How\'d it go!!',time:'17:01'},{s:'p2',t:'They screamed and dropped their phone',time:'17:01'},{s:'p1',t:'Like screamed scared or screamed happy?',time:'17:02'},{s:'p2',t:'...the first one',time:'17:02'},{s:'p1',t:'Oh no',time:'17:03'}]},
+  {cat:'🎉 Fun',name:'Best Day Ever',preview:'Everything going right',msgs:[{s:'p1',t:'I just found $20 in my old jacket',time:'11:00'},{s:'p2',t:'nice!!',time:'11:01'},{s:'p1',t:'AND my coffee was free because they spelled my name right for once',time:'11:01'},{s:'p2',t:'is that even a win',time:'11:02'},{s:'p1',t:'when your name is as weird as mine YES',time:'11:02'},{s:'p2',t:'ok fair enough congrats 😂',time:'11:03'}]},
+  {cat:'🎉 Fun',name:'Plan Chaos',preview:'When no one can decide',msgs:[{s:'p1',t:'What do you want to do today?',time:'13:00'},{s:'p2',t:'idk you pick',time:'13:01'},{s:'p1',t:'ok how about the mall',time:'13:01'},{s:'p2',t:'ehhhh not really feeling it',time:'13:02'},{s:'p1',t:'beach?',time:'13:02'},{s:'p2',t:'too hot',time:'13:03'},{s:'p1',t:'movies?',time:'13:03'},{s:'p2',t:'nothing good is out',time:'13:04'},{s:'p1',t:'then YOU pick',time:'13:04'},{s:'p2',t:'idk you\'re better at this',time:'13:05'}]},
+];
+
+const CATS=[...new Set(TEMPLATES.map(t=>t.cat))];
+let activeCat=CATS[0];
+
+function openTemplates(){renderCats();renderTemplates();document.getElementById('tplModal').classList.remove('hidden');}
+function closeTemplates(){document.getElementById('tplModal').classList.add('hidden');}
+function renderCats(){document.getElementById('tplCats').innerHTML=CATS.map(c=>`<button class="cat-btn${c===activeCat?' active':''}" onclick="selectCat('${c.replace(/'/g,"\\'")}',this)">${c} <span style="color:var(--c-txt3);font-weight:400;">${TEMPLATES.filter(t=>t.cat===c).length}</span></button>`).join('');}
+function selectCat(cat,el){activeCat=cat;document.querySelectorAll('.cat-btn').forEach(b=>b.classList.remove('active'));el.classList.add('active');renderTemplates();}
+function renderTemplates(){
+  const filtered=TEMPLATES.filter(t=>t.cat===activeCat);
+  document.getElementById('tplGrid').innerHTML=filtered.map(t=>{
+    const idx=TEMPLATES.indexOf(t);
+    return `<div class="tpl-card" onclick="loadTemplate(${idx})"><div class="tpl-name">${t.name}</div><div class="tpl-preview">${esc(t.preview)}</div></div>`;
+  }).join('');
+}
+function loadTemplate(idx){
+  const tpl=TEMPLATES[idx];msgs=[];idCnt=0;
+  tpl.msgs.forEach(m=>{msgs.push({id:++idCnt,sender:m.s,type:'text',text:m.t,time:m.time||nowTime(),reactions:'',status:'read'});});
+  rebuildList();render();closeTemplates();showToast('✅',`Loaded: ${tpl.name}`);
+}
+
+/* ── RANDOM CONVO ── */
+const RANDOM_CONVOS=[
+  [['p1','hey'],['p2','hey! what\'s up?'],['p1','not much, just bored'],['p2','same honestly 😭'],['p1','wanna do something later?'],['p2','sure what did you have in mind'],['p1','idk you decide'],['p2','classic. ok how about food?'],['p1','yes 👍']],
+  [['p1','ok don\'t freak out'],['p2','you can\'t say that and expect me not to freak out'],['p1','I may have accidentally told everyone your secret'],['p2','WHAT SECRET'],['p1','that you cried at the dog movie'],['p2','That movie was SAD and anyone who didn\'t cry is a robot'],['p1','I\'m telling people you said that too']],
+  [['p1','I just sneezed so hard I fell off my chair'],['p2','are you ok???'],['p1','physically yes, emotionally no'],['p2','why emotionally'],['p1','my boss saw it on the zoom call'],['p2','💀💀💀'],['p1','I\'m quitting']],
+  [['p2','confession time'],['p1','uh oh'],['p2','I\'ve been rewatching the same 3 shows for 2 years'],['p1','SAME what are yours'],['p2','can\'t say or we\'ll both be judged'],['p1','valid. mine involve vampires.'],['p2','...same 😭']],
+  [['p1','are you up'],['p2','unfortunately'],['p1','I\'m hungry'],['p2','and?'],['p1','and we should order pizza'],['p2','it\'s 1am'],['p1','peak pizza hours'],['p2','...fine what do you want on it']],
+  [['p1','did you see that thing last night'],['p2','which thing'],['p1','THE thing. everyone was talking about it'],['p2','…I have no idea what you mean'],['p1','never mind you had to be there'],['p2','helpful as always 🙄']],
+];
+const P1_NAMES=['Alex','Sam','Chris','Jordan','Taylor','Morgan','Riley','Casey'];
+const P2_NAMES=['Jamie','Drew','Avery','Blake','Quinn','Skyler','Rowan','Finley'];
+
+function randomConvo(){
+  const p1=P1_NAMES[Math.floor(Math.random()*P1_NAMES.length)];
+  const p2=P2_NAMES[Math.floor(Math.random()*P2_NAMES.length)];
+  document.getElementById('p1name').value=p1;
+  document.getElementById('p2name').value=p2;
+  const convo=RANDOM_CONVOS[Math.floor(Math.random()*RANDOM_CONVOS.length)];
+  msgs=[];idCnt=0;
+  let h=10+Math.floor(Math.random()*12),m2=Math.floor(Math.random()*50);
+  convo.forEach(line=>{
+    m2+=Math.floor(1+Math.random()*4);if(m2>=60){m2-=60;h++;}
+    msgs.push({id:++idCnt,sender:line[0],type:'text',text:line[1],time:pad(h%24)+':'+pad(m2),reactions:'',status:'read'});
+  });
+  rebuildList();render();showToast('🎲','Random convo generated!');
+}
+
+/* ── INIT ── */
+addMsg('p1','text','Hey, are you coming tonight? 🎉','20:14','','read');
+addMsg('p2','text','Umm… I might be a little late 😅','20:15','❤️😂','read');
+addMsg('p1','text','You ALWAYS say that lmaooo 💀','20:16','','read');
+addMsg('p2','text','Ok ok I PROMISE this time!! 🙏','20:16','','read');
+addMsg('p1','text','I\'ll believe it when I see it 👀','20:17','','read');
+render();
+</script>
+</body>
+</html>

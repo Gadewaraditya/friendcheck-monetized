@@ -77,11 +77,121 @@
       flex-direction: column;
       align-items: center;
       overflow-x: hidden;
-      background-image:
-        radial-gradient(circle at 10% 20%, rgba(162,89,255,0.10), transparent 40%),
-        radial-gradient(circle at 90% 80%, rgba(0,210,255,0.10),  transparent 40%),
-        radial-gradient(circle at 50% 50%, rgba(255,45,122,0.05), transparent 60%);
     }
+
+    /* ── BACKGROUND CANVAS ── */
+    .bg-scene {
+      position: fixed; inset: 0; z-index: 0;
+      pointer-events: none; overflow: hidden;
+    }
+
+    /* Dot grid */
+    .bg-scene::before {
+      content: '';
+      position: absolute; inset: 0;
+      background-image: radial-gradient(circle, rgba(255,255,255,0.06) 1px, transparent 1px);
+      background-size: 36px 36px;
+      mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 100%);
+      -webkit-mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 100%);
+    }
+
+    /* Diagonal grid lines */
+    .bg-scene::after {
+      content: '';
+      position: absolute; inset: 0;
+      background:
+        linear-gradient(rgba(162,89,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(162,89,255,0.03) 1px, transparent 1px);
+      background-size: 80px 80px;
+    }
+
+    /* ── ORBS ── */
+    .bg-orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0;
+      animation: orbDrift linear infinite;
+    }
+    .bg-orb-1 {
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(162,89,255,0.22), transparent 70%);
+      top: -120px; left: -100px;
+      animation-duration: 22s; animation-delay: 0s;
+      opacity: 1;
+    }
+    .bg-orb-2 {
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(0,210,255,0.18), transparent 70%);
+      bottom: -80px; right: -80px;
+      animation-duration: 28s; animation-delay: -8s;
+      opacity: 1;
+    }
+    .bg-orb-3 {
+      width: 420px; height: 420px;
+      background: radial-gradient(circle, rgba(255,45,122,0.14), transparent 70%);
+      top: 40%; left: 55%;
+      animation-duration: 35s; animation-delay: -14s;
+      opacity: 1;
+    }
+    .bg-orb-4 {
+      width: 320px; height: 320px;
+      background: radial-gradient(circle, rgba(0,255,135,0.10), transparent 70%);
+      top: 20%; right: 10%;
+      animation-duration: 30s; animation-delay: -5s;
+      opacity: 1;
+    }
+    @keyframes orbDrift {
+      0%   { transform: translate(0,    0)    scale(1);   }
+      25%  { transform: translate(40px, -30px) scale(1.05); }
+      50%  { transform: translate(20px, 50px)  scale(0.95); }
+      75%  { transform: translate(-30px,20px)  scale(1.08); }
+      100% { transform: translate(0,    0)    scale(1);   }
+    }
+
+    /* ── AURORA STREAKS ── */
+    .bg-streak {
+      position: absolute;
+      height: 1px;
+      border-radius: 999px;
+      opacity: 0;
+      animation: streakSlide linear infinite;
+    }
+    .bg-streak-1 {
+      width: 55%; top: 22%; left: -10%;
+      background: linear-gradient(90deg, transparent, rgba(162,89,255,0.35), transparent);
+      animation-duration: 8s; animation-delay: 0s;
+    }
+    .bg-streak-2 {
+      width: 40%; top: 58%; right: -5%;
+      background: linear-gradient(90deg, transparent, rgba(0,210,255,0.30), transparent);
+      animation-duration: 11s; animation-delay: -3s;
+    }
+    .bg-streak-3 {
+      width: 30%; top: 75%; left: 20%;
+      background: linear-gradient(90deg, transparent, rgba(255,45,122,0.25), transparent);
+      animation-duration: 9s; animation-delay: -6s;
+    }
+    @keyframes streakSlide {
+      0%   { opacity: 0; transform: translateX(-8%) scaleX(0.7); }
+      20%  { opacity: 1; }
+      80%  { opacity: 1; }
+      100% { opacity: 0; transform: translateX(8%)  scaleX(1.1); }
+    }
+
+    /* ── FLOATING PARTICLES ── */
+    .bg-particle {
+      position: absolute;
+      border-radius: 50%;
+      animation: particleFloat ease-in-out infinite;
+    }
+    @keyframes particleFloat {
+      0%, 100% { transform: translateY(0) scale(1);   opacity: 0.4; }
+      50%       { transform: translateY(-28px) scale(1.2); opacity: 0.8; }
+    }
+
+    /* Ensure all content sits above bg */
+    .container, footer { position: relative; z-index: 1; }
 
     .container {
       max-width: 1200px;
@@ -166,10 +276,35 @@
       .container { padding-top:calc(2.5rem + 60px); }
     }
     @media (min-width:640px) and (max-width:899px) { .grid { grid-template-columns:repeat(2,1fr); } }
-    @media (prefers-reduced-motion:reduce) { .card { animation:none; opacity:1; } }
+    @media (prefers-reduced-motion:reduce) {
+      .card { animation:none; opacity:1; }
+      .bg-orb, .bg-streak, .bg-particle { animation:none !important; }
+    }
   </style>
 </head>
 <body>
+
+  <!-- ── BACKGROUND SCENE ── -->
+  <div class="bg-scene" aria-hidden="true">
+    <!-- Orbs -->
+    <div class="bg-orb bg-orb-1"></div>
+    <div class="bg-orb bg-orb-2"></div>
+    <div class="bg-orb bg-orb-3"></div>
+    <div class="bg-orb bg-orb-4"></div>
+    <!-- Aurora streaks -->
+    <div class="bg-streak bg-streak-1"></div>
+    <div class="bg-streak bg-streak-2"></div>
+    <div class="bg-streak bg-streak-3"></div>
+    <!-- Floating particles -->
+    <div class="bg-particle" style="width:5px;height:5px;background:rgba(162,89,255,.6);top:18%;left:12%;animation-duration:5.2s;animation-delay:0s;"></div>
+    <div class="bg-particle" style="width:4px;height:4px;background:rgba(0,210,255,.5);top:35%;left:82%;animation-duration:6.8s;animation-delay:-2s;"></div>
+    <div class="bg-particle" style="width:6px;height:6px;background:rgba(255,45,122,.5);top:62%;left:25%;animation-duration:7.4s;animation-delay:-1s;"></div>
+    <div class="bg-particle" style="width:3px;height:3px;background:rgba(255,215,0,.6);top:78%;left:70%;animation-duration:4.9s;animation-delay:-3s;"></div>
+    <div class="bg-particle" style="width:5px;height:5px;background:rgba(0,255,135,.4);top:50%;left:48%;animation-duration:8.1s;animation-delay:-4s;"></div>
+    <div class="bg-particle" style="width:4px;height:4px;background:rgba(162,89,255,.5);top:88%;left:15%;animation-duration:6.3s;animation-delay:-1.5s;"></div>
+    <div class="bg-particle" style="width:3px;height:3px;background:rgba(0,210,255,.6);top:10%;left:60%;animation-duration:5.7s;animation-delay:-2.5s;"></div>
+    <div class="bg-particle" style="width:5px;height:5px;background:rgba(255,45,122,.4);top:42%;left:5%;animation-duration:9.2s;animation-delay:-0.5s;"></div>
+  </div>
 
   <div class="container">
     <header>
@@ -189,18 +324,43 @@
     <main>
       <div class="grid">
 
-        <a href="friendship-test.html" class="card">
-          <span class="card-hot">🔥 #1</span>
-          <div class="card-icon">📝</div>
-          <h2 class="card-title">Ultimate Friendship Test</h2>
-          <p class="card-desc">10 hilarious scenarios. One brutal verdict. Find out if you're a Soulmate BFF or a Blocked Friend.</p>
-          <div class="card-btn">Take Test</div>
+        <!-- ── PRANKS FIRST ── -->
+
+        <a href="free-100-challenge.html" class="card">
+          <span class="card-hot">🎯 #1 Viral</span>
+          <div class="card-icon">💰</div>
+          <h2 class="card-title">₹100 Challenge</h2>
+          <p class="card-desc">Complete one simple mission and unlock your reward. Can you do it? Send to a friend and see 😈</p>
+          <div class="card-btn">Take Challenge</div>
+        </a>
+
+        <a href="fake_chat_generator.html" class="card">
+          <span class="card-hot">😂 Prank</span>
+          <div class="card-icon">💬</div>
+          <h2 class="card-title">Fake Chat Generator</h2>
+          <p class="card-desc">Build hyper-realistic fake chat conversations with 50+ prank templates. WhatsApp, iMessage & more.</p>
+          <div class="card-btn">Create Prank</div>
+        </a>
+
+        <a href="fake_screenshot_generator.html" class="card">
+          <span class="card-hot">📸 Prank</span>
+          <div class="card-icon">📱</div>
+          <h2 class="card-title">Fake Screenshot Generator</h2>
+          <p class="card-desc">Create realistic fake chat screenshots for WhatsApp, iMessage, Instagram DM & Telegram. Download instantly.</p>
+          <div class="card-btn">Create Now</div>
+        </a>
+
+        <a href="roast_generator.html" class="card">
+          <div class="card-icon">🔥</div>
+          <h2 class="card-title">Roast Generator</h2>
+          <p class="card-desc">Generate devastating, AI-powered roasts tailored specifically to your besties.</p>
+          <div class="card-btn">Generate Roast</div>
         </a>
 
         <a href="fake-friend-investigator.html" class="card">
           <div class="card-icon">🔎</div>
-          <h2 class="card-title">Friend Investigator</h2>
-          <p class="card-desc">Deep dive into social media interactions to uncover the hidden dynamics of your friendship.</p>
+          <h2 class="card-title">Fake Friend Investigator</h2>
+          <p class="card-desc">Run an AI investigation to expose the snake in your friend group based on loyalty patterns.</p>
           <div class="card-btn">Investigate</div>
         </a>
 
@@ -211,18 +371,14 @@
           <div class="card-btn">Start Battle</div>
         </a>
 
-        <a href="roast_generator.html" class="card">
-          <div class="card-icon">🔥</div>
-          <h2 class="card-title">Roast Generator</h2>
-          <p class="card-desc">Generate devastating, AI-powered roasts tailored specifically to your besties.</p>
-          <div class="card-btn">Generate Roast</div>
-        </a>
+        <!-- ── QUIZZES & TOOLS ── -->
 
-        <a href="friendship_compatibility.html" class="card">
-          <div class="card-icon">🧬</div>
-          <h2 class="card-title">Compatibility Scanner</h2>
-          <p class="card-desc">Discover how genetically linked your vibes really are with our advanced algorithm.</p>
-          <div class="card-btn">Scan Vibes</div>
+        <a href="friendship-test.html" class="card">
+          <span class="card-hot">🔥 Popular</span>
+          <div class="card-icon">📝</div>
+          <h2 class="card-title">Ultimate Friendship Test</h2>
+          <p class="card-desc">10 hilarious scenarios. One brutal verdict. Find out if you're a Soulmate BFF or a Blocked Friend.</p>
+          <div class="card-btn">Take Test</div>
         </a>
 
         <a href="friendship_court.html" class="card">
@@ -230,6 +386,13 @@
           <h2 class="card-title">Friendship Court</h2>
           <p class="card-desc">Settle petty disputes in a virtual courtroom. Let the AI judge decide who is right.</p>
           <div class="card-btn">Hold Court</div>
+        </a>
+
+        <a href="friendship_compatibility.html" class="card">
+          <div class="card-icon">🧬</div>
+          <h2 class="card-title">Compatibility Scanner</h2>
+          <p class="card-desc">Discover how genetically linked your vibes really are with our advanced algorithm.</p>
+          <div class="card-btn">Scan Vibes</div>
         </a>
 
         <a href="friendship_prediction.html" class="card">

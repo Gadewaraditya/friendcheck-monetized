@@ -14,22 +14,25 @@
 (function (window) {
   'use strict';
 
-  /* ── Tool registry ── */
+  /* ── Tool registry — ordered by fun/prank potential ── */
   var TOOLS = [
     { id: 'home',            label: '🏠 Home',               href: 'index.html' },
-    { id: 'friendship-test', label: '📝 Friendship Test',    href: 'friendship-test.html' },
-    { id: 'friend-battle',   label: '⚔️ Friend Battle',      href: 'friend-battle.html' },
-    { id: 'fake-friend',     label: '🔎 Fake Friend',        href: 'fake-friend-investigator.html' },
+    { id: 'challenge',       label: '🎯 ₹100 Challenge',     href: 'free-100-challenge.html' },
+    { id: 'fake-chat',       label: '💬 Fake Chat',          href: 'fake_chat_generator.html' },
+    { id: 'fake-screenshot', label: '📱 Fake Screenshot',    href: 'fake_screenshot_generator.html' },
     { id: 'roast',           label: '🔥 Roast Generator',    href: 'roast_generator.html' },
-    { id: 'compatibility',   label: '🧬 Compatibility',      href: 'friendship_compatibility.html' },
+    { id: 'fake-friend',     label: '🔎 Fake Friend',        href: 'fake-friend-investigator.html' },
+    { id: 'friend-battle',   label: '⚔️ Friend Battle',      href: 'friend-battle.html' },
+    { id: 'friendship-test', label: '📝 Friendship Test',    href: 'friendship-test.html' },
     { id: 'court',           label: '⚖️ Court',              href: 'friendship_court.html' },
+    { id: 'compatibility',   label: '🧬 Compatibility',      href: 'friendship_compatibility.html' },
     { id: 'prediction',      label: '🔮 Prediction',         href: 'friendship_prediction.html' },
     { id: 'certificate',     label: '📜 Certificate',        href: 'friendship_certificate_generator.html' },
   ];
 
   /* ── Desktop nav: show first 5 items + "More" dropdown ── */
-  var PRIMARY   = TOOLS.slice(0, 5);   // always visible
-  var SECONDARY = TOOLS.slice(5);      // in "More" dropdown
+  var PRIMARY   = TOOLS.slice(0, 5);   // home + top 4 prank/fun tools
+  var SECONDARY = TOOLS.slice(5);      // rest in "More" dropdown
 
   /* ── HTML builder helpers ── */
   function esc(s) {

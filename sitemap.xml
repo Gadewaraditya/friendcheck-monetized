@@ -6,7 +6,7 @@
   <!-- ─── Homepage ─────────────────────────────────────────────────── -->
   <url>
     <loc>https://friendship-check.in/</loc>
-    <lastmod>2025-06-05</lastmod>
+    <lastmod>2026-06-06</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
     <image:image>
@@ -15,10 +15,46 @@
     </image:image>
   </url>
 
-  <!-- ─── Friendship Test (highest traffic page) ───────────────────── -->
+  <!-- ─── ₹100 Challenge (top viral prank) ────────────────────────── -->
+  <url>
+    <loc>https://friendship-check.in/free-100-challenge.html</loc>
+    <lastmod>2026-06-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.92</priority>
+    <image:image>
+      <image:loc>https://friendship-check.in/og-challenge.png</image:loc>
+      <image:title>Free ₹100 Challenge 🎯 — Viral Friendship Dare</image:title>
+    </image:image>
+  </url>
+
+  <!-- ─── Fake Chat Generator (prank tool) ────────────────────────── -->
+  <url>
+    <loc>https://friendship-check.in/fake_chat_generator.html</loc>
+    <lastmod>2026-06-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.88</priority>
+    <image:image>
+      <image:loc>https://friendship-check.in/og-fake-chat.png</image:loc>
+      <image:title>Fake Chat Generator 💬 — 50+ Prank Templates</image:title>
+    </image:image>
+  </url>
+
+  <!-- ─── Fake Screenshot Generator (prank tool) ─────────────────── -->
+  <url>
+    <loc>https://friendship-check.in/fake_screenshot_generator.html</loc>
+    <lastmod>2026-06-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.88</priority>
+    <image:image>
+      <image:loc>https://friendship-check.in/og-fake-screenshot.png</image:loc>
+      <image:title>Fake Screenshot Generator 📱 — WhatsApp, iMessage, Instagram</image:title>
+    </image:image>
+  </url>
+
+  <!-- ─── Friendship Test (highest organic traffic page) ──────────── -->
   <url>
     <loc>https://friendship-check.in/friendship-test.html</loc>
-    <lastmod>2025-06-05</lastmod>
+    <lastmod>2026-06-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.95</priority>
     <image:image>
@@ -27,22 +63,22 @@
     </image:image>
   </url>
 
-  <!-- ─── Friend Battle ────────────────────────────────────────────── -->
+  <!-- ─── Roast Generator ──────────────────────────────────────────── -->
   <url>
-    <loc>https://friendship-check.in/friend-battle.html</loc>
-    <lastmod>2025-06-05</lastmod>
+    <loc>https://friendship-check.in/roast_generator.html</loc>
+    <lastmod>2026-06-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.85</priority>
     <image:image>
-      <image:loc>https://friendship-check.in/og-friend-battle.png</image:loc>
-      <image:title>Friend Battle ⚔️ — 20 Categories, 1 Winner</image:title>
+      <image:loc>https://friendship-check.in/og-roast.png</image:loc>
+      <image:title>Roast Generator 🔥 — 100 Savage AI Roasts</image:title>
     </image:image>
   </url>
 
   <!-- ─── Fake Friend Investigator ─────────────────────────────────── -->
   <url>
     <loc>https://friendship-check.in/fake-friend-investigator.html</loc>
-    <lastmod>2025-06-05</lastmod>
+    <lastmod>2026-06-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.85</priority>
     <image:image>
@@ -51,22 +87,22 @@
     </image:image>
   </url>
 
-  <!-- ─── Roast Generator ──────────────────────────────────────────── -->
+  <!-- ─── Friend Battle ────────────────────────────────────────────── -->
   <url>
-    <loc>https://friendship-check.in/roast_generator.html</loc>
-    <lastmod>2025-06-05</lastmod>
+    <loc>https://friendship-check.in/friend-battle.html</loc>
+    <lastmod>2026-06-06</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.80</priority>
+    <priority>0.82</priority>
     <image:image>
-      <image:loc>https://friendship-check.in/og-roast.png</image:loc>
-      <image:title>Roast Generator 🔥 — 100 Savage AI Roasts</image:title>
+      <image:loc>https://friendship-check.in/og-friend-battle.png</image:loc>
+      <image:title>Friend Battle ⚔️ — 20 Categories, 1 Winner</image:title>
     </image:image>
   </url>
 
   <!-- ─── Friendship Court ─────────────────────────────────────────── -->
   <url>
     <loc>https://friendship-check.in/friendship_court.html</loc>
-    <lastmod>2025-06-05</lastmod>
+    <lastmod>2026-06-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.80</priority>
     <image:image>
@@ -78,7 +114,7 @@
   <!-- ─── Compatibility Meter ──────────────────────────────────────── -->
   <url>
     <loc>https://friendship-check.in/friendship_compatibility.html</loc>
-    <lastmod>2025-06-05</lastmod>
+    <lastmod>2026-06-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
     <image:image>
@@ -90,7 +126,7 @@
   <!-- ─── Prediction Machine ───────────────────────────────────────── -->
   <url>
     <loc>https://friendship-check.in/friendship_prediction.html</loc>
-    <lastmod>2025-06-05</lastmod>
+    <lastmod>2026-06-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
     <image:image>
@@ -102,9 +138,9 @@
   <!-- ─── Certificate Generator ───────────────────────────────────── -->
   <url>
     <loc>https://friendship-check.in/friendship_certificate_generator.html</loc>
-    <lastmod>2025-06-05</lastmod>
+    <lastmod>2026-06-06</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.75</priority>
+    <priority>0.72</priority>
     <image:image>
       <image:loc>https://friendship-check.in/og-certificate.png</image:loc>
       <image:title>Friendship Certificate Generator 📜</image:title>

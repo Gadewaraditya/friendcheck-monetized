@@ -1,0 +1,1126 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>FriendCheck | Fake Screenshot Generator 📱</title>
+    <meta name="description" content="Create realistic fake chat screenshots from WhatsApp, iMessage, Instagram DM, and Telegram. Free, instant download."/>
+
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html-to-image/1.11.11/html-to-image.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <script>
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              colors: {
+                "primary": "#fface8",
+                "primary-container": "#ff24e4",
+                "on-primary": "#5e0053",
+                "secondary": "#d3fbff",
+                "secondary-container": "#00eefc",
+                "on-secondary": "#00363a",
+                "on-secondary-container": "#00686f",
+                "tertiary": "#d1bcff",
+                "tertiary-container": "#a178ff",
+                "on-tertiary": "#3c0090",
+                "error": "#ffb4ab",
+                "surface": "#131314",
+                "surface-dim": "#131314",
+                "surface-container-lowest": "#0e0e0f",
+                "surface-container-low": "#1c1b1c",
+                "surface-container": "#201f20",
+                "surface-container-high": "#2a2a2b",
+                "surface-container-highest": "#353436",
+                "on-surface": "#e5e2e3",
+                "on-surface-variant": "#ddbed1",
+                "background": "#131314",
+                "on-background": "#e5e2e3",
+              },
+              fontFamily: {
+                "sora": ["Sora", "sans-serif"],
+                "jakarta": ["Plus Jakarta Sans", "sans-serif"],
+              }
+            }
+          }
+        }
+    </script>
+
+    <link rel="stylesheet" href="shared/fc-design-system.css">
+
+    <style>
+        * { box-sizing: border-box; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            user-select: none;
+        }
+        .glass-card {
+            background: rgba(255,255,255,0.03);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+        .glass-card-elevated {
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border: 1px solid rgba(255,255,255,0.14);
+        }
+
+        /* ===== TYPING ANIMATION ===== */
+        @keyframes bounce-dots {
+            0%, 60%, 100% { transform: translateY(0); opacity: 0.45; }
+            30% { transform: translateY(-5px); opacity: 1; }
+        }
+        .typing-dot {
+            display: inline-block;
+            width: 7px; height: 7px;
+            border-radius: 50%;
+            background-color: currentColor;
+            animation: bounce-dots 1.4s infinite ease-in-out;
+        }
+        .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+        .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+
+        /* ===== PHONE MOCKUP ===== */
+        .preview-area-wrapper {
+            position: relative;
+            width: 100%;
+            max-width: 360px;
+            aspect-ratio: 9 / 19.5;
+            border-radius: 44px;
+            box-shadow:
+                0 0 0 2px #1a1a1c,
+                0 0 0 10px #2d2d30,
+                0 0 0 11px #111,
+                0 35px 60px -15px rgba(0,0,0,0.9);
+            overflow: hidden;
+            background: #000;
+        }
+
+        /* Dynamic Island */
+        .phone-notch {
+            position: absolute;
+            top: 12px; left: 50%;
+            transform: translateX(-50%);
+            width: 96px; height: 28px;
+            background: #000;
+            border-radius: 20px;
+            z-index: 100;
+        }
+
+        /* Shine effect */
+        @keyframes phone-shine {
+            0% { opacity: 0; transform: translateX(-100%) rotate(25deg); }
+            10% { opacity: 0.12; }
+            20%, 100% { opacity: 0; transform: translateX(200%) rotate(25deg); }
+        }
+        .phone-shine {
+            position: absolute; inset: 0; pointer-events: none; z-index: 99;
+            overflow: hidden; border-radius: 44px;
+        }
+        .phone-shine::after {
+            content: '';
+            position: absolute; top: 0; left: 0;
+            width: 60%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            animation: phone-shine 5s ease-in-out infinite 3s;
+        }
+
+        .preview-screenshot-container {
+            width: 100%; height: 100%;
+            display: flex; flex-direction: column;
+            overflow: hidden; position: relative;
+        }
+
+        /* ===== BLUR BG GLOW UNDER PHONE ===== */
+        .blur-bg-wrapper {
+            position: relative;
+            filter: drop-shadow(0 40px 80px rgba(0,0,0,0.7));
+        }
+        .blur-bg-wrapper::before {
+            content: '';
+            position: absolute;
+            bottom: -20px; left: 10%; right: 10%;
+            height: 40px;
+            background: radial-gradient(ellipse, rgba(255,172,232,0.25) 0%, transparent 70%);
+            filter: blur(20px);
+            z-index: -1;
+        }
+
+        /* ===== WHATSAPP DARK ===== */
+        .theme-wa-dark {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+        .theme-wa-dark .sys-bar { background: #1f2c34; color: #e9edef; }
+        .theme-wa-dark .chat-header { background: #1f2c34; color: #e9edef; border-bottom: 1px solid rgba(255,255,255,0.04); }
+        .theme-wa-dark .chat-bg {
+            background-color: #0b141a;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Crect width='200' height='200' fill='%230b141a'/%3E%3Ccircle cx='20' cy='20' r='1.5' fill='%23ffffff' opacity='0.02'/%3E%3Ccircle cx='80' cy='60' r='1.5' fill='%23ffffff' opacity='0.02'/%3E%3Ccircle cx='140' cy='20' r='1.5' fill='%23ffffff' opacity='0.02'/%3E%3Ccircle cx='60' cy='120' r='1.5' fill='%23ffffff' opacity='0.02'/%3E%3Ccircle cx='160' cy='100' r='1.5' fill='%23ffffff' opacity='0.02'/%3E%3C/svg%3E");
+        }
+        .theme-wa-dark .footer-bar { background: #1f2c34; padding: 8px 10px; }
+        .theme-wa-dark .footer-input { background: #2a3942; color: #e9edef; border-radius: 24px; }
+        .theme-wa-dark .bubble-in {
+            background: #202c33; color: #e9edef;
+            border-radius: 4px 12px 12px 12px;
+            position: relative;
+        }
+        .theme-wa-dark .bubble-in::before {
+            content: ''; position: absolute; top: 0; left: -8px;
+            border: 8px solid transparent;
+            border-right-color: #202c33; border-top-color: #202c33;
+        }
+        .theme-wa-dark .bubble-out {
+            background: #005c4b; color: #e9edef;
+            border-radius: 12px 4px 12px 12px;
+            position: relative;
+        }
+        .theme-wa-dark .bubble-out::after {
+            content: ''; position: absolute; top: 0; right: -8px;
+            border: 8px solid transparent;
+            border-left-color: #005c4b; border-top-color: #005c4b;
+        }
+        .theme-wa-dark .tick-read { color: #53bdeb; }
+        .theme-wa-dark .tick-delivered { color: #8696a0; }
+        .theme-wa-dark .meta-text { color: #8696a0; }
+
+        /* ===== WHATSAPP LIGHT ===== */
+        .theme-wa-light {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+        .theme-wa-light .sys-bar { background: #008069; color: #fff; }
+        .theme-wa-light .chat-header { background: #008069; color: #fff; }
+        .theme-wa-light .chat-bg {
+            background-color: #eae6df;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Crect width='200' height='200' fill='%23eae6df'/%3E%3Cline x1='0' y1='40' x2='200' y2='40' stroke='%23d4d0ca' stroke-width='0.5' opacity='0.7'/%3E%3Cline x1='0' y1='80' x2='200' y2='80' stroke='%23d4d0ca' stroke-width='0.5' opacity='0.7'/%3E%3Cline x1='0' y1='120' x2='200' y2='120' stroke='%23d4d0ca' stroke-width='0.5' opacity='0.7'/%3E%3Cline x1='0' y1='160' x2='200' y2='160' stroke='%23d4d0ca' stroke-width='0.5' opacity='0.7'/%3E%3C/svg%3E");
+        }
+        .theme-wa-light .footer-bar { background: #f0f0f0; padding: 8px 10px; border-top: 1px solid #ddd; }
+        .theme-wa-light .footer-input { background: #fff; color: #333; border-radius: 24px; border: 1px solid #ddd; }
+        .theme-wa-light .bubble-in {
+            background: #fff; color: #111;
+            border-radius: 4px 12px 12px 12px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.12);
+            position: relative;
+        }
+        .theme-wa-light .bubble-in::before {
+            content: ''; position: absolute; top: 0; left: -8px;
+            border: 8px solid transparent;
+            border-right-color: #fff; border-top-color: #fff;
+        }
+        .theme-wa-light .bubble-out {
+            background: #d9fdd3; color: #111;
+            border-radius: 12px 4px 12px 12px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.12);
+            position: relative;
+        }
+        .theme-wa-light .bubble-out::after {
+            content: ''; position: absolute; top: 0; right: -8px;
+            border: 8px solid transparent;
+            border-left-color: #d9fdd3; border-top-color: #d9fdd3;
+        }
+        .theme-wa-light .tick-read { color: #53bdeb; }
+        .theme-wa-light .tick-delivered { color: #999; }
+        .theme-wa-light .meta-text { color: #999; }
+
+        /* ===== IMESSAGE ===== */
+        .theme-imessage {
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", sans-serif;
+        }
+        .theme-imessage .sys-bar { background: #000; color: #fff; }
+        .theme-imessage .chat-header { background: rgba(28,28,30,0.98); color: #fff; border-bottom: 0.5px solid #2c2c2e; }
+        .theme-imessage .chat-bg { background: #000; }
+        .theme-imessage .footer-bar { background: #1c1c1e; border-top: 0.5px solid #2c2c2e; padding: 8px 10px; }
+        .theme-imessage .footer-input { background: #2c2c2e; color: #fff; border-radius: 20px; }
+        .theme-imessage .bubble-in { background: #1c1c1e; color: #fff; border-radius: 18px 18px 18px 4px; }
+        .theme-imessage .bubble-out { background: #0a84ff; color: #fff; border-radius: 18px 18px 4px 18px; }
+        .theme-imessage .meta-text { color: #636366; }
+
+        /* ===== INSTAGRAM ===== */
+        .theme-instagram {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        }
+        .theme-instagram .sys-bar { background: #000; color: #fff; }
+        .theme-instagram .chat-header { background: #000; color: #fff; border-bottom: 0.5px solid #1a1a1a; }
+        .theme-instagram .chat-bg { background: #000; }
+        .theme-instagram .footer-bar { background: #000; border-top: 0.5px solid #1a1a1a; padding: 8px 10px; }
+        .theme-instagram .footer-input { background: #1a1a1a; color: #fff; border-radius: 24px; border: 1px solid #2a2a2a; }
+        .theme-instagram .bubble-in { background: #262626; color: #fff; border-radius: 18px 18px 18px 4px; border: 1px solid #333; }
+        .theme-instagram .bubble-out { background: linear-gradient(135deg, #833ab4, #c13584, #e1306c); color: #fff; border-radius: 18px 18px 4px 18px; }
+        .theme-instagram .meta-text { color: #666; }
+
+        /* ===== TELEGRAM ===== */
+        .theme-telegram {
+            font-family: system-ui, -apple-system, Roboto, sans-serif;
+        }
+        .theme-telegram .sys-bar { background: #17212b; color: #fff; }
+        .theme-telegram .chat-header { background: #17212b; color: #fff; border-bottom: 1px solid #0d1117; }
+        .theme-telegram .chat-bg {
+            background-color: #0e1621;
+            background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,0.03) 1px, transparent 0);
+            background-size: 22px 22px;
+        }
+        .theme-telegram .footer-bar { background: #17212b; padding: 8px 10px; }
+        .theme-telegram .footer-input { background: #242f3d; color: #fff; border-radius: 24px; }
+        .theme-telegram .bubble-in { background: #182533; color: #fff; border-radius: 4px 14px 14px 14px; }
+        .theme-telegram .bubble-out { background: #2b5278; color: #fff; border-radius: 14px 4px 14px 14px; }
+        .theme-telegram .tick-read { color: #4fc3f7; }
+        .theme-telegram .tick-delivered { color: #8696a0; }
+        .theme-telegram .meta-text { color: #738a9c; }
+
+        /* ===== SHARED BUBBLE ===== */
+        .chat-bubble {
+            position: relative;
+            max-width: 72%;
+            padding: 7px 11px 5px;
+            font-size: 13.5px;
+            line-height: 1.45;
+            word-break: break-word;
+        }
+
+        /* ===== DATE CHIP ===== */
+        .date-divider { display: flex; align-items: center; justify-content: center; margin: 8px 0 4px; }
+        .date-chip {
+            font-size: 11px; padding: 3px 10px; border-radius: 8px;
+        }
+        .theme-wa-dark .date-chip { background: rgba(17,43,57,0.85); color: #e9edef; }
+        .theme-wa-light .date-chip { background: rgba(209,230,245,0.9); color: #54656f; }
+        .theme-imessage .date-chip { color: #636366; background: transparent; font-size: 12px; }
+        .theme-instagram .date-chip { color: #666; background: transparent; }
+        .theme-telegram .date-chip { background: rgba(23,33,43,0.9); color: #738a9c; }
+
+        /* ===== ONLINE DOT ===== */
+        .online-dot {
+            width: 7px; height: 7px; border-radius: 50%;
+            background: #25d366; display: inline-block;
+            box-shadow: 0 0 0 2px rgba(37,211,102,0.2);
+        }
+
+        /* ===== MINI TOGGLE ===== */
+        .mini-toggle { display: flex; border-radius: 8px; overflow: hidden; border: 1px solid rgba(255,255,255,0.12); }
+        .mini-toggle button { padding: 5px 12px; font-size: 11px; font-weight: 700; cursor: pointer; transition: all 0.15s; }
+
+        /* ===== THEME BTN ===== */
+        .theme-btn {
+            padding: 8px 4px; border-radius: 10px; font-size: 11px; font-weight: 700;
+            cursor: pointer; transition: all 0.18s; border: 1.5px solid rgba(255,255,255,0.1);
+            background: rgba(255,255,255,0.05);
+            display: flex; flex-direction: column; align-items: center; gap: 4px;
+            color: var(--color-on-surface, #e5e2e3);
+            width: 100%;
+        }
+        .theme-btn:hover { background: rgba(255,255,255,0.1); }
+
+        /* ===== FLOATING ORBS ===== */
+        @keyframes float-orbs {
+            0%, 100% { transform: translateY(0) scale(1); opacity: 0.2; }
+            50% { transform: translateY(-20px) scale(1.05); opacity: 0.35; }
+        }
+        .floating-orb-1 { animation: float-orbs 8s ease-in-out infinite; }
+        .floating-orb-2 { animation: float-orbs 10s ease-in-out infinite -3s; }
+
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<body class="bg-background text-on-background selection:bg-primary selection:text-on-primary min-h-screen flex flex-col overflow-x-hidden fc-page">
+
+    <!-- Ambient glow -->
+    <div class="fixed pointer-events-none w-80 h-80 blur-[100px] rounded-full z-0 opacity-0 transition-opacity duration-500" id="mouse-glow"
+        style="background:radial-gradient(circle,rgba(255,172,232,0.08) 0%,transparent 70%);transform:translate(-50%,-50%);"></div>
+    <div class="absolute top-20 -left-40 w-[600px] h-[600px] bg-primary/10 blur-[150px] rounded-full floating-orb-1 z-0 pointer-events-none"></div>
+    <div class="absolute top-80 -right-40 w-[500px] h-[500px] bg-secondary-container/10 blur-[140px] rounded-full floating-orb-2 z-0 pointer-events-none"></div>
+
+    <!-- Header -->
+    <header class="relative pt-32 pb-10 px-6 md:px-10 text-center overflow-hidden z-10">
+        <div class="max-w-7xl mx-auto">
+            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-surface-container-high border border-white/10 mb-6">
+                <span class="text-[16px]">📱</span>
+                <span class="font-jakarta text-[12px] font-bold text-on-surface uppercase tracking-widest">Ultra Realistic Prank Engine</span>
+            </div>
+            <h1 class="font-sora text-[42px] md:text-[56px] font-extrabold leading-[1.1] mb-5">
+                Fake <span class="bg-gradient-to-r from-secondary-container via-primary to-tertiary bg-clip-text text-transparent">Screenshot</span><br class="hidden md:block"/> Generator
+            </h1>
+            <p class="font-jakarta text-[16px] md:text-[18px] text-on-surface-variant max-w-xl mx-auto leading-relaxed">
+                Ultra-realistic chat screenshots — WhatsApp dark &amp; light, iMessage, Instagram, Telegram. High-res download in seconds.
+            </p>
+        </div>
+    </header>
+
+    <!-- Main Grid -->
+    <main class="flex-grow pb-24 px-4 md:px-6 relative z-10">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid grid-cols-1 xl:grid-cols-12 gap-8 items-start">
+
+                <!-- ===== CONTROL PANEL ===== -->
+                <div class="xl:col-span-6 space-y-5">
+
+                    <!-- 1. THEME -->
+                    <div class="glass-card-elevated p-6 rounded-2xl">
+                        <h2 class="font-sora text-[16px] font-bold mb-4 flex items-center gap-2 text-primary">
+                            <span class="material-symbols-outlined text-[20px]">palette</span>
+                            1. Choose App Theme
+                        </h2>
+                        <div class="grid grid-cols-4 gap-2 mb-3">
+                            <button onclick="setTheme('wa-dark')" data-theme="wa-dark" class="theme-btn">
+                                <span class="text-[22px]">💬</span>WhatsApp
+                            </button>
+                            <button onclick="setTheme('imessage')" data-theme="imessage" class="theme-btn">
+                                <span class="text-[22px]">🔵</span>iMessage
+                            </button>
+                            <button onclick="setTheme('instagram')" data-theme="instagram" class="theme-btn">
+                                <span class="text-[22px]">📸</span>Instagram
+                            </button>
+                            <button onclick="setTheme('telegram')" data-theme="telegram" class="theme-btn">
+                                <span class="text-[22px]">✈️</span>Telegram
+                            </button>
+                        </div>
+                        <!-- WhatsApp light/dark sub-toggle -->
+                        <div id="wa-sub-toggle" class="flex items-center gap-3 mt-1">
+                            <span class="font-jakarta text-[11px] text-on-surface-variant font-bold uppercase">Mode:</span>
+                            <div class="mini-toggle">
+                                <button id="wa-dark-btn" onclick="setTheme('wa-dark')" class="font-jakarta bg-[#005c4b] text-white">🌙 Dark</button>
+                                <button id="wa-light-btn" onclick="setTheme('wa-light')" class="font-jakarta bg-transparent text-on-surface-variant">☀️ Light</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 2. CONTACT -->
+                    <div class="glass-card-elevated p-6 rounded-2xl space-y-4">
+                        <h2 class="font-sora text-[16px] font-bold flex items-center gap-2 text-secondary-container">
+                            <span class="material-symbols-outlined text-[20px]">person</span>
+                            2. Contact & Device
+                        </h2>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block font-jakarta text-[11px] font-bold text-on-surface-variant mb-1.5 uppercase">Friend's Name</label>
+                                <input type="text" id="input-friend-name" value="Elon Musk"
+                                    class="w-full bg-surface-container border border-white/10 rounded-xl px-4 py-2.5 text-on-surface placeholder:text-on-surface-variant/40 focus:outline-none focus:border-secondary-container transition-all font-jakarta text-[14px]"
+                                    oninput="updatePreview()"/>
+                            </div>
+                            <div>
+                                <label class="block font-jakarta text-[11px] font-bold text-on-surface-variant mb-1.5 uppercase">Profile Picture</label>
+                                <div class="flex items-center gap-2">
+                                    <input type="file" id="input-avatar-file" accept="image/*" class="hidden" onchange="handleAvatarUpload(this)"/>
+                                    <button onclick="document.getElementById('input-avatar-file').click()"
+                                        class="flex-1 py-2.5 px-4 rounded-xl bg-surface-container border border-white/10 text-on-surface hover:bg-white/5 font-jakarta text-[13px] font-semibold transition-all text-center">
+                                        Upload
+                                    </button>
+                                    <button onclick="resetAvatar()" class="p-2.5 rounded-xl bg-error/20 border border-error/30 text-error hover:bg-error/30 transition-all">
+                                        <span class="material-symbols-outlined text-[18px] block">delete</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block font-jakarta text-[11px] font-bold text-on-surface-variant mb-1.5 uppercase">Status</label>
+                                <select id="select-friend-status"
+                                    class="w-full bg-surface-container border border-white/10 rounded-xl px-4 py-2.5 text-on-surface focus:outline-none focus:border-secondary-container transition-all font-jakarta text-[14px]"
+                                    onchange="updatePreview()">
+                                    <option value="online">Online</option>
+                                    <option value="typing">Typing…</option>
+                                    <option value="recent" selected>Last seen recently</option>
+                                    <option value="none">Offline</option>
+                                    <option value="custom">Custom…</option>
+                                </select>
+                            </div>
+                            <div id="custom-status-container" class="hidden">
+                                <label class="block font-jakarta text-[11px] font-bold text-on-surface-variant mb-1.5 uppercase">Custom Status</label>
+                                <input type="text" id="input-custom-status" value="active 2 hours ago"
+                                    class="w-full bg-surface-container border border-white/10 rounded-xl px-4 py-2.5 text-on-surface focus:outline-none focus:border-secondary-container transition-all font-jakarta text-[14px]"
+                                    oninput="updatePreview()"/>
+                            </div>
+                        </div>
+                        <div class="border-t border-white/5 pt-4">
+                            <button onclick="toggleAdvancedSettings()" class="flex items-center gap-1.5 text-xs text-on-surface-variant hover:text-white font-bold transition-all uppercase">
+                                <span id="advanced-toggle-icon" class="material-symbols-outlined text-[16px]">expand_more</span>
+                                Device Bar (Time, Battery, Network)
+                            </button>
+                            <div id="advanced-settings-panel" class="hidden mt-4 grid grid-cols-3 gap-3">
+                                <div>
+                                    <label class="block font-jakarta text-[10px] font-bold text-on-surface-variant mb-1 uppercase">Time</label>
+                                    <input type="text" id="input-device-time" value="9:41"
+                                        class="w-full bg-surface-container border border-white/10 rounded-lg px-3 py-1.5 text-on-surface text-[13px] focus:outline-none" oninput="updatePreview()"/>
+                                </div>
+                                <div>
+                                    <label class="block font-jakarta text-[10px] font-bold text-on-surface-variant mb-1 uppercase">Battery %</label>
+                                    <input type="number" id="input-device-battery" value="84" min="1" max="100"
+                                        class="w-full bg-surface-container border border-white/10 rounded-lg px-3 py-1.5 text-on-surface text-[13px] focus:outline-none" oninput="updatePreview()"/>
+                                </div>
+                                <div>
+                                    <label class="block font-jakarta text-[10px] font-bold text-on-surface-variant mb-1 uppercase">Network</label>
+                                    <select id="select-device-network"
+                                        class="w-full bg-surface-container border border-white/10 rounded-lg px-2 py-1.5 text-on-surface text-[13px] focus:outline-none" onchange="updatePreview()">
+                                        <option value="wifi">WiFi</option>
+                                        <option value="5g">5G</option>
+                                        <option value="lte">LTE</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 3. MESSAGES -->
+                    <div class="glass-card-elevated p-6 rounded-2xl space-y-4">
+                        <div class="flex justify-between items-center">
+                            <h2 class="font-sora text-[16px] font-bold flex items-center gap-2 text-tertiary">
+                                <span class="material-symbols-outlined text-[20px]">chat_bubble</span>
+                                3. Build Messages
+                            </h2>
+                            <button onclick="addEmptyMessage()" class="flex items-center gap-1 text-[12px] font-bold py-1.5 px-3 rounded-full bg-tertiary/20 text-tertiary border border-tertiary/30 hover:bg-tertiary/30 transition-all">
+                                <span class="material-symbols-outlined text-[14px]">add</span> Add
+                            </button>
+                        </div>
+                        <div id="message-builder-list" class="space-y-3 max-h-[420px] overflow-y-auto pr-1 no-scrollbar"></div>
+                        <p class="text-[11px] text-on-surface-variant/50 italic text-right">💡 Reorder, flip sender, or set ticks per bubble</p>
+                    </div>
+
+                    <!-- 4. ACTIONS -->
+                    <div class="glass-card p-6 rounded-2xl space-y-4">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <button onclick="generateScreenshot()"
+                                class="py-4 rounded-full bg-gradient-to-r from-secondary-container to-primary text-on-secondary font-sora font-extrabold text-[15px] flex items-center justify-center gap-2 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200"
+                                style="box-shadow:0 0 25px rgba(0,238,252,0.25);">
+                                <span class="material-symbols-outlined text-[20px]">photo_camera</span>
+                                Render Screenshot
+                            </button>
+                            <button id="btn-download" onclick="downloadImage()" disabled
+                                class="py-4 rounded-full bg-surface-container-highest border border-white/10 text-on-surface font-sora font-extrabold text-[15px] flex items-center justify-center gap-2 hover:bg-white/5 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 opacity-60 cursor-not-allowed">
+                                <span class="material-symbols-outlined text-[20px]">download</span>
+                                Download
+                            </button>
+                        </div>
+                        <div class="grid grid-cols-3 gap-2">
+                            <button id="btn-copy" onclick="copyToClipboard()" disabled
+                                class="py-3 px-2 rounded-xl bg-surface-container border border-white/10 text-on-surface-variant hover:text-white font-jakarta text-[12px] font-bold flex items-center justify-center gap-1.5 transition-all opacity-60 cursor-not-allowed">
+                                <span class="material-symbols-outlined text-[17px]">content_copy</span>
+                                Copy
+                            </button>
+                            <button onclick="shareWhatsApp()"
+                                class="py-3 px-2 rounded-xl bg-surface-container border border-white/10 text-on-surface-variant hover:text-white font-jakarta text-[12px] font-bold flex items-center justify-center gap-1.5 transition-all">
+                                <span class="material-symbols-outlined text-[17px]">share</span>
+                                Share
+                            </button>
+                            <button onclick="resetAll()"
+                                class="py-3 px-2 rounded-xl bg-surface-container border border-white/10 text-on-surface-variant hover:text-white font-jakarta text-[12px] font-bold flex items-center justify-center gap-1.5 transition-all">
+                                <span class="material-symbols-outlined text-[17px]">restart_alt</span>
+                                Reset
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ===== PHONE PREVIEW ===== -->
+                <div class="xl:col-span-6 flex flex-col items-center gap-4 sticky top-8">
+                    <div class="flex items-center justify-between w-full max-w-[360px]">
+                        <span class="font-jakarta text-[12px] text-on-surface-variant flex items-center gap-1">
+                            <span class="material-symbols-outlined text-[15px] text-primary">preview</span>
+                            Live Preview
+                        </span>
+                        <span class="font-jakarta text-[11px] text-on-surface-variant/50">Render → Download</span>
+                    </div>
+
+                    <!-- PHONE BEZEL with blur bg -->
+                    <div class="blur-bg-wrapper">
+                        <div class="preview-area-wrapper" id="phone-bezel">
+                            <div class="phone-shine"></div>
+                            <div class="phone-notch"></div>
+
+                            <!-- CAPTURE TARGET -->
+                            <div id="screenshot-target" class="preview-screenshot-container theme-wa-dark">
+
+                                <!-- STATUS BAR -->
+                                <div class="sys-bar px-5 pt-11 pb-1.5 flex justify-between items-center text-[12px] font-semibold select-none z-10 w-full flex-shrink-0" id="phone-sys-bar">
+                                    <span id="disp-time" class="font-sans tracking-tight">9:41</span>
+                                    <div class="flex items-center gap-1.5">
+                                        <span id="disp-signal" class="text-[10px] font-black">WiFi</span>
+                                        <!-- Signal bars -->
+                                        <svg width="15" height="11" viewBox="0 0 15 11" fill="currentColor" opacity="0.85">
+                                            <rect x="0" y="6" width="2.5" height="5" rx="0.8"/>
+                                            <rect x="3.5" y="3.5" width="2.5" height="7.5" rx="0.8"/>
+                                            <rect x="7" y="1.5" width="2.5" height="9.5" rx="0.8"/>
+                                            <rect x="10.5" y="0" width="2.5" height="11" rx="0.8"/>
+                                        </svg>
+                                        <!-- Battery -->
+                                        <div class="flex items-center gap-0.5">
+                                            <span id="disp-battery" class="text-[10px] font-black">84%</span>
+                                            <svg width="22" height="10" viewBox="0 0 22 10" fill="none">
+                                                <rect x="0.5" y="0.5" width="18" height="9" rx="2" stroke="currentColor" stroke-width="1" fill="none" opacity="0.5"/>
+                                                <rect x="1.5" y="1.5" width="15" height="7" rx="1.2" fill="currentColor" id="battery-fill"/>
+                                                <rect x="19" y="3" width="2.5" height="4" rx="1" fill="currentColor" opacity="0.45"/>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- CHAT HEADER -->
+                                <div class="chat-header px-3 py-2 flex items-center justify-between z-10 flex-shrink-0 shadow-sm" id="chat-header-bar">
+                                    <div class="flex items-center gap-1.5">
+                                        <span class="material-symbols-outlined text-[22px] cursor-pointer opacity-90" id="header-back">arrow_back</span>
+                                        <div class="flex items-center gap-2">
+                                            <div class="w-9 h-9 rounded-full flex items-center justify-center font-bold text-[13px] overflow-hidden select-none flex-shrink-0" id="chat-avatar" style="background:linear-gradient(135deg,#a259ff,#ff2d7a);color:#fff;">
+                                                <span id="chat-avatar-initials">EM</span>
+                                                <img id="chat-avatar-image" class="hidden w-full h-full object-cover"/>
+                                            </div>
+                                            <div class="leading-tight">
+                                                <div class="font-bold text-[14px] tracking-wide" id="disp-name">Elon Musk</div>
+                                                <div class="text-[11px] flex items-center gap-1" id="disp-status" style="opacity:0.8;">
+                                                    <span class="online-dot hidden" id="online-dot"></span>
+                                                    <span id="disp-status-text">last seen recently</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center gap-3 opacity-85" id="header-actions">
+                                        <span class="material-symbols-outlined text-[19px] cursor-pointer">videocam</span>
+                                        <span class="material-symbols-outlined text-[19px] cursor-pointer">call</span>
+                                        <span class="material-symbols-outlined text-[19px] cursor-pointer">more_vert</span>
+                                    </div>
+                                </div>
+
+                                <!-- MESSAGE LOG -->
+                                <div class="chat-bg flex-grow overflow-y-auto no-scrollbar px-2.5 pt-2 pb-1 flex flex-col justify-end" id="chat-log"></div>
+
+                                <!-- FOOTER -->
+                                <div class="footer-bar flex items-center gap-2 flex-shrink-0 z-10" id="chat-footer">
+                                    <div class="footer-input flex-grow flex items-center gap-2 px-3 py-2 text-[13px]" id="footer-input">
+                                        <span class="material-symbols-outlined text-[17px] opacity-60">mood</span>
+                                        <span class="opacity-40 flex-grow">Message</span>
+                                        <span class="material-symbols-outlined text-[17px] opacity-60">attach_file</span>
+                                        <span class="material-symbols-outlined text-[17px] opacity-60">photo_camera</span>
+                                    </div>
+                                    <div class="w-9 h-9 rounded-full flex items-center justify-center text-white flex-shrink-0" id="footer-action" style="background:#00a884;">
+                                        <span class="material-symbols-outlined text-[18px]">mic</span>
+                                    </div>
+                                </div>
+
+                            </div><!-- /screenshot-target -->
+                        </div><!-- /phone-bezel -->
+                    </div><!-- /blur-bg-wrapper -->
+
+                    <div id="render-toast" class="hidden font-jakarta text-[13px] font-bold text-center px-5 py-2.5 rounded-full border bg-emerald-500/20 border-emerald-500/40 text-emerald-400">
+                        ✅ Screenshot ready — download enabled!
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-surface-container-lowest w-full border-t border-white/5 relative z-10 mt-8">
+        <div class="flex flex-col md:flex-row justify-between items-center px-8 py-10 max-w-7xl mx-auto gap-6">
+            <div class="flex flex-col items-center md:items-start">
+                <span class="font-sora text-[22px] font-extrabold text-primary mb-1">FriendCheck</span>
+                <p class="font-jakarta text-[14px] text-on-surface-variant max-w-xs">The world's #1 destination for friendship tests and digital pranks.</p>
+            </div>
+            <div class="flex flex-wrap justify-center gap-6">
+                <a class="font-jakarta text-[14px] text-on-surface-variant hover:text-primary transition-colors" href="#">Privacy</a>
+                <a class="font-jakarta text-[14px] text-on-surface-variant hover:text-primary transition-colors" href="#">Terms</a>
+                <a class="font-jakarta text-[14px] text-on-surface-variant hover:text-primary transition-colors" href="#">Support</a>
+            </div>
+            <p class="font-jakarta text-[13px] text-tertiary">© 2026 FriendCheck. Stay Viral.</p>
+        </div>
+    </footer>
+
+    <script>
+    // ===== STATE =====
+    let currentTheme = 'wa-dark';
+    let customAvatarUrl = '';
+    let screenshotBlob = null;
+    let messages = [
+        { id: 1, sender: 'friend', text: 'Hey, did you finish the project? 🤔', time: '12:30 PM', status: 'none' },
+        { id: 2, sender: 'you', text: 'Yes! Just uploaded it. Check your mail 📧', time: '12:31 PM', status: 'read' }
+    ];
+
+    // ===== HELPERS =====
+    function getNameColor(name) {
+        let h = 0;
+        for (let i = 0; i < name.length; i++) h = name.charCodeAt(i) + ((h << 5) - h);
+        h = Math.abs(h % 360);
+        return `linear-gradient(135deg, hsl(${h},65%,45%), hsl(${(h+130)%360},70%,32%))`;
+    }
+    function getInitials(name) {
+        if (!name) return '?';
+        const p = name.trim().split(/\s+/);
+        return p.length >= 2 ? (p[0][0]+p[1][0]).toUpperCase() : name.trim().substring(0,2).toUpperCase();
+    }
+    function esc(t) {
+        return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;');
+    }
+
+    // ===== TICKS HTML =====
+    function ticksHTML(status, theme) {
+        const isWA = theme === 'wa-dark' || theme === 'wa-light';
+        const isTG = theme === 'telegram';
+        if (!isWA && !isTG) return '';
+        const readColor = theme === 'wa-light' ? '#34b7f1' : (theme === 'telegram' ? '#4fc3f7' : '#53bdeb');
+        if (status === 'read') return `<span class="material-symbols-outlined" style="font-size:13px;color:${readColor};font-variation-settings:'FILL' 1,'wght' 600,'GRAD' 0,'opsz' 20;line-height:1;">done_all</span>`;
+        if (status === 'delivered') return `<span class="material-symbols-outlined" style="font-size:13px;opacity:0.6;font-variation-settings:'FILL' 1,'wght' 500,'GRAD' 0,'opsz' 20;line-height:1;">done_all</span>`;
+        if (status === 'sent') return `<span class="material-symbols-outlined" style="font-size:13px;opacity:0.6;font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 20;line-height:1;">done</span>`;
+        return '';
+    }
+
+    // ===== THEME SWITCH =====
+    function setTheme(theme) {
+        currentTheme = theme;
+        const isWA = theme === 'wa-dark' || theme === 'wa-light';
+
+        // Button highlight
+        document.querySelectorAll('[data-theme]').forEach(btn => {
+            const t = btn.dataset.theme;
+            const active = isWA ? t === 'wa-dark' : t === theme;
+            btn.style.background = active ? 'rgba(255,172,232,0.15)' : '';
+            btn.style.borderColor = active ? '#fface8' : 'rgba(255,255,255,0.1)';
+            btn.style.color = active ? '#fface8' : '';
+        });
+
+        // WA sub-toggle visibility
+        document.getElementById('wa-sub-toggle').style.display = isWA ? 'flex' : 'none';
+        const wdBtn = document.getElementById('wa-dark-btn');
+        const wlBtn = document.getElementById('wa-light-btn');
+        wdBtn.style.background = theme === 'wa-dark' ? '#005c4b' : 'transparent';
+        wdBtn.style.color = theme === 'wa-dark' ? '#fff' : '';
+        wlBtn.style.background = theme === 'wa-light' ? '#25d366' : 'transparent';
+        wlBtn.style.color = theme === 'wa-light' ? '#fff' : '';
+
+        // Apply theme class
+        const target = document.getElementById('screenshot-target');
+        target.className = `preview-screenshot-container theme-${theme}`;
+
+        // Per-theme header/footer overrides
+        const hdrActions = document.getElementById('header-actions');
+        const hdrBack = document.getElementById('header-back');
+        const footerInput = document.getElementById('footer-input');
+        const footerAction = document.getElementById('footer-action');
+
+        hdrBack.innerText = 'arrow_back';
+
+        if (isWA) {
+            hdrActions.innerHTML = `
+                <span class="material-symbols-outlined text-[19px] cursor-pointer">videocam</span>
+                <span class="material-symbols-outlined text-[19px] cursor-pointer">call</span>
+                <span class="material-symbols-outlined text-[19px] cursor-pointer">more_vert</span>`;
+            footerInput.innerHTML = `
+                <span class="material-symbols-outlined text-[17px] opacity-60">mood</span>
+                <span class="opacity-40 flex-grow text-[13px]">Message</span>
+                <span class="material-symbols-outlined text-[17px] opacity-60">attach_file</span>
+                <span class="material-symbols-outlined text-[17px] opacity-60">photo_camera</span>`;
+            footerAction.style.background = '#00a884';
+            footerAction.innerHTML = `<span class="material-symbols-outlined text-[18px]">mic</span>`;
+        } else if (theme === 'imessage') {
+            hdrBack.innerText = 'chevron_left';
+            hdrActions.innerHTML = `<span class="material-symbols-outlined text-[20px] cursor-pointer" style="color:#0a84ff;">info</span>`;
+            footerInput.innerHTML = `
+                <span class="material-symbols-outlined text-[17px] opacity-50">add_circle</span>
+                <span class="opacity-30 flex-grow text-[12px] border border-white/10 rounded-full py-0.5 px-3">iMessage</span>
+                <span class="material-symbols-outlined text-[17px] opacity-50">mic</span>`;
+            footerAction.style.background = 'transparent';
+            footerAction.innerHTML = `<span class="material-symbols-outlined text-[20px]" style="color:#0a84ff;">apps</span>`;
+        } else if (theme === 'instagram') {
+            hdrActions.innerHTML = `
+                <span class="material-symbols-outlined text-[20px] cursor-pointer">call</span>
+                <span class="material-symbols-outlined text-[20px] cursor-pointer">videocam</span>`;
+            footerInput.innerHTML = `
+                <span class="material-symbols-outlined text-[17px] opacity-70">mood</span>
+                <span class="opacity-40 flex-grow text-[13px]">Message…</span>
+                <span class="material-symbols-outlined text-[17px] opacity-70">mic</span>
+                <span class="material-symbols-outlined text-[17px] opacity-70">image</span>`;
+            footerAction.style.background = 'transparent';
+            footerAction.innerHTML = `<span class="material-symbols-outlined text-[20px]" style="color:#e1306c;">favorite</span>`;
+        } else if (theme === 'telegram') {
+            hdrActions.innerHTML = `
+                <span class="material-symbols-outlined text-[20px] cursor-pointer">search</span>
+                <span class="material-symbols-outlined text-[20px] cursor-pointer">more_vert</span>`;
+            footerInput.innerHTML = `
+                <span class="material-symbols-outlined text-[17px] opacity-60">mood</span>
+                <span class="opacity-40 flex-grow text-[13px]">Message</span>
+                <span class="material-symbols-outlined text-[17px] opacity-60">attach_file</span>`;
+            footerAction.style.background = 'transparent';
+            footerAction.innerHTML = `<span class="material-symbols-outlined text-[20px]" style="color:#5288c1;">send</span>`;
+        }
+
+        updatePreview();
+    }
+
+    // ===== AVATAR =====
+    function handleAvatarUpload(input) {
+        if (input.files && input.files[0]) {
+            const r = new FileReader();
+            r.onload = e => { customAvatarUrl = e.target.result; updatePreview(); };
+            r.readAsDataURL(input.files[0]);
+        }
+    }
+    function resetAvatar() { customAvatarUrl = ''; document.getElementById('input-avatar-file').value = ''; updatePreview(); }
+
+    function toggleAdvancedSettings() {
+        const p = document.getElementById('advanced-settings-panel');
+        const i = document.getElementById('advanced-toggle-icon');
+        const hidden = p.classList.toggle('hidden');
+        i.innerText = hidden ? 'expand_more' : 'expand_less';
+    }
+
+    // ===== MESSAGE BUILDER =====
+    function renderBuilderList() {
+        const list = document.getElementById('message-builder-list');
+        list.innerHTML = '';
+        messages.forEach((msg, idx) => {
+            const d = document.createElement('div');
+            d.className = 'p-3 rounded-xl bg-surface-container border border-white/5 space-y-2';
+            d.innerHTML = `
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-1.5">
+                        <span class="text-[10px] font-bold uppercase text-on-surface-variant">From:</span>
+                        <button onclick="toggleSender(${msg.id})"
+                            class="px-2 py-0.5 rounded text-[11px] font-bold tracking-wide transition-all ${msg.sender==='you'?'bg-primary/20 text-primary border border-primary/30':'bg-secondary-container/20 text-secondary-container border border-secondary-container/30'}">
+                            ${msg.sender === 'you' ? 'YOU' : 'FRIEND'}
+                        </button>
+                    </div>
+                    <div class="flex items-center gap-1">
+                        <button onclick="moveBubble(${idx},-1)" class="p-1 rounded bg-white/5 hover:bg-white/10 text-on-surface-variant">
+                            <span class="material-symbols-outlined text-[13px] block">arrow_upward</span>
+                        </button>
+                        <button onclick="moveBubble(${idx},1)" class="p-1 rounded bg-white/5 hover:bg-white/10 text-on-surface-variant">
+                            <span class="material-symbols-outlined text-[13px] block">arrow_downward</span>
+                        </button>
+                        <button onclick="removeBubble(${msg.id})" class="p-1 rounded bg-error/10 hover:bg-error/20 text-error ml-1">
+                            <span class="material-symbols-outlined text-[13px] block">delete</span>
+                        </button>
+                    </div>
+                </div>
+                <input type="text" value="${esc(msg.text)}" oninput="editBubbleText(${msg.id},this.value)" placeholder="Message…"
+                    class="w-full bg-surface border border-white/10 rounded-lg px-3 py-1.5 text-on-surface focus:outline-none focus:border-secondary-container transition-all font-jakarta text-[13px]"/>
+                <div class="flex gap-2">
+                    <div class="flex-1">
+                        <label class="block text-[10px] font-bold text-on-surface-variant mb-0.5 uppercase">Time</label>
+                        <input type="text" value="${esc(msg.time)}" oninput="editBubbleTime(${msg.id},this.value)"
+                            class="w-full bg-surface border border-white/10 rounded-lg px-2.5 py-1 text-on-surface text-[12px] focus:outline-none"/>
+                    </div>
+                    ${msg.sender==='you'?`
+                    <div class="flex-1">
+                        <label class="block text-[10px] font-bold text-on-surface-variant mb-0.5 uppercase">Ticks</label>
+                        <select onchange="editBubbleReceipt(${msg.id},this.value)"
+                            class="w-full bg-surface border border-white/10 rounded-lg px-2 py-1 text-on-surface text-[12px] focus:outline-none">
+                            <option value="read" ${msg.status==='read'?'selected':''}>✓✓ Read</option>
+                            <option value="delivered" ${msg.status==='delivered'?'selected':''}>✓✓ Delivered</option>
+                            <option value="sent" ${msg.status==='sent'?'selected':''}>✓ Sent</option>
+                            <option value="none" ${msg.status==='none'?'selected':''}>None</option>
+                        </select>
+                    </div>`:''}
+                </div>`;
+            list.appendChild(d);
+        });
+    }
+
+    function toggleSender(id) {
+        messages = messages.map(m => {
+            if (m.id !== id) return m;
+            const s = m.sender === 'you' ? 'friend' : 'you';
+            return {...m, sender: s, status: s === 'you' ? 'read' : 'none'};
+        });
+        renderBuilderList(); updatePreview();
+    }
+    function editBubbleText(id, v) { messages = messages.map(m => m.id===id ? {...m,text:v} : m); updatePreview(); }
+    function editBubbleTime(id, v) { messages = messages.map(m => m.id===id ? {...m,time:v} : m); updatePreview(); }
+    function editBubbleReceipt(id, v) { messages = messages.map(m => m.id===id ? {...m,status:v} : m); updatePreview(); }
+    function removeBubble(id) { messages = messages.filter(m => m.id!==id); renderBuilderList(); updatePreview(); }
+    function moveBubble(idx, dir) {
+        const ni = idx + dir;
+        if (ni < 0 || ni >= messages.length) return;
+        [messages[idx], messages[ni]] = [messages[ni], messages[idx]];
+        renderBuilderList(); updatePreview();
+    }
+    function addEmptyMessage() {
+        const last = messages[messages.length-1];
+        const newId = messages.length > 0 ? Math.max(...messages.map(m=>m.id))+1 : 1;
+        const sender = last && last.sender==='you' ? 'friend' : 'you';
+        messages.push({id:newId, sender, text:'Type here…', time: last ? last.time : '12:00 PM', status: sender==='you'?'read':'none'});
+        renderBuilderList(); updatePreview();
+        setTimeout(() => { const l = document.getElementById('message-builder-list'); l.scrollTop = l.scrollHeight; }, 50);
+    }
+
+    // ===== LIVE PREVIEW =====
+    function updatePreview() {
+        const friendName = document.getElementById('input-friend-name').value || 'Friend';
+        const statusType = document.getElementById('select-friend-status').value;
+        const customStatus = document.getElementById('input-custom-status').value;
+        const deviceTime = document.getElementById('input-device-time').value;
+        const deviceBattery = parseInt(document.getElementById('input-device-battery').value) || 84;
+        const networkType = document.getElementById('select-device-network').value;
+
+        // Custom status toggle
+        document.getElementById('custom-status-container').classList.toggle('hidden', statusType !== 'custom');
+
+        // Device bar
+        document.getElementById('disp-time').innerText = deviceTime;
+        document.getElementById('disp-battery').innerText = `${deviceBattery}%`;
+        document.getElementById('disp-signal').innerText = networkType === 'wifi' ? 'WiFi' : networkType.toUpperCase();
+
+        // Battery fill
+        const fillEl = document.getElementById('battery-fill');
+        if (fillEl) {
+            const w = Math.max(1, Math.round((deviceBattery / 100) * 15));
+            fillEl.setAttribute('width', w);
+            fillEl.setAttribute('fill', deviceBattery <= 20 ? '#ff3b30' : deviceBattery <= 40 ? '#ff9500' : 'currentColor');
+        }
+
+        // Status text + dot
+        const dot = document.getElementById('online-dot');
+        let statusText = '';
+        if (statusType === 'online') { statusText = 'online'; dot.classList.remove('hidden'); }
+        else if (statusType === 'typing') { statusText = 'typing…'; dot.classList.add('hidden'); }
+        else if (statusType === 'recent') {
+            statusText = currentTheme === 'instagram' ? 'Active recently' : 'last seen recently';
+            dot.classList.add('hidden');
+        }
+        else if (statusType === 'none') { statusText = ''; dot.classList.add('hidden'); }
+        else { statusText = customStatus; dot.classList.add('hidden'); }
+
+        document.getElementById('disp-name').innerText = friendName;
+        document.getElementById('disp-status-text').innerText = statusText;
+        const statusEl = document.getElementById('disp-status');
+        statusEl.style.color = (statusType === 'online' || statusType === 'typing') ? '#25d366' : '';
+        statusEl.style.opacity = statusText ? '1' : '0';
+
+        // Avatar
+        const initEl = document.getElementById('chat-avatar-initials');
+        const imgEl = document.getElementById('chat-avatar-image');
+        const circleEl = document.getElementById('chat-avatar');
+        if (customAvatarUrl) {
+            imgEl.src = customAvatarUrl; imgEl.classList.remove('hidden'); initEl.classList.add('hidden');
+        } else {
+            imgEl.classList.add('hidden'); initEl.classList.remove('hidden');
+            initEl.innerText = getInitials(friendName);
+            circleEl.style.background = getNameColor(friendName);
+        }
+
+        // Render message log
+        const log = document.getElementById('chat-log');
+        log.innerHTML = '';
+
+        // Date chip
+        const dateDiv = document.createElement('div');
+        dateDiv.className = 'date-divider';
+        dateDiv.innerHTML = '<span class="date-chip">Today</span>';
+        log.appendChild(dateDiv);
+
+        const isWA = currentTheme === 'wa-dark' || currentTheme === 'wa-light';
+        const isTG = currentTheme === 'telegram';
+
+        let prevSender = null;
+        messages.forEach((msg, idx) => {
+            const isYou = msg.sender === 'you';
+            const sameAsPrev = prevSender === msg.sender;
+            const nextMsg = messages[idx + 1];
+            const isLastInGroup = !nextMsg || nextMsg.sender !== msg.sender;
+
+            // Row
+            const row = document.createElement('div');
+            row.style.cssText = `display:flex;width:100%;justify-content:${isYou?'flex-end':'flex-start'};align-items:flex-end;margin-top:${sameAsPrev?'2px':'8px'};`;
+
+            // Friend avatar slot (left side)
+            if (!isYou) {
+                const av = document.createElement('div');
+                av.style.cssText = 'width:26px;height:26px;border-radius:50%;flex-shrink:0;margin-right:5px;overflow:hidden;align-self:flex-end;';
+                if (isLastInGroup) {
+                    if (customAvatarUrl) {
+                        av.innerHTML = `<img src="${customAvatarUrl}" style="width:100%;height:100%;object-fit:cover;"/>`;
+                    } else {
+                        av.style.background = getNameColor(friendName);
+                        av.style.display = 'flex';
+                        av.style.alignItems = 'center';
+                        av.style.justifyContent = 'center';
+                        av.style.color = '#fff';
+                        av.style.fontSize = '10px';
+                        av.style.fontWeight = '700';
+                        av.innerText = getInitials(friendName).charAt(0);
+                    }
+                } else {
+                    av.style.visibility = 'hidden';
+                }
+                row.appendChild(av);
+            }
+
+            // Bubble
+            const bubble = document.createElement('div');
+            bubble.className = `chat-bubble ${isYou ? 'bubble-out' : 'bubble-in'}`;
+
+            if (isWA || isTG) {
+                const ticks = isYou ? ticksHTML(msg.status, currentTheme) : '';
+                bubble.innerHTML = `
+                    <div style="padding-bottom:15px;${isYou?'padding-right:46px;':''}">
+                        <span style="white-space:pre-wrap;">${esc(msg.text)}</span>
+                    </div>
+                    <div class="meta-text" style="position:absolute;bottom:4px;right:8px;display:flex;align-items:center;gap:2px;font-size:10px;white-space:nowrap;line-height:1;">
+                        <span>${msg.time}</span>${ticks}
+                    </div>`;
+            } else {
+                bubble.innerHTML = `<span style="white-space:pre-wrap;">${esc(msg.text)}</span>`;
+            }
+
+            row.appendChild(bubble);
+            log.appendChild(row);
+
+            // Sub-status for iMessage / Instagram
+            if (isYou && msg.status !== 'none' && !isWA && !isTG) {
+                const sub = document.createElement('div');
+                sub.className = 'meta-text';
+                sub.style.cssText = 'width:100%;display:flex;justify-content:flex-end;padding-right:8px;margin-top:1px;font-size:10px;';
+                if (currentTheme === 'imessage') sub.innerText = msg.status === 'read' ? `Read ${msg.time}` : 'Delivered';
+                else sub.innerText = msg.status === 'read' ? 'Seen' : 'Sent';
+                log.appendChild(sub);
+            }
+
+            prevSender = msg.sender;
+        });
+
+        // Typing indicator
+        if (statusType === 'typing') {
+            const tRow = document.createElement('div');
+            tRow.style.cssText = 'display:flex;width:100%;justify-content:flex-start;align-items:flex-end;margin-top:8px;';
+
+            const tAv = document.createElement('div');
+            tAv.style.cssText = 'width:26px;height:26px;border-radius:50%;flex-shrink:0;margin-right:5px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:10px;font-weight:700;';
+            if (customAvatarUrl) {
+                tAv.innerHTML = `<img src="${customAvatarUrl}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"/>`;
+            } else {
+                tAv.style.background = getNameColor(friendName);
+                tAv.innerText = getInitials(friendName).charAt(0);
+            }
+
+            const tBubble = document.createElement('div');
+            tBubble.className = 'chat-bubble bubble-in';
+            tBubble.style.cssText = 'padding:10px 14px;display:flex;align-items:center;gap:3px;';
+            tBubble.innerHTML = `
+                <span class="typing-dot"></span>
+                <span class="typing-dot" style="animation-delay:0.2s;"></span>
+                <span class="typing-dot" style="animation-delay:0.4s;"></span>`;
+
+            tRow.appendChild(tAv);
+            tRow.appendChild(tBubble);
+            log.appendChild(tRow);
+        }
+
+        setTimeout(() => { log.scrollTop = log.scrollHeight; }, 20);
+    }
+
+    // ===== EXPORT (3× pixel ratio for crisp download) =====
+    function generateScreenshot() {
+        const target = document.getElementById('screenshot-target');
+        const toast = document.getElementById('render-toast');
+        const notch = document.querySelector('.phone-notch');
+        const shine = document.querySelector('.phone-shine');
+
+        notch.style.display = 'none';
+        shine.style.display = 'none';
+
+        htmlToImage.toPng(target, {
+            pixelRatio: 3,
+            cacheBust: true,
+            quality: 1.0,
+            style: { borderRadius: '0px' }
+        }).then(dataUrl => {
+            screenshotBlob = dataUrl;
+            notch.style.display = '';
+            shine.style.display = '';
+
+            const dl = document.getElementById('btn-download');
+            dl.removeAttribute('disabled'); dl.classList.remove('opacity-60','cursor-not-allowed');
+            const cp = document.getElementById('btn-copy');
+            cp.removeAttribute('disabled'); cp.classList.remove('opacity-60','cursor-not-allowed');
+
+            toast.classList.remove('hidden');
+            setTimeout(() => toast.classList.add('hidden'), 3500);
+            createSparkle();
+        }).catch(err => {
+            notch.style.display = ''; shine.style.display = '';
+            console.error(err);
+            alert('Render failed — try again or use a native screenshot.');
+        });
+    }
+
+    function downloadImage() {
+        if (!screenshotBlob) return;
+        const name = document.getElementById('input-friend-name').value || 'Friend';
+        const a = document.createElement('a');
+        a.download = `FriendCheck_${name.replace(/\s+/g,'_')}_${currentTheme}.png`;
+        a.href = screenshotBlob; a.click();
+    }
+
+    function copyToClipboard() {
+        if (!screenshotBlob) return;
+        fetch(screenshotBlob).then(r => r.blob()).then(blob => {
+            navigator.clipboard.write([new ClipboardItem({'image/png': blob})])
+                .then(() => alert('Copied! Paste it anywhere.'))
+                .catch(() => alert('Clipboard blocked by browser. Use Download instead.'));
+        });
+    }
+
+    function shareWhatsApp() {
+        window.open('https://api.whatsapp.com/send?text=' +
+            encodeURIComponent('Check out this Fake Screenshot Generator!\nhttps://friendship-check.in/fake_screenshot_generator.html'), '_blank');
+    }
+
+    function createSparkle() {
+        const c = ['#fface8','#00eefc','#d1bcff','#ffd700','#25d366'];
+        for (let i = 0; i < 18; i++) {
+            const el = document.createElement('div');
+            el.style.cssText = `position:fixed;width:8px;height:8px;border-radius:50%;background:${c[i%c.length]};
+                left:${Math.random()*window.innerWidth}px;top:${window.innerHeight-60}px;z-index:9999;pointer-events:none;`;
+            document.body.appendChild(el);
+            el.animate([
+                {transform:'translate(0,0) scale(1)',opacity:1},
+                {transform:`translate(${(Math.random()-.5)*220}px,${-(Math.random()*320+80)}px) scale(0)`,opacity:0}
+            ], {duration:900+Math.random()*800, easing:'cubic-bezier(0.1,0.8,0.25,1)', fill:'forwards'});
+            setTimeout(() => el.remove(), 2000);
+        }
+    }
+
+    function resetAll() {
+        document.getElementById('input-friend-name').value = 'Elon Musk';
+        document.getElementById('select-friend-status').value = 'recent';
+        customAvatarUrl = ''; screenshotBlob = null;
+        document.getElementById('input-avatar-file').value = '';
+        messages = [
+            {id:1, sender:'friend', text:'Hey, is this actually working? 😅', time:'3:45 PM', status:'none'},
+            {id:2, sender:'you', text:'Yes! Customize it and prank your besties 😂', time:'3:46 PM', status:'read'}
+        ];
+        const dl = document.getElementById('btn-download');
+        dl.setAttribute('disabled','true'); dl.classList.add('opacity-60','cursor-not-allowed');
+        const cp = document.getElementById('btn-copy');
+        cp.setAttribute('disabled','true'); cp.classList.add('opacity-60','cursor-not-allowed');
+        setTheme('wa-dark');
+        renderBuilderList(); updatePreview();
+    }
+
+    // ===== INIT =====
+    window.addEventListener('DOMContentLoaded', () => {
+        const glow = document.getElementById('mouse-glow');
+        window.addEventListener('mousemove', e => {
+            glow.style.opacity = '1';
+            glow.style.left = e.clientX + 'px';
+            glow.style.top = e.clientY + 'px';
+        });
+        window.addEventListener('mouseleave', () => glow.style.opacity = '0');
+
+        setTheme('wa-dark');
+        renderBuilderList();
+        updatePreview();
+    });
+    </script>
+
+    <script src="shared/fc-utils.js"></script>
+    <script src="shared/fc-nav.js"></script>
+    <script src="shared/fc-ads.js"></script>
+    <div id="ad-footer-sticky"></div>
+    <script>
+      if (window.FCNav) FCNav.init({ active: 'fake-screenshot' });
+      if (window.FCAds) FCAds.initAll([
+        { type: 'footer', id: 'ad-footer-sticky', key: 'REPLACE_WITH_FOOTER_KEY', options: { sticky: true, closeable: true } },
+      ]);
+    </script>
+</body>
+</html>
