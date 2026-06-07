@@ -22,7 +22,7 @@
 (function (window) {
   'use strict';
 
-  var BASE_URL  = 'https://friendship-check.in';
+  var BASE_URL  = 'https://friendship-hub.fun';
   var SITE_NAME = 'FriendCheck';
   var TWITTER_HANDLE = '@FriendCheckApp';
 
