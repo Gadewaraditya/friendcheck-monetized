@@ -461,7 +461,9 @@
   <!-- ── UNIFIED NAV + UTILS ── -->
   <script src="shared/fc-utils.js"></script>
   <script src="shared/fc-nav.js"></script>
-  <script>FCNav.init({ active: 'fake-friend' });</script>
+<script src="shared/fc-guide.js"></script>
+  <script>FCNav.init({ active: 'fake-friend' });
+  if (window.FCGuide) FCGuide.init({ page: "fake-friend" });</script>
   <!-- ═══════════════════════════════════════════════════════════
        MONETIZATION LAYER — ads + affiliate recommendations
        Injected by friendcheck-monetized build

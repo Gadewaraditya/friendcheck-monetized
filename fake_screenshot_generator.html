@@ -1116,12 +1116,14 @@
 
     <script src="shared/fc-utils.js"></script>
     <script src="shared/fc-nav.js"></script>
+<script src="shared/fc-guide.js"></script>
     <script src="shared/fc-ads.js"></script>
     <div id="ad-footer-sticky">
 <script src="https://www.highperformanceformat.com/3a0e3e4a28865cc7a7db3e43e103a297/invoke.js"></script>
 </div>
     <script>
       if (window.FCNav) FCNav.init({ active: 'fake-screenshot' });
+  if (window.FCGuide) FCGuide.init({ page: "fake-screenshot" });
       if (window.FCAds) FCAds.initAll([
         { type: 'footer', id: 'ad-footer-sticky', key: '3a0e3e4a28865cc7a7db3e43e103a297', options: { sticky: true, closeable: true } },
       ]);

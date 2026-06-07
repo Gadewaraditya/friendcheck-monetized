@@ -928,7 +928,9 @@ document.addEventListener('mousemove',e=>{mg.style.left=e.clientX+'px';mg.style.
   <!-- ── UNIFIED NAV + UTILS ── -->
   <script src="shared/fc-utils.js"></script>
   <script src="shared/fc-nav.js"></script>
-  <script>FCNav.init({ active: 'prediction' });</script>
+<script src="shared/fc-guide.js"></script>
+  <script>FCNav.init({ active: 'prediction' });
+  if (window.FCGuide) FCGuide.init({ page: "prediction" });</script>
   <!-- ═══════════════════════════════════════════════════════════
        MONETIZATION LAYER — ads + affiliate recommendations
        Injected by friendcheck-monetized build

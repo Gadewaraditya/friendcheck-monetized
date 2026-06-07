@@ -512,7 +512,9 @@ function resetBattle(){
 <!-- ── UNIFIED NAV + UTILS ── -->
 <script src="shared/fc-utils.js"></script>
 <script src="shared/fc-nav.js"></script>
-<script>FCNav.init({ active: 'friend-battle' });</script>
+<script src="shared/fc-guide.js"></script>
+<script>FCNav.init({ active: 'friend-battle' });
+  if (window.FCGuide) FCGuide.init({ page: "friend-battle" });</script>
 
 
   <!-- ═══════════════════════════════════════════════════════════

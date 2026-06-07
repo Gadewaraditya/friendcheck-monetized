@@ -936,7 +936,9 @@ document.head.appendChild(s);
   <!-- ── UNIFIED NAV + UTILS ── -->
   <script src="shared/fc-utils.js"></script>
   <script src="shared/fc-nav.js"></script>
-  <script>FCNav.init({ active: 'compatibility' });</script>
+<script src="shared/fc-guide.js"></script>
+  <script>FCNav.init({ active: 'compatibility' });
+  if (window.FCGuide) FCGuide.init({ page: "compatibility" });</script>
   <!-- ═══════════════════════════════════════════════════════════
        MONETIZATION LAYER — ads + affiliate recommendations
        Injected by friendcheck-monetized build

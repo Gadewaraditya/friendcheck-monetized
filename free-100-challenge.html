@@ -1052,10 +1052,12 @@ updateHUD();
 <!-- ── SHARED SCRIPTS ── -->
 <script src="shared/fc-utils.js"></script>
 <script src="shared/fc-nav.js"></script>
+<script src="shared/fc-guide.js"></script>
 <script src="shared/fc-ads.js"></script>
 <script src="shared/fc-affiliate.js"></script>
 <script>
   FCNav.init({ active: 'challenge' });
+  if (window.FCGuide) FCGuide.init({ page: "challenge" });
 
   FCAds.initAll([
     { type: 'banner', id: 'ad-mid-banner', key: { desktop: '29b6a7e09126d354eee84aba19c99f53', mobile: '3a0e3e4a28865cc7a7db3e43e103a297' } },

@@ -408,8 +408,10 @@ select{cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%
 
 <script src="shared/fc-utils.js"></script>
 <script src="shared/fc-nav.js"></script>
+<script src="shared/fc-guide.js"></script>
 <script>
 if(window.FCNav) FCNav.init({active:'fake-chat'});
+  if (window.FCGuide) FCGuide.init({ page: "fake-chat" });
 
 /* ── STATE ── */
 let theme='wa', msgs=[], idCnt=0;

@@ -1253,7 +1253,9 @@
   <!-- ── UNIFIED NAV + UTILS ── -->
   <script src="shared/fc-utils.js"></script>
   <script src="shared/fc-nav.js"></script>
-  <script>FCNav.init({ active: 'certificate' });</script>
+<script src="shared/fc-guide.js"></script>
+  <script>FCNav.init({ active: 'certificate' });
+  if (window.FCGuide) FCGuide.init({ page: "certificate" });</script>
   <!-- ═══════════════════════════════════════════════════════════
        MONETIZATION LAYER — ads + affiliate recommendations
        Injected by friendcheck-monetized build

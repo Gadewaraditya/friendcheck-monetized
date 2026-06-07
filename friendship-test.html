@@ -1199,12 +1199,14 @@ root.render(<App />);
 <!-- ── SHARED UTILITIES ── -->
 <script src="shared/fc-utils.js"></script>
 <script src="shared/fc-nav.js"></script>
+<script src="shared/fc-guide.js"></script>
 <script src="shared/fc-ads.js"></script>
 <script src="shared/fc-affiliate.js"></script>
 <script src="shared/fc-seo-meta.js"></script>
 <script>
   // ── Nav ─────────────────────────────────────────────────────────────────
   FCNav.init({ active: 'friendship-test' });
+  if (window.FCGuide) FCGuide.init({ page: "friendship-test" });
 
   // ── Ads ──────────────────────────────────────────────────────────────────
   // Banner shown mid-page while test is in progress (lazy-loads on scroll)

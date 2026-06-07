@@ -441,9 +441,11 @@
   <!-- ── UNIFIED SCRIPTS ── -->
   <script src="shared/fc-utils.js"></script>
   <script src="shared/fc-nav.js"></script>
+<script src="shared/fc-guide.js"></script>
   <script src="shared/fc-ads.js"></script>
   <script>
     FCNav.init({ active: 'home' });
+  if (window.FCGuide) FCGuide.init({ page: "home" });
 
     // ── Ad Placements ──────────────────────────────────────────────────────
     // Homepage: after hero banner + native before footer + sticky footer
